@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="18dp"
+    android:layout_marginBottom="18dp"
+    android:clickable="true"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:strokeColor="@color/material_dynamic_neutral30"
+    app:strokeWidth="5dp">
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="?android:attr/listDivider" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contenedorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
+        android:clickable="false">
+
+        <ImageView
+            android:id="@+id/teamImageView"
+            android:layout_width="149dp"
+            android:layout_height="94dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/nameTextView2"
+            app:layout_constraintStart_toStartOf="@+id/nameTextView2"
+            app:layout_constraintTop_toBottomOf="@+id/nameTextView2"
+            app:srcCompat="@drawable/escudo24px"
+            tools:srcCompat="@drawable/escudo24px" />
+
+        <TextView
+            android:id="@+id/nameTextView2"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Team 1"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/matchesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Partidos:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/material_dynamic_neutral60"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/goalsScoredTextView"
+            app:layout_constraintTop_toTopOf="@+id/teamImageView" />
+
+        <TextView
+            android:id="@+id/goalsScoredTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Goles anotados:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/material_dynamic_neutral60"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/teamImageView"
+            app:layout_constraintStart_toEndOf="@+id/teamImageView" />
+
+        <TextView
+            android:id="@+id/winsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Victorias:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/material_dynamic_neutral60"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/goalsScoredTextView"
+            app:layout_constraintEnd_toEndOf="@+id/goalsScoredTextView"
+            app:layout_constraintTop_toBottomOf="@+id/matchesTextView" />
+
+        <ImageView
+            android:id="@+id/menuImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/nameTextView2"
+            app:srcCompat="@drawable/menu_24px" />
+
+        <TextView
+            android:id="@+id/numberGamesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/menuImageView"
+            app:layout_constraintTop_toTopOf="@+id/matchesTextView" />
+
+        <TextView
+            android:id="@+id/numberWinstextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            app:layout_constraintStart_toStartOf="@+id/numberGamesTextView"
+            app:layout_constraintTop_toTopOf="@+id/winsTextView" />
+
+        <TextView
+            android:id="@+id/numberGoalstextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            app:layout_constraintStart_toStartOf="@+id/numberWinstextView"
+            app:layout_constraintTop_toTopOf="@+id/goalsScoredTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyTeamsApp2024</string>
+    <string name="prefs_file">com.myTeams.app.PREFERENCE_FILE_KEY</string>
+    <string name="default_web_client_id">391685244378-9348ju2svt7kmp3plb0ap3d5jqq1uh6q.apps.googleusercontent.com</string>
+</resources>
