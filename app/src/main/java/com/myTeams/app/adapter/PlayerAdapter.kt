@@ -43,6 +43,8 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
         binding.nameTextView.text = player.name
         binding.numberTextView.text = player.number.toString()
 
+
+
         //Menu
         binding.menuImageView2.setOnClickListener {
             val popupMenu = PopupMenu(context, binding.menuImageView2)

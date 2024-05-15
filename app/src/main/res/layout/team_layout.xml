@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="18dp"
-    android:layout_marginBottom="18dp"
+    android:layout_marginTop="25dp"
+    android:layout_marginBottom="25dp"
     android:clickable="true"
+    android:padding="10dp"
     app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="8dp"
     app:cardElevation="16dp"
@@ -14,12 +15,6 @@
     app:strokeColor="@color/material_dynamic_neutral30"
     app:strokeWidth="5dp">
 
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:background="?android:attr/listDivider" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contenedorLayout"
@@ -33,23 +28,23 @@
             android:layout_width="149dp"
             android:layout_height="94dp"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/nameTextView2"
-            app:layout_constraintStart_toStartOf="@+id/nameTextView2"
-            app:layout_constraintTop_toBottomOf="@+id/nameTextView2"
+            app:layout_constraintStart_toStartOf="@+id/nombreTextView"
+            app:layout_constraintTop_toBottomOf="@+id/nombreTextView"
             app:srcCompat="@drawable/escudo24px"
             tools:srcCompat="@drawable/escudo24px" />
 
         <TextView
-            android:id="@+id/nameTextView2"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:id="@+id/nombreTextView"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="Team 1"
+            android:textAlignment="viewStart"
             android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@+id/menuImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,7 +92,7 @@
             android:layout_height="50dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/nameTextView2"
+            app:layout_constraintTop_toTopOf="@+id/nombreTextView"
             app:srcCompat="@drawable/menu_24px" />
 
         <TextView
@@ -126,5 +121,11 @@
             app:layout_constraintTop_toTopOf="@+id/goalsScoredTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="?android:attr/listDivider" />
 
 </com.google.android.material.card.MaterialCardView>

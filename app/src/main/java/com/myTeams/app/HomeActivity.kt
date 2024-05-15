@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable.Orientation
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -13,19 +14,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.myTeams.app.adapter.TeamAdapter
-
 import com.myTeams.app.databinding.ActivityHomeBinding
 import com.myTeams.app.model.TeamModel
 import com.myTeams.app.startup.MainActivity
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+
 
 enum class ProviderType{
     BASIC,
@@ -83,7 +85,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(mainActivityIntent)
         }
 
-        binding.addButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             val addTeamActivityIntent = Intent(this, AddTeamActivity::class.java)
             startActivity(addTeamActivityIntent)
         }
@@ -96,6 +98,7 @@ class HomeActivity : AppCompatActivity() {
         binding.playersRecyclerView.adapter = TeamAdapter(
             listado, this, db
         )
+
     }
 
     private suspend fun cargarEquipos(email: String?): ArrayList<TeamModel> {
@@ -155,7 +158,6 @@ class HomeActivity : AppCompatActivity() {
             return true
         }
         return super.onKeyDown(keyCode, event)
-
     }
 
     private fun confirmCerrar(){
@@ -173,7 +175,6 @@ class HomeActivity : AppCompatActivity() {
 
         val alertDialog = builder.create()
         alertDialog.show()
-
     }
 }
 

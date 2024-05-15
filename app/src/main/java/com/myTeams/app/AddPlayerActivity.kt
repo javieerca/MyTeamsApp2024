@@ -42,6 +42,15 @@ class AddPlayerActivity : AppCompatActivity() {
             if (!binding.nameEditText.text.isNullOrEmpty() && !binding.numberEditText.text.isNullOrEmpty()) {
                 valido = true
             }
+            var posicionId=0
+            if (binding.positionSpinner.selectedItem.toString() == "Defensa"){
+                posicionId=1
+            }else if(binding.positionSpinner.selectedItem.toString() == "Centrocampista"){
+                posicionId=2
+            }
+            else if(binding.positionSpinner.selectedItem.toString() == "Delantero"){
+                posicionId=3
+            }
 
 
             if (valido) {
@@ -49,7 +58,8 @@ class AddPlayerActivity : AppCompatActivity() {
                     name = binding.nameEditText.text.toString(),
                     number = binding.numberEditText.text.toString().toInt(),
                     position = binding.positionSpinner.selectedItem.toString(),
-                    teamId = currentTeam.id
+                    positionId = posicionId,
+                    teamId = currentTeam.id,
                 )
 
                 val teamref = db.collection("teams").document(currentTeam.id)
@@ -61,7 +71,8 @@ class AddPlayerActivity : AppCompatActivity() {
                         "position" to player.position,
                         "number" to player.number,
                         "gamesPlayed" to player.gamesPlayed,
-                        "goalsScored" to player.goalsScored
+                        "goalsScored" to player.goalsScored,
+                        "positionId" to player.positionId
                     )
                 )
                 finish()

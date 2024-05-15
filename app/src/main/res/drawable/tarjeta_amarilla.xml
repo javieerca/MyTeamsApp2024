@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="36dp"
+    android:viewportWidth="20"
+    android:viewportHeight="36">
+  <!-- Relleno amarillo con esquinas redondeadas -->
+    <path
+        android:fillColor="#FFFF00"
+        android:pathData="M2,2 L18,2 Q20,2 20,6 L20,30 Q20,34 18,34 L2,34 Q0,34 0,30 L0,6 Q0,2 2,2 Z"/>
+</vector>
+

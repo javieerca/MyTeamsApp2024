@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="player_positions">
-        <item>Goalkeeper</item>
-        <item>Defense</item>
-        <item>Midfielder</item>
-        <item>Striker</item>
+        <item>Portero</item>
+        <item>Defensa</item>
+        <item>Centrocampista</item>
+        <item>Delantero</item>
     </string-array>
 </resources>

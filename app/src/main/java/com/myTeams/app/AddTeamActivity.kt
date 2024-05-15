@@ -41,8 +41,8 @@ class AddTeamActivity : AppCompatActivity() {
                         "goalsScored" to team.goalsScored
                     )
                 )
-
             }
+
             finish()
         }
 

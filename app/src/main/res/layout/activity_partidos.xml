@@ -5,10 +5,48 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayersActivity">
+    tools:context=".PartidosActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/partidosRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/addbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myTeamText4"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/loadingGif3"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:src="@drawable/gif_loading"
+        app:layout_constraintBottom_toBottomOf="@+id/partidosRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/partidosRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/partidosRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/partidosRecyclerView" />
+
+    <TextView
+        android:id="@+id/myTeamText4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#82B1FF"
+        android:gravity="center"
+        android:text="Partidos"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/addButton2"
+        android:id="@+id/addbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -16,48 +54,4 @@
         android:text="Añadir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playersRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/addButton2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTeamText2" />
-
-    <TextView
-        android:id="@+id/myTeamText2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#82B1FF"
-        android:gravity="center"
-        android:text="MyTeams"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/loadingGif2"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:src="@drawable/gif_loading"
-        app:layout_constraintBottom_toBottomOf="@+id/playersRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/playersRecyclerView" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Generar 11"
-        app:layout_constraintStart_toStartOf="@+id/playersRecyclerView"
-        app:layout_constraintTop_toTopOf="@+id/addButton2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

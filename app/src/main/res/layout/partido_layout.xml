@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="25dp"
+    android:layout_marginBottom="25dp"
+    android:clickable="true"
+    android:padding="10dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="16dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:strokeColor="@color/material_dynamic_neutral30"
+    app:strokeWidth="5dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contenedorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
+        android:clickable="false">
+
+        <TextView
+            android:id="@+id/visitanteTextView"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Team 1"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/golesvisitanteTextView2"
+            app:layout_constraintStart_toStartOf="@+id/localTextView"
+            app:layout_constraintTop_toBottomOf="@+id/localTextView" />
+
+        <TextView
+            android:id="@+id/localTextView"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Team 1"
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/golesLocalTextView"
+            app:layout_constraintStart_toStartOf="@+id/jornadaTextView"
+            app:layout_constraintTop_toBottomOf="@+id/jornadaTextView" />
+
+        <ImageView
+            android:id="@+id/menuImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/jornadaTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/jornadaTextView"
+            app:srcCompat="@drawable/menu_24px" />
+
+        <TextView
+            android:id="@+id/jornadaTextView"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Jornada"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/menuImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/golesLocalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/localTextView"
+            app:layout_constraintEnd_toEndOf="@+id/menuImageView"
+            app:layout_constraintStart_toStartOf="@+id/menuImageView"
+            app:layout_constraintTop_toTopOf="@+id/localTextView" />
+
+        <TextView
+            android:id="@+id/golesvisitanteTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/visitanteTextView"
+            app:layout_constraintEnd_toEndOf="@+id/golesLocalTextView"
+            app:layout_constraintTop_toTopOf="@+id/visitanteTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="?android:attr/listDivider" />
+
+</com.google.android.material.card.MaterialCardView>

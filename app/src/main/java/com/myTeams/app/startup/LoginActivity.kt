@@ -57,7 +57,10 @@ class LoginActivity : AppCompatActivity() {
                             showAlert()
                         }
                     }
+            }else{
+                //Avisar de que estan vacio
             }
+
         }
 
         binding.googleButton.setOnClickListener{

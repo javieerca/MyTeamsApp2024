@@ -47,12 +47,22 @@ class TeamActivity : AppCompatActivity() {
         binding.playersButton.setOnClickListener {
             Toast.makeText(this, "Cambiando a jugadores de $teamId", Toast.LENGTH_SHORT).show()
             val teamActivityIntent = Intent(this, PlayersActivity::class.java)
+
             if(currentTeam.id != ""){
                 teamActivityIntent.putExtra("teamId", currentTeam.id)
                 teamActivityIntent.putExtra("equipo", currentTeam)
                 startActivity(teamActivityIntent)
             }
+        }
 
+        binding.gamesButton.setOnClickListener {
+            val partidosActivityIntent = Intent(this, PartidosActivity::class.java)
+
+            if(currentTeam.id != ""){
+                partidosActivityIntent.putExtra("teamId", currentTeam.id)
+                partidosActivityIntent.putExtra("equipo", currentTeam)
+                startActivity(partidosActivityIntent)
+            }
         }
 
     }

@@ -4,12 +4,15 @@ import java.io.Serializable
 
 data class TeamModel(
     var id: String ="",
-    val name: String = "",
-    val kitColor: String ="",
+    var name: String = "",
+    var kitColor: String ="",
     val user: String ="",
-    val gamesPlayed: Int =0,
-    val gamesWon: Int=0,
-    val goalsScored: Int=0
+    var gamesPlayed: Int =0,
+    var gamesWon: Int=0,
+    var derrotas: Int=0,
+    var empates: Int=0,
+    var goalsScored: Int=0,
+    var golesEncajados: Int=0
 ): Serializable
 
 fun TeamModel.toMap() = mapOf<String, Any>(
