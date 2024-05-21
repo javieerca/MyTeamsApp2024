@@ -114,7 +114,7 @@ class HomeActivity : AppCompatActivity() {
 
         if (email != null) {
             db.collection("teams")
-                .whereEqualTo("user", email)
+                .whereEqualTo("usuario", email)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {

@@ -13,11 +13,12 @@ data class PartidoModel(
     var golesMarcados: Int = 0,
     val numeroJornada: Int =0,
     val observaciones: String = "",
-    val titularesId: ArrayList<String> = ArrayList(),
-    val suplentesId: ArrayList<String> = ArrayList(),
-    val goles: ArrayList<EventoModel> = ArrayList(),
-    val amonestaciones: ArrayList<EventoModel> = ArrayList(),
-    val sustituciones: ArrayList<EventoModel> = ArrayList()
+    var titulares: ArrayList<JugadorModel> = ArrayList(),
+    var suplentes: ArrayList<JugadorModel> = ArrayList(),
+    var convocados: ArrayList<JugadorModel> = ArrayList(),
+    var goles: ArrayList<EventoModel> = ArrayList(),
+    var amonestaciones: ArrayList<EventoModel> = ArrayList(),
+    var sustituciones: ArrayList<EventoModel> = ArrayList()
 ): Serializable
 
 

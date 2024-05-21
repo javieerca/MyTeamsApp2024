@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MyTeamsApp2024" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- <item nombre="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.MyTeamsApp2024" parent="Base.Theme.MyTeamsApp2024" />

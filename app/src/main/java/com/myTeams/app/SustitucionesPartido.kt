@@ -13,16 +13,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.myTeams.app.adapter.GolAdapter
+import com.myTeams.app.adapter.SustitucionAdapter
 import com.myTeams.app.adapter.TarjetaAdapter
-import com.myTeams.app.databinding.ActivityAmonestacionesPartidoBinding
+import com.myTeams.app.databinding.ActivitySustitucionesPartidoBinding
 import com.myTeams.app.model.EventoModel
-import com.myTeams.app.model.JugadorModel
 import com.myTeams.app.model.PartidoModel
 import com.myTeams.app.model.TeamModel
 
-class AmonestacionesPartidoActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAmonestacionesPartidoBinding
+class SustitucionesPartido : AppCompatActivity() {
+    private lateinit var binding: ActivitySustitucionesPartidoBinding
     private var currentTeam: TeamModel = TeamModel()
     private var partido: PartidoModel = PartidoModel()
 
@@ -30,11 +29,12 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
     private var jugadoresSuplentes: ArrayList<String> = ArrayList()
 
     private var listado: ArrayList<EventoModel> = ArrayList()
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityAmonestacionesPartidoBinding.inflate(layoutInflater)
+        binding = ActivitySustitucionesPartidoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -49,17 +49,19 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
         jugadoresSuplentes = intent.extras?.getStringArrayList("suplentes")!!
 
         setup()
+
+
     }
 
     private fun setup(){
         binding.addeventobutton.setOnClickListener {
-            val addTarjetaActivty = Intent(this, AddTarjetaActivity::class.java)
-            addTarjetaActivty.putExtra("equipo", currentTeam)
-            addTarjetaActivty.putExtra("partido", partido)
+            val addSustitucionActivity = Intent(this, AddSustitucionActivty::class.java)
+            addSustitucionActivity.putExtra("equipo", currentTeam)
+            addSustitucionActivity.putExtra("partido", partido)
 
-            addTarjetaActivty.putStringArrayListExtra("titulares", jugadoresTitulares)
-            addTarjetaActivty.putStringArrayListExtra("suplentes", jugadoresSuplentes)
-            startActivityForResult(addTarjetaActivty, 333)
+            addSustitucionActivity.putStringArrayListExtra("titulares", jugadoresTitulares)
+            addSustitucionActivity.putStringArrayListExtra("suplentes", jugadoresSuplentes)
+            startActivityForResult(addSustitucionActivity, 333)
         }
 
         binding.guardarEventosbutton.setOnClickListener {
@@ -73,7 +75,7 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
 
     private fun guardarYSalir(){
         for (evento in listado){//listado viene de la bd
-            partido.amonestaciones.add(evento)
+            partido.sustituciones.add(evento)
         }
 
         val resultadoIntent = Intent()
@@ -90,10 +92,9 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-
     private fun setAdapter(listado: ArrayList<EventoModel>) {
         if(listado.isEmpty() || listado.size == 1){
-            binding.eventosRecyclerView.adapter = TarjetaAdapter(
+            binding.eventosRecyclerView.adapter = SustitucionAdapter(
                 listado, this, partido
             )
         }else{
@@ -104,49 +105,20 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
                 arrayListOrdenado.add(tarjeta)
             }
 
-            binding.eventosRecyclerView.adapter = TarjetaAdapter(
+            binding.eventosRecyclerView.adapter = SustitucionAdapter(
                 arrayListOrdenado, this, partido
             )
         }
     }
 
-    private fun encontrarSegundaAmarilla(amonestaciones: List<EventoModel>): JugadorModel?{
-        var conAmarilla: ArrayList<JugadorModel> = ArrayList()
-        for(tarjeta in amonestaciones){
-            if(tarjeta.tipoEventoId == 1){ //es tarjeta amarilla
-                conAmarilla.add(tarjeta.jugadoresImplicados[0])   //guardo los amonestados
-            }
-        }
-        val idsEncontrados = mutableSetOf<String>()
-        for (jugador in conAmarilla) {
-            if (!idsEncontrados.add(jugador.id)) {
-                // Si add devuelve false, significa que el id ya estaba en el array
-                return jugador
-            }
-        }
-        return null
-    }
-
     private fun actualizar(){
-        if(encontrarSegundaAmarilla(partido.amonestaciones) != null) {
-            val segundaAmarilla = partido.amonestaciones.last()
-            val expulsion = EventoModel(
-                tipoEventoId = 2,
-                tipoEventoNombre = "Tarjeta Roja",
-                jugadoresImplicados = segundaAmarilla.jugadoresImplicados,
-                minuto = segundaAmarilla.minuto
-            )
-            partido.amonestaciones.add(expulsion)
-        }
-        val tarjetas = partido.amonestaciones
-        setAdapter(tarjetas)
+        val sustituciones = partido.sustituciones
+        setAdapter(sustituciones)
     }
-
     override fun onResume() {
         super.onResume()
         actualizar()
     }
-
 
     @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -154,14 +126,14 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 333 && resultCode == Activity.RESULT_OK) {
-            //jugadoresTitulares = data?.getStringArrayListExtra("titulares")!!
-            //binding.contadorTitulares.text = "(${jugadoresTitulares!!.size})"
             partido = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
 
             if (partido.equipoId != "") {
-                Toast.makeText(this, "Tarjetas: ${partido.amonestaciones.size}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Sustituciones: ${partido.sustituciones.size}", Toast.LENGTH_SHORT).show()
             }
             //añadir evento a la bd y a listado
         }
     }
+
+
 }

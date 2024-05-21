@@ -13,7 +13,7 @@ abstract class FirebaseUtils {
 
      fun getTeamsByEmail(user: String): TeamModel? {
         val snapshot =db.collection("teams")
-                        .whereEqualTo("user", user)
+                        .whereEqualTo("usuario", user)
                         .get()
 
         val document = snapshot.result.documents.firstOrNull()

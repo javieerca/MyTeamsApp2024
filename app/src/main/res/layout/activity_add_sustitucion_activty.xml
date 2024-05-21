@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddSustitucionActivty">
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:max="90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/numeroSaletextView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView13"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/seleccionarsustituidobutton" />
+
+    <TextView
+        android:id="@+id/nombreSaletextView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Selecciona un jugador"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/numeroSaletextView3"
+        app:layout_constraintEnd_toEndOf="@+id/seleccionarsustituidobutton"
+        app:layout_constraintStart_toStartOf="@+id/seleccionarsustituidobutton"
+        app:layout_constraintTop_toTopOf="@+id/numeroSaletextView3" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sale:"
+        app:layout_constraintBottom_toBottomOf="@+id/seleccionarsustituidobutton"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/seleccionarsustituidobutton" />
+
+    <Button
+        android:id="@+id/seleccionarsustituidobutton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Seleccionar jugador"
+        app:layout_constraintEnd_toEndOf="@+id/nombreEntratextView"
+        app:layout_constraintStart_toStartOf="@+id/nombreEntratextView"
+        app:layout_constraintTop_toBottomOf="@+id/nombreEntratextView" />
+
+    <Button
+        android:id="@+id/seleccionarsustitutobutton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="Seleccionar jugador"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numeroEntratextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/seleccionarsustitutobutton" />
+
+    <TextView
+        android:id="@+id/nombreEntratextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:hint="Selecciona un jugador"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/numeroEntratextView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/seleccionarsustitutobutton"
+        app:layout_constraintTop_toTopOf="@+id/numeroEntratextView2" />
+
+    <TextView
+        android:id="@+id/minutotextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minuto:"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintEnd_toEndOf="@+id/textView13"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="1"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/nombreSaletextView3"
+        app:layout_constraintTop_toBottomOf="@+id/nombreSaletextView3" />
+
+    <Button
+        android:id="@+id/guardarGolbutton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="Añadir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="Entra:"
+        app:layout_constraintBottom_toBottomOf="@+id/seleccionarsustitutobutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/seleccionarsustitutobutton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

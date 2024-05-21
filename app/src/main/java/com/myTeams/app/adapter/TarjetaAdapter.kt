@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.myTeams.app.R
-import com.myTeams.app.databinding.GolLayoutBinding
 import com.myTeams.app.databinding.TarjetasLayoutBinding
 import com.myTeams.app.model.EventoModel
 import com.myTeams.app.model.PartidoModel
@@ -36,10 +35,17 @@ class TarjetaAdapter (private var tarjetas: ArrayList<EventoModel>, val context:
             //intent de TeamActivity
         }
 
-        binding.nameTextView2.text = evento.jugadoresImplicados[0].name
-        binding.dorsalTextView2.text = evento.jugadoresImplicados[0].number.toString()
+        binding.nameTextView2.text = evento.jugadoresImplicados[0].nombre
+        binding.dorsalTextView2.text = evento.jugadoresImplicados[0].numero.toString()
         binding.minutoTextView.text = evento.minuto.toString()
-        //binding.imageView6.setImageResource(R.drawable.tarje)
+        if(evento.tipoEventoId == 1){
+            binding.tarjetaRojaimageView.visibility = View.INVISIBLE
+        }
+        else{ //seria 2
+            binding.tarjetaAmarillaimageView.visibility = View.INVISIBLE
+            binding.tarjetaRojaimageView.visibility = View.VISIBLE
+
+        }
 
         binding.imageView7.setOnClickListener{
             Toast.makeText(context, "Vamos a borrar la tarjeta del minuto " + evento.minuto, Toast.LENGTH_SHORT)

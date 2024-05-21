@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditarPartidoActivity">
+
+    <TextView
+        android:id="@+id/alineacionTextView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Eventos:"
+        app:layout_constraintStart_toStartOf="@+id/titularesButton"
+        app:layout_constraintTop_toBottomOf="@+id/titularesButton" />
+
+    <TextView
+        android:id="@+id/observacionesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="104dp"
+        android:text="Observaciones:"
+        app:layout_constraintStart_toStartOf="@+id/titularesButton"
+        app:layout_constraintTop_toBottomOf="@+id/titularesButton" />
+
+    <TextView
+        android:id="@+id/alineacionTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Suplentes:"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/alineacionTextView" />
+
+    <TextView
+        android:id="@+id/alineacionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Titulares:"
+        app:layout_constraintStart_toStartOf="@+id/encajadosTextNumber"
+        app:layout_constraintTop_toBottomOf="@+id/encajadosTextNumber" />
+
+    <TextView
+        android:id="@+id/rivalTextView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Goles del rival:"
+        app:layout_constraintStart_toStartOf="@+id/rivalEditText"
+        app:layout_constraintTop_toBottomOf="@+id/rivalEditText" />
+
+    <TextView
+        android:id="@+id/myTeamText3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#82B1FF"
+        android:gravity="center"
+        android:text="Nuevo partido"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/rivalEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:hint="Nombre del rival"
+        android:inputType="text"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rivalTextView"
+        app:layout_constraintTop_toBottomOf="@+id/rivalTextView" />
+
+    <TextView
+        android:id="@+id/rivalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Rival:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jornadaNumberEdit" />
+
+    <Spinner
+        android:id="@+id/estadioSpinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        android:entries="@array/estadio"
+        android:gravity="start"
+        app:layout_constraintBottom_toBottomOf="@+id/encajadosTextNumber"
+        app:layout_constraintEnd_toEndOf="@+id/rivalEditText"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/encajadosTextNumber"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/estadioTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Jugó como:"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/rivalTextView3" />
+
+    <EditText
+        android:id="@+id/encajadosTextNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Goles encajados"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:text="0"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/rivalTextView3"
+        app:layout_constraintTop_toBottomOf="@+id/rivalTextView3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="206dp" />
+
+    <Button
+        android:id="@+id/titularesButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Añadir titulares"
+        app:layout_constraintBottom_toBottomOf="@+id/Suplentesbutton"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.546"
+        app:layout_constraintStart_toStartOf="@+id/encajadosTextNumber"
+        app:layout_constraintTop_toBottomOf="@+id/alineacionTextView" />
+
+    <Button
+        android:id="@+id/Suplentesbutton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:text="Añadir suplentes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/alineacionTextView2"
+        app:layout_constraintTop_toBottomOf="@+id/alineacionTextView2" />
+
+    <Button
+        android:id="@+id/guardarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="Añadir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/cancelButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toStartOf="@+id/guardarButton"
+        app:layout_constraintTop_toTopOf="@+id/guardarButton" />
+
+    <Button
+        android:id="@+id/eventosbutton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Goles, Sustituciones y amonestaciones"
+        app:layout_constraintEnd_toEndOf="@+id/Suplentesbutton"
+        app:layout_constraintStart_toStartOf="@+id/alineacionTextView4"
+        app:layout_constraintTop_toBottomOf="@+id/alineacionTextView4" />
+
+    <TextView
+        android:id="@+id/contadorEventostextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="(0)"
+        app:layout_constraintStart_toEndOf="@+id/alineacionTextView4"
+        app:layout_constraintTop_toTopOf="@+id/alineacionTextView4" />
+
+    <EditText
+        android:id="@+id/observacionesMultiline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:gravity="start|top|center_vertical"
+        android:hint="Observaciones del partido:"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton1"
+        app:layout_constraintEnd_toEndOf="@+id/eventosbutton"
+        app:layout_constraintStart_toStartOf="@+id/observacionesTextView"
+        app:layout_constraintTop_toBottomOf="@+id/observacionesTextView" />
+
+    <TextView
+        android:id="@+id/contadorTitulares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="(0)"
+        app:layout_constraintStart_toEndOf="@+id/alineacionTextView"
+        app:layout_constraintTop_toTopOf="@+id/alineacionTextView" />
+
+    <TextView
+        android:id="@+id/contadorSuplentes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="(0)"
+        app:layout_constraintStart_toEndOf="@+id/alineacionTextView2"
+        app:layout_constraintTop_toTopOf="@+id/alineacionTextView2" />
+
+    <EditText
+        android:id="@+id/jornadaNumberEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:inputType="number"
+        android:minHeight="48dp"
+        android:text="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/myTeamText3" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jornada:"
+        app:layout_constraintBottom_toBottomOf="@+id/jornadaNumberEdit"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/jornadaNumberEdit" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Goles anotados:"
+        app:layout_constraintStart_toStartOf="@+id/rivalTextView"
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/golesanotadostextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="0"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/jornadaNumberEdit"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
+        app:layout_constraintTop_toTopOf="@+id/jornadaNumberEdit" />
+</androidx.constraintlayout.widget.ConstraintLayout>

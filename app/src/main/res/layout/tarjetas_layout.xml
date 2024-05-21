@@ -9,12 +9,12 @@
         android:id="@+id/minutoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         android:text="90"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="@+id/imageView6" />
+        app:layout_constraintEnd_toEndOf="@+id/tarjetaRojaimageView"
+        app:layout_constraintStart_toStartOf="@+id/tarjetaRojaimageView"
+        app:layout_constraintTop_toBottomOf="@+id/tarjetaRojaimageView" />
 
     <TextView
         android:id="@+id/dorsalTextView2"
@@ -37,7 +37,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/minutoTextView" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -64,22 +64,32 @@
 
     <TextView
         android:id="@+id/nameTextView2"
-        android:layout_width="57dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
         android:text="Player 1"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/minutoTextView"
+        app:layout_constraintEnd_toStartOf="@+id/dorsalTextView2"
         app:layout_constraintStart_toEndOf="@+id/minutoTextView"
-        app:layout_constraintTop_toTopOf="@+id/minutoTextView" />
+        app:layout_constraintTop_toTopOf="@+id/tarjetaRojaimageView" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/tarjetaRojaimageView"
         android:layout_width="40dp"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tarjeta_roja" />
+
+    <ImageView
+        android:id="@+id/tarjetaAmarillaimageView"
+        android:layout_width="40dp"
+        android:layout_height="55dp"
+        app:layout_constraintStart_toStartOf="@+id/tarjetaRojaimageView"
+        app:layout_constraintTop_toTopOf="@+id/tarjetaRojaimageView"
+        app:srcCompat="@drawable/tarjeta_amarilla" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,8 +47,8 @@ class GolesPartidoActivity : AppCompatActivity() {
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
         partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
 
-        jugadoresTitulares = intent.extras?.getStringArrayList("titularesId")!!
-        jugadoresSuplentes = intent.extras?.getStringArrayList("suplentesId")!!
+        jugadoresTitulares = intent.extras?.getStringArrayList("titulares")!!
+        jugadoresSuplentes = intent.extras?.getStringArrayList("suplentes")!!
 
         setup()
     }
@@ -59,12 +59,12 @@ class GolesPartidoActivity : AppCompatActivity() {
             addGolActivityIntent.putExtra("equipo", currentTeam)
             addGolActivityIntent.putExtra("partido", partido)
 
-            addGolActivityIntent.putStringArrayListExtra("titularesId", jugadoresTitulares)
-            addGolActivityIntent.putStringArrayListExtra("suplentesId", jugadoresSuplentes)
+            addGolActivityIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
+            addGolActivityIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
             startActivityForResult(addGolActivityIntent, 333)
         }
 
-        binding.guardarGolesbutton.setOnClickListener {
+        binding.guardarEventosbutton.setOnClickListener {
             guardarYSalir()
         }
 

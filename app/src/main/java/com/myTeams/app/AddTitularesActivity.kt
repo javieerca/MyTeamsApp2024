@@ -3,6 +3,7 @@ package com.myTeams.app
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,7 +21,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.myTeams.app.databinding.ActivityAddTitularesBinding
-import com.myTeams.app.model.PlayerModel
+import com.myTeams.app.model.PartidoModel
+import com.myTeams.app.model.JugadorModel
 import com.myTeams.app.model.TeamModel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
@@ -27,16 +30,20 @@ import kotlin.coroutines.suspendCoroutine
 
 class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
     private lateinit var binding: ActivityAddTitularesBinding
-    private var equipoId: String = ""
 
     private var listOfItem: ArrayList<String> = ArrayList()
     private var jugadoresId: ArrayList<String> = ArrayList()
 
+    private var jugadores: ArrayList<JugadorModel> = ArrayList()
+    private var seleccionados: ArrayList<JugadorModel> = ArrayList()
+
     private var seleccionadosId: ArrayList<String> = ArrayList()
 
+    private var partido: PartidoModel = PartidoModel()
 
     private val db = FirebaseFirestore.getInstance()
     private var currentTeam: TeamModel = TeamModel()
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,7 +56,8 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
             insets
         }
 
-        equipoId = intent.extras?.getString("idEquipo")!!
+        currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
+        partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
         mostrarListado(listOfItem)
 
 
@@ -57,9 +65,12 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
             if(seleccionadosId.size != 11){
                 Toast.makeText(this, "Debes seleccionar 11 jugadores.", Toast.LENGTH_SHORT).show()
             }else{
+                partido.titulares = seleccionados
+
                 val resultadoIntent = Intent()
                 resultadoIntent.putExtra("sonTitulares", true)
-                resultadoIntent.putExtra("titulares", seleccionadosId)
+                resultadoIntent.putExtra("partido", partido)
+                resultadoIntent.putExtra("titularesId", seleccionadosId)
 
                 setResult(Activity.RESULT_OK, resultadoIntent)
                 finish()
@@ -72,18 +83,19 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
     private fun mostrarListado(listado: ArrayList<String>){
         val arrayAdapter: ArrayAdapter<String> = ArrayAdapter (applicationContext,
             android.R.layout.simple_list_item_multiple_choice,
-            listOfItem)
+            listado)
 
         binding.multipleListview.choiceMode = ListView.CHOICE_MODE_MULTIPLE
         binding.multipleListview.adapter = arrayAdapter
         binding.multipleListview.onItemClickListener = this
     }
 
-    private fun setMultipleListView(listado: ArrayList<PlayerModel>): ArrayList<String>{
+    private fun setMultipleListView(listado: ArrayList<JugadorModel>): ArrayList<String>{
         val arrayList: ArrayList<String> = ArrayList()
         for (jugador in listado){
-            arrayList.add("${jugador.number}. ${jugador.name.uppercase()}")
+            arrayList.add("${jugador.numero}. ${jugador.nombre.uppercase()}")
             jugadoresId.add(jugador.id)
+            jugadores.add(jugador)
         }
 
         return arrayList
@@ -94,37 +106,37 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
 
         if(binding.multipleListview.isItemChecked(position)){
             seleccionadosId.add(jugadoresId[position])
+            seleccionados.add(jugadores[position])
 
         }else{
             seleccionadosId.remove(jugadoresId[position])
+            seleccionados.remove(jugadores[position])
         }
 
     }
 
-    private suspend fun cargarJugadores(teamId: String?): ArrayList<PlayerModel> {
+    private suspend fun cargarJugadores(teamId: String?): ArrayList<JugadorModel> {
         return suspendCoroutine { continuation ->
             buscarJugadores(teamId) { jugadores ->
                 continuation.resume(jugadores)
             }
         }
     }
-    private fun buscarJugadores(teamId: String?, callback: (ArrayList<PlayerModel>) -> Unit) {
+    private fun buscarJugadores(teamId: String?, callback: (ArrayList<JugadorModel>) -> Unit) {
         //val teamDB
-        val listado = ArrayList<PlayerModel>()
+        val listado = ArrayList<JugadorModel>()
 
         val teamRef = db.collection("teams").document(teamId!!)
 
-        teamRef.collection("players").orderBy("positionId")
+        teamRef.collection("players").orderBy("posicionId")
             .get()
             .addOnSuccessListener { documents ->
                 for (jugador in documents) {
-                    val playerDB = jugador.toObject<PlayerModel>()
+                    val playerDB = jugador.toObject<JugadorModel>()
                     playerDB.id = jugador.id
                     listado.add(playerDB)
 
                 }
-
-
                 callback(listado)
             }
             .addOnFailureListener { exception ->
@@ -135,8 +147,8 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
 
     private fun actualizar() {
         lifecycleScope.launch {
-            val listado = cargarJugadores(intent.extras?.getString("idEquipo"))
-            listOfItem = setMultipleListView(cargarJugadores(equipoId))
+            val listado = cargarJugadores(currentTeam.id)
+            listOfItem = setMultipleListView(listado)
             mostrarListado(listOfItem)
         }
 

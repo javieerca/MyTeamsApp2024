@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.databinding.ActivityAddPlayerBinding
-import com.myTeams.app.model.PlayerModel
+import com.myTeams.app.model.JugadorModel
 import com.myTeams.app.model.TeamModel
 
 class AddPlayerActivity : AppCompatActivity() {
@@ -54,29 +54,32 @@ class AddPlayerActivity : AppCompatActivity() {
 
 
             if (valido) {
-                val player = PlayerModel(
-                    name = binding.nameEditText.text.toString(),
-                    number = binding.numberEditText.text.toString().toInt(),
-                    position = binding.positionSpinner.selectedItem.toString(),
-                    positionId = posicionId,
-                    teamId = currentTeam.id,
+                val player = JugadorModel(
+                    nombre = binding.nameEditText.text.toString(),
+                    numero = binding.numberEditText.text.toString().toInt(),
+                    posicion = binding.positionSpinner.selectedItem.toString(),
+                    posicionId = posicionId,
+                    equipoId = currentTeam.id,
+
                 )
 
                 val teamref = db.collection("teams").document(currentTeam.id)
 
                 teamref.collection("players").document().set(
                     hashMapOf(
-                        "name" to player.name,
-                        "teamId" to player.teamId,
-                        "position" to player.position,
-                        "number" to player.number,
-                        "gamesPlayed" to player.gamesPlayed,
-                        "goalsScored" to player.goalsScored,
-                        "positionId" to player.positionId
+                        "nombre" to player.nombre,
+                        "equipoId" to player.equipoId,
+                        "posicion" to player.posicion,
+                        "numero" to player.numero,
+                        "partidosJugados" to player.partidosJugados,
+                        "golesMarcados" to player.golesMarcados,
+                        "posicionId" to player.posicionId,
+                        "tarjetasAmarillas" to player.tarjetasAmarillas,
+                        "tarjetasRojas" to player.tarjetasRojas
                     )
                 )
                 finish()
-                Toast.makeText(this, "Vamos a añadir a " + player.name, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Vamos a añadir a " + player.nombre, Toast.LENGTH_SHORT).show()
 
             } else {
                 Toast.makeText(this, "Debes rellenar todos los campos", Toast.LENGTH_SHORT).show()

@@ -39,8 +39,8 @@ class AddEventoActivity : AppCompatActivity() {
         partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
 
         //TODO cargar jugadores desde partido
-        jugadoresTitulares = intent.extras?.getStringArrayList("titularesId")!!
-        jugadoresSuplentes = intent.extras?.getStringArrayList("suplentesId")!!
+        //jugadoresTitulares = intent.extras?.getStringArrayList("titulares")!!
+        //jugadoresSuplentes = intent.extras?.getStringArrayList("suplentes")!!
 
 
         binding.golesbutton.setOnClickListener {
@@ -48,12 +48,38 @@ class AddEventoActivity : AppCompatActivity() {
             golesPartidoActivityIntent.putExtra("equipo", currentTeam)
             golesPartidoActivityIntent.putExtra("partido", partido)
 
-            golesPartidoActivityIntent.putStringArrayListExtra("titularesId", jugadoresTitulares)
-            golesPartidoActivityIntent.putStringArrayListExtra("suplentesId", jugadoresSuplentes)
+            golesPartidoActivityIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
+            golesPartidoActivityIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
             startActivityForResult(golesPartidoActivityIntent, 333)
 
             Toast.makeText(this, "Seleccionado goles", Toast.LENGTH_SHORT).show()
         }
+
+        binding.amonestacionesbutton.setOnClickListener {
+            val amonestacionesPartidoActivityIntent = Intent(this, AmonestacionesPartidoActivity::class.java)
+            amonestacionesPartidoActivityIntent.putExtra("equipo", currentTeam)
+            amonestacionesPartidoActivityIntent.putExtra("partido", partido)
+
+            amonestacionesPartidoActivityIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
+            amonestacionesPartidoActivityIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
+            startActivityForResult(amonestacionesPartidoActivityIntent, 444)
+
+            Toast.makeText(this, "Seleccionado goles", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.cambiosbutton.setOnClickListener {
+            val sustitucionesPartidoIntent = Intent(this, SustitucionesPartido::class.java)
+            sustitucionesPartidoIntent.putExtra("equipo", currentTeam)
+            sustitucionesPartidoIntent.putExtra("partido", partido)
+
+            sustitucionesPartidoIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
+            sustitucionesPartidoIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
+            startActivityForResult(sustitucionesPartidoIntent, 555)
+
+            Toast.makeText(this, "Seleccionado goles", Toast.LENGTH_SHORT).show()
+
+        }
+
 
         binding.atrasbutton.setOnClickListener {
             guardarYSalir()
@@ -86,6 +112,14 @@ class AddEventoActivity : AppCompatActivity() {
 
         }
         //hacer 444 con amonestaciones
+        if (requestCode == 444 && resultCode == Activity.RESULT_OK) {
+            partido = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
+            //recibe el partido actualizado con los goles dentro del listado eventos
+        }
+        if (requestCode == 555 && resultCode == Activity.RESULT_OK) {
+            partido = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
+            //recibe el partido actualizado con los goles dentro del listado eventos
+        }
 
         //hacer 555 con sustituciones
     }

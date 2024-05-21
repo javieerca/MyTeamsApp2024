@@ -49,7 +49,7 @@ class TeamActivity : AppCompatActivity() {
             val teamActivityIntent = Intent(this, PlayersActivity::class.java)
 
             if(currentTeam.id != ""){
-                teamActivityIntent.putExtra("teamId", currentTeam.id)
+                teamActivityIntent.putExtra("equipoId", currentTeam.id)
                 teamActivityIntent.putExtra("equipo", currentTeam)
                 startActivity(teamActivityIntent)
             }
@@ -59,7 +59,7 @@ class TeamActivity : AppCompatActivity() {
             val partidosActivityIntent = Intent(this, PartidosActivity::class.java)
 
             if(currentTeam.id != ""){
-                partidosActivityIntent.putExtra("teamId", currentTeam.id)
+                partidosActivityIntent.putExtra("equipoId", currentTeam.id)
                 partidosActivityIntent.putExtra("equipo", currentTeam)
                 startActivity(partidosActivityIntent)
             }
@@ -83,11 +83,11 @@ class TeamActivity : AppCompatActivity() {
                 currentTeam.id= document.id
             }
             .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error getting teeam: ", exception)
+                Log.w(ContentValues.TAG, "Error getting team: ", exception)
                 callback(TeamModel()) // En caso de error, devolver una lista vacía
             }
         callback(currentTeam)
-        Toast.makeText(this,"Ya hemos econtrado el equipo ${currentTeam.name}",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,"Ya hemos econtrado el equipo ${currentTeam.nombre}",Toast.LENGTH_SHORT).show()
     }
 
 }

@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.R
 import com.myTeams.app.databinding.PlayerLayoutBinding
-import com.myTeams.app.model.PlayerModel
+import com.myTeams.app.model.JugadorModel
 
 
-class PlayerAdapter (private var players: ArrayList<PlayerModel>, val context: Context, private val db: FirebaseFirestore):
+class PlayerAdapter (private var players: ArrayList<JugadorModel>, val context: Context, private val db: FirebaseFirestore):
 
 RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
     private val layoutInflater = LayoutInflater.from(context)
@@ -40,8 +40,8 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
             //intent de TeamActivity
         }
 
-        binding.nameTextView.text = player.name
-        binding.numberTextView.text = player.number.toString()
+        binding.nameTextView.text = player.nombre
+        binding.numberTextView.text = player.numero.toString()
 
 
 
@@ -62,9 +62,9 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
                     }
 
                     R.id.borrarEquipoOption -> {
-                        Toast.makeText(context, "Vamos a borrar a " + player.name, Toast.LENGTH_SHORT)
+                        Toast.makeText(context, "Vamos a borrar a " + player.nombre, Toast.LENGTH_SHORT)
                             .show()
-                        val teamref = db.collection("teams").document(player.teamId)
+                        val teamref = db.collection("teams").document(player.equipoId)
                         val playerRef = teamref.collection("players").document(player.id)
 
                         playerRef.delete()
@@ -98,7 +98,7 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
     }
 
 
-    private fun updateDataSet(list: ArrayList<PlayerModel>) {
+    private fun updateDataSet(list: ArrayList<JugadorModel>) {
         players = list
         notifyItemRangeInserted(0, itemCount)
     }

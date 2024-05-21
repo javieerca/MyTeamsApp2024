@@ -19,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.myTeams.app.adapter.PlayerAdapter
 import com.myTeams.app.databinding.ActivityPlayersBinding
-import com.myTeams.app.model.PlayerModel
+import com.myTeams.app.model.JugadorModel
 import com.myTeams.app.model.TeamModel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
@@ -65,32 +65,32 @@ class PlayersActivity : AppCompatActivity() {
                GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
     }
 
-    private fun setAdapter(listado: ArrayList<PlayerModel>) {
+    private fun setAdapter(listado: ArrayList<JugadorModel>) {
         binding.playersRecyclerView.adapter = PlayerAdapter(
             listado, this, db
         )
     }
 
-    private suspend fun cargarJugadores(teamId: String?): ArrayList<PlayerModel> {
+    private suspend fun cargarJugadores(teamId: String?): ArrayList<JugadorModel> {
         return suspendCoroutine { continuation ->
             buscarJugadores(teamId) { jugadores ->
                 continuation.resume(jugadores)
             }
         }
     }
-    private fun buscarJugadores(teamId: String?, callback: (ArrayList<PlayerModel>) -> Unit) {
+    private fun buscarJugadores(teamId: String?, callback: (ArrayList<JugadorModel>) -> Unit) {
         //val teamDB
-        val listado = ArrayList<PlayerModel>()
+        val listado = ArrayList<JugadorModel>()
 
         val teamRef = db.collection("teams").document(teamId!!)
 
 
         if (teamId != null) {
-            teamRef.collection("players").orderBy("number")
+            teamRef.collection("players").orderBy("numero")
                 .get()
                 .addOnSuccessListener { documents ->
                     for (jugador in documents) {
-                        val playerDB = jugador.toObject<PlayerModel>()
+                        val playerDB = jugador.toObject<JugadorModel>()
                         playerDB.id = jugador.id
                         listado.add(playerDB)
                     }
@@ -110,7 +110,7 @@ class PlayersActivity : AppCompatActivity() {
 
     private fun actualizar() {
         lifecycleScope.launch {
-            val listado = cargarJugadores(intent.extras?.getString("teamId"))
+            val listado = cargarJugadores(intent.extras?.getString("equipoId"))
             setAdapter(listado)
         }
 
@@ -122,103 +122,103 @@ class PlayersActivity : AppCompatActivity() {
     }
 
     private fun crear11(){
-        var jugadores: ArrayList<PlayerModel>  = ArrayList()
-        val por = PlayerModel(
-            name = "por",
-            number = 1,
-            position = "Portero",
-            positionId = 0,
-            teamId = currentTeam.id,
+        var jugadores: ArrayList<JugadorModel>  = ArrayList()
+        val por = JugadorModel(
+            nombre = "por",
+            numero = 1,
+            posicion = "Portero",
+            posicionId = 0,
+            equipoId = currentTeam.id,
         )
         jugadores.add(por)
 
-        val ld = PlayerModel(
-            name = "Ld",
-            number = 2,
-            position = "Defensa",
-            positionId = 1,
-            teamId = currentTeam.id,
+        val ld = JugadorModel(
+            nombre = "Ld",
+            numero = 2,
+            posicion = "Defensa",
+            posicionId = 1,
+            equipoId = currentTeam.id,
         )
         jugadores.add(ld)
 
-        val li = PlayerModel(
-            name = "Li",
-            number = 4,
-            position = "Defensa",
-            positionId = 1,
-            teamId = currentTeam.id,
+        val li = JugadorModel(
+            nombre = "Li",
+            numero = 4,
+            posicion = "Defensa",
+            posicionId = 1,
+            equipoId = currentTeam.id,
         )
         jugadores.add(li)
 
-        val ctd = PlayerModel(
-            name = "Ct",
-            number = 3,
-            position = "Defensa",
-            positionId = 1,
-            teamId = currentTeam.id,
+        val ctd = JugadorModel(
+            nombre = "Ct",
+            numero = 3,
+            posicion = "Defensa",
+            posicionId = 1,
+            equipoId = currentTeam.id,
         )
         jugadores.add(ctd)
 
-        val cti = PlayerModel(
-            name = "Ct",
-            number = 5,
-            position = "Defensa",
-            positionId = 1,
-            teamId = currentTeam.id,
+        val cti = JugadorModel(
+            nombre = "Ct",
+            numero = 5,
+            posicion = "Defensa",
+            posicionId = 1,
+            equipoId = currentTeam.id,
         )
         jugadores.add(cti)
 
-        val mcd = PlayerModel(
-            name = "Mcd",
-            number = 14,
-            position = "Mediocentro",
-            positionId = 2,
-            teamId = currentTeam.id,
+        val mcd = JugadorModel(
+            nombre = "Mcd",
+            numero = 14,
+            posicion = "Mediocentro",
+            posicionId = 2,
+            equipoId = currentTeam.id,
         )
         jugadores.add(mcd)
 
-        val mci = PlayerModel(
-            name = "Mc",
-            number = 8,
-            position = "Mediocentro",
-            positionId = 2,
-            teamId = currentTeam.id,
+        val mci = JugadorModel(
+            nombre = "Mc",
+            numero = 8,
+            posicion = "Mediocentro",
+            posicionId = 2,
+            equipoId = currentTeam.id,
         )
         jugadores.add(mci)
 
-        val mc = PlayerModel(
-            name = "Mc",
-            number = 6,
-            position = "Mediocentro",
-            positionId = 2,
-            teamId = currentTeam.id,
+        val mc = JugadorModel(
+            nombre = "Mc",
+            numero = 6,
+            posicion = "Mediocentro",
+            posicionId = 2,
+            equipoId = currentTeam.id,
         )
         jugadores.add(mc)
 
-        val ei = PlayerModel(
-            name = "Ei",
-            number = 7,
-            position = "Delantero",
-            positionId = 3,
-            teamId = currentTeam.id,
+        val ei = JugadorModel(
+            nombre = "Ei",
+            numero = 7,
+            posicion = "Delantero",
+            posicionId = 3,
+            equipoId = currentTeam.id,
         )
         jugadores.add(ei)
 
-        val ed = PlayerModel(
-            name = "Ed",
-            number = 10,
-            position = "Delantero",
-            positionId = 3,
-            teamId = currentTeam.id,
+        val ed = JugadorModel(
+            nombre = "Ed",
+            numero = 10,
+            posicion = "Delantero",
+            posicionId = 3,
+            equipoId = currentTeam.id,
         )
         jugadores.add(ed)
 
-        val dc = PlayerModel(
-            name = "Dc",
-            number = 9,
-            position = "Delantero",
-            positionId = 3,
-            teamId = currentTeam.id,
+        val dc = JugadorModel(
+            nombre = "Dc",
+            numero = 9,
+            posicion = "Delantero",
+            posicionId = 3,
+            equipoId = currentTeam.id,
         )
         jugadores.add(dc)
 
@@ -226,13 +226,13 @@ class PlayersActivity : AppCompatActivity() {
         for (i in 0 until jugadores.size) {
             teamref.collection("players").document().set(
                 hashMapOf(
-                    "name" to jugadores[i].name,
-                    "teamId" to jugadores[i].teamId,
-                    "position" to jugadores[i].position,
-                    "number" to jugadores[i].number,
-                    "gamesPlayed" to jugadores[i].gamesPlayed,
-                    "goalsScored" to jugadores[i].goalsScored,
-                    "positionId" to jugadores[i].positionId
+                    "nombre" to jugadores[i].nombre,
+                    "equipoId" to jugadores[i].equipoId,
+                    "posicion" to jugadores[i].posicion,
+                    "numero" to jugadores[i].numero,
+                    "partidosJugados" to jugadores[i].partidosJugados,
+                    "golesMarcados" to jugadores[i].golesMarcados,
+                    "posicionId" to jugadores[i].posicionId
                 )
             )
         }

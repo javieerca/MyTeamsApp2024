@@ -2,6 +2,8 @@ package com.myTeams.app
 
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.SeekBar
@@ -12,29 +14,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
-import com.myTeams.app.databinding.ActivityAddGolBinding
+import com.myTeams.app.databinding.ActivityAddTarjetaBinding
 import com.myTeams.app.model.EventoModel
 import com.myTeams.app.model.PartidoModel
 import com.myTeams.app.model.JugadorModel
 import com.myTeams.app.model.TeamModel
 
-class AddGolActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAddGolBinding
+class AddTarjetaActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddTarjetaBinding
     private var currentTeam: TeamModel = TeamModel()
     private var goleadorId: String = ""
-    private var goleador: JugadorModel = JugadorModel()
+    private var amonestado: JugadorModel = JugadorModel()
     private var progresoSeekBar: Int=0
+    private var esAmarilla: Boolean = true
 
     private val db = FirebaseFirestore.getInstance()
     private var partido: PartidoModel = PartidoModel()
-
-
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityAddGolBinding.inflate(layoutInflater)
+        binding = ActivityAddTarjetaBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -46,6 +46,7 @@ class AddGolActivity : AppCompatActivity() {
         partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
 
         binding.seekBar.min = 1
+
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 binding.textView7.text = progress.toString()
@@ -59,6 +60,18 @@ class AddGolActivity : AppCompatActivity() {
             }
         })
 
+        binding.switch1.setOnCheckedChangeListener{ _, isChecked ->
+            if (isChecked) {
+                esAmarilla = false
+                binding.switch1.trackTintList = ColorStateList.valueOf(Color.parseColor("#FF0000"))
+                binding.switch1.text = "Roja"
+            } else {
+                esAmarilla = true
+                binding.switch1.trackTintList = ColorStateList.valueOf(Color.parseColor("#EDED09"))
+                binding.switch1.text = "Amarilla"
+            }
+        }
+
         binding.seleccionarJugadorbutton.setOnClickListener {
             val seleccionarJugadorEventoActivityIntent = Intent(this, SeleccionarJugadorEventoActivity::class.java)
 
@@ -70,18 +83,24 @@ class AddGolActivity : AppCompatActivity() {
 
 
         binding.guardarGolbutton.setOnClickListener {
-            var minutoGol: Int= progresoSeekBar
+            var minutoTarjeta: Int= progresoSeekBar
             var jugadorArray: ArrayList<JugadorModel> = ArrayList()
-            jugadorArray.add(goleador)
+            jugadorArray.add(amonestado)
+            var tipoEventoId = 1
+            var tipoEventoNombre = "Tarjeta Amarilla"
+            if(!esAmarilla){
+                tipoEventoId = 2
+                tipoEventoNombre = "Tarjeta roja"
+            }
             var evento = EventoModel(
-                tipoEventoId = 0,
-                tipoEventoNombre = "Gol",
+                tipoEventoId = tipoEventoId,
+                tipoEventoNombre = tipoEventoNombre,
                 jugadoresImplicados = jugadorArray,
-                minuto = minutoGol
+                minuto = minutoTarjeta
             )
             Toast.makeText(this, "Evento creado", Toast.LENGTH_SHORT).show()
 
-            partido.goles.add(evento)
+            partido.amonestaciones.add(evento)
 
             val resultadoIntent = Intent()
             resultadoIntent.putExtra("partido", partido)
@@ -89,9 +108,9 @@ class AddGolActivity : AppCompatActivity() {
             //SUBIR A BD
             setResult(Activity.RESULT_OK, resultadoIntent)
             finish()
+
         }
     }
-
 
     @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -99,13 +118,12 @@ class AddGolActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 333 && resultCode == Activity.RESULT_OK) {
-            goleador = data?.getSerializableExtra("jugador", JugadorModel::class.java)!!
-            binding.nombreJugadortextView.text = goleador.nombre
-            binding.numeroGoleadortextView.text = goleador.numero.toString()
+            amonestado = data?.getSerializableExtra("jugador", JugadorModel::class.java)!!
+            binding.nombreJugadortextView.text = amonestado.nombre
+            binding.numeroGoleadortextView.text = amonestado.numero.toString()
 
-            Toast.makeText(this, "JugadorId ${goleador.id}", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "JugadorId ${amonestado.id}", Toast.LENGTH_SHORT)
                 .show()
         }
     }
-
 }

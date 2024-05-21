@@ -39,10 +39,10 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
             //intent de TeamActivity
         }
 
-        binding.nombreTextView.text = team.name
-        binding.numberGamesTextView.text = team.gamesPlayed.toString()
-        binding.numberWinstextView.text = team.gamesWon.toString()
-        binding.numberGoalstextView.text = team.goalsScored.toString()
+        binding.nombreTextView.text = team.nombre
+        binding.numberGamesTextView.text = team.partidosJugados.toString()
+        binding.numberWinstextView.text = team.victorias.toString()
+        binding.numberGoalstextView.text = team.golesMarcados.toString()
 
         //Menu
         binding.menuImageView.setOnClickListener{
@@ -62,7 +62,7 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
                         true
                     }
                     R.id.borrarEquipoOption ->{
-                        Toast.makeText(context, "Vamos a borrar a "+team.name, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Vamos a borrar a "+team.nombre, Toast.LENGTH_SHORT).show()
                         db.collection("teams").document(team.id).delete()
                         db.collection("partidos").document(team.id).delete()
 

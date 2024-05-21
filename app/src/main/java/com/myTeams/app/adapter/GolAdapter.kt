@@ -35,8 +35,8 @@ class GolAdapter (private var goles: ArrayList<EventoModel>, val context: Contex
             //intent de TeamActivity
         }
 
-        binding.nameTextView.text = evento.jugadoresImplicados[0].name
-        binding.numberTextView.text = evento.jugadoresImplicados[0].number.toString()
+        binding.nameTextView.text = evento.jugadoresImplicados[0].nombre
+        binding.numberTextView.text = evento.jugadoresImplicados[0].numero.toString()
         binding.minutoTextView2.text = evento.minuto.toString()
 
         binding.imageView.setOnClickListener{

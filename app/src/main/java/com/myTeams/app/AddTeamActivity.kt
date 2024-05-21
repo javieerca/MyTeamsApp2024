@@ -27,18 +27,18 @@ class AddTeamActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             val team =TeamModel(
-                name= binding.teamNameEditText.text.toString(),
-                kitColor = binding.kitSpinner.selectedItem.toString()
+                nombre= binding.teamNameEditText.text.toString(),
+                colorEquipacion = binding.kitSpinner.selectedItem.toString()
             )
 
             if (email != null) {
                 db.collection("teams").document().set(
-                    hashMapOf("name" to team.name,
-                        "kitColor" to team.kitColor,
-                        "user" to email,
-                        "gamesPlayed" to team.gamesPlayed,
-                        "gamesWon" to team.gamesWon,
-                        "goalsScored" to team.goalsScored
+                    hashMapOf("nombre" to team.nombre,
+                        "colorEquipacion" to team.colorEquipacion,
+                        "usuario" to email,
+                        "partidosJugados" to team.partidosJugados,
+                        "victorias" to team.victorias,
+                        "golesMarcados" to team.golesMarcados
                     )
                 )
             }

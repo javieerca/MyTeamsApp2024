@@ -13,7 +13,7 @@
         android:layout_height="75dp"
         android:background="#82B1FF"
         android:gravity="center"
-        android:text="Tarjetas VS Rival"
+        android:text="Cambios VS Rival"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="false"
+    android:scrollIndicators="right"
+    android:scrollbars="vertical"
+    tools:context=".MostrarPartidoActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cambiostextView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Sustituciones:"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/titularestextView"
+                app:layout_constraintTop_toBottomOf="@+id/divider9" />
+
+            <TextView
+                android:id="@+id/eventostextView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Eventos:"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/cambiostextView3"
+                app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+            <TextView
+                android:id="@+id/marcotextView"
+                android:layout_width="411dp"
+                android:layout_height="136dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/design_default_color_secondary_variant"
+                android:backgroundTint="@color/design_default_color_secondary_variant"
+                app:layout_constraintBottom_toTopOf="@+id/titularestextView"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/golesVisitantetextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="34sp"
+                app:layout_constraintEnd_toEndOf="@+id/visitantetextView2"
+                app:layout_constraintStart_toStartOf="@+id/visitantetextView2"
+                app:layout_constraintTop_toTopOf="@+id/golesLocaltextView" />
+
+            <TextView
+                android:id="@+id/localTextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:text="Local"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/visitantetextView2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/marcotextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/visitantetextView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="24dp"
+                android:text="Visitante"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/localTextView2"
+                app:layout_constraintTop_toTopOf="@+id/localTextView2" />
+
+            <TextView
+                android:id="@+id/golesLocaltextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="34sp"
+                app:layout_constraintEnd_toEndOf="@+id/localTextView2"
+                app:layout_constraintStart_toStartOf="@+id/marcotextView"
+                app:layout_constraintTop_toBottomOf="@+id/localTextView2" />
+
+            <TextView
+                android:id="@+id/titularestextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="Titulares:"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/golesLocaltextView" />
+
+            <TextView
+                android:id="@+id/listadoTitularestextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/localTextView2"
+                app:layout_constraintStart_toStartOf="@+id/titularestextView"
+                app:layout_constraintTop_toBottomOf="@+id/titularestextView" />
+
+            <TextView
+                android:id="@+id/suplentesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Suplentes:"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/visitantetextView2"
+                app:layout_constraintTop_toTopOf="@+id/titularestextView" />
+
+            <TextView
+                android:id="@+id/listadoSuplentestextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/visitantetextView2"
+                app:layout_constraintStart_toStartOf="@+id/suplentesTextView"
+                app:layout_constraintTop_toTopOf="@+id/listadoTitularestextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sustitucionesrecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cambiostextView3" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventosRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventostextView2" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/golesVisitantetextView"
+                app:layout_constraintEnd_toStartOf="@+id/golesVisitantetextView"
+                app:layout_constraintStart_toEndOf="@+id/golesLocaltextView"
+                app:layout_constraintTop_toTopOf="@+id/golesVisitantetextView" />
+
+            <View
+                android:id="@+id/divider8"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sustitucionesrecyclerView" />
+
+            <View
+                android:id="@+id/divider9"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listadoTitularestextView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.myTeams.app
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,7 +19,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.myTeams.app.databinding.ActivityAddTitularesBinding
-import com.myTeams.app.model.PlayerModel
+import com.myTeams.app.model.PartidoModel
+import com.myTeams.app.model.JugadorModel
 import com.myTeams.app.model.TeamModel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
@@ -25,19 +28,20 @@ import kotlin.coroutines.suspendCoroutine
 
 class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     private lateinit var binding: ActivityAddTitularesBinding
-    private var equipoId: String = ""
 
     private var listOfItem: ArrayList<String> = ArrayList()
-    private var titularesIds: ArrayList<String> = ArrayList()
-    private var jugadoresIds: ArrayList<String> = ArrayList()
+    private var jugadoresId: ArrayList<String> = ArrayList()
 
+    private var jugadores: ArrayList<JugadorModel> = ArrayList()
+    private var seleccionados: ArrayList<JugadorModel> = ArrayList()
 
     private var seleccionadosId: ArrayList<String> = ArrayList()
 
+    private var partido: PartidoModel = PartidoModel()
 
     private val db = FirebaseFirestore.getInstance()
     private var currentTeam: TeamModel = TeamModel()
-
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,15 +54,20 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
             insets
         }
 
-        equipoId = intent.extras?.getString("idEquipo")!!
-        titularesIds = intent.extras?.getStringArrayList("titularesId")!!
+        currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
+        partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
+        mostrarListado(listOfItem)
 
         binding.guardarButton3.setOnClickListener {
-            val resultadoIntent = Intent()
-            resultadoIntent.putExtra("sonTitulares", false)
-            resultadoIntent.putExtra("suplentes", seleccionadosId)
-            setResult(Activity.RESULT_OK, resultadoIntent)
-            finish()
+                partido.suplentes = seleccionados
+
+                val resultadoIntent = Intent()
+                resultadoIntent.putExtra("sonTitulares", false)
+                resultadoIntent.putExtra("partido", partido)
+                resultadoIntent.putExtra("suplentesId", seleccionadosId)
+
+                setResult(Activity.RESULT_OK, resultadoIntent)
+                finish()
         }
     }
 
@@ -72,11 +81,12 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
         binding.multipleListview.onItemClickListener = this
     }
 
-    private fun setMultipleListView(listado: ArrayList<PlayerModel>): ArrayList<String>{
+    private fun setMultipleListView(listado: ArrayList<JugadorModel>): ArrayList<String>{
         val arrayList: ArrayList<String> = ArrayList()
         for (jugador in listado){
-            arrayList.add("${jugador.number}. ${jugador.name.uppercase()}")
-            jugadoresIds.add(jugador.id)
+            arrayList.add("${jugador.numero}. ${jugador.nombre.uppercase()}")
+            jugadoresId.add(jugador.id)
+            jugadores.add(jugador)
         }
 
         return arrayList
@@ -86,41 +96,43 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
         val options: String = parent?.getItemAtPosition(position) as String
 
         if(binding.multipleListview.isItemChecked(position)){
-            seleccionadosId.add(jugadoresIds[position])
+            seleccionadosId.add(jugadoresId[position])
+            seleccionados.add(jugadores[position])
+
         }else{
-            seleccionadosId.remove(jugadoresIds[position])
+            seleccionadosId.remove(jugadoresId[position])
+            seleccionados.remove(jugadores[position])
         }
 
     }
 
-    private suspend fun cargarJugadores(teamId: String?): ArrayList<PlayerModel> {
+    private suspend fun cargarJugadores(teamId: String?): ArrayList<JugadorModel> {
         return suspendCoroutine { continuation ->
             buscarJugadores(teamId) { jugadores ->
                 continuation.resume(jugadores)
             }
         }
     }
-    private fun buscarJugadores(teamId: String?, callback: (ArrayList<PlayerModel>) -> Unit) {
+    private fun buscarJugadores(teamId: String?, callback: (ArrayList<JugadorModel>) -> Unit) {
         //val teamDB
-        val listado = ArrayList<PlayerModel>()
+        val listado = ArrayList<JugadorModel>()
 
-        val teamRef = db.collection("teams").document(teamId!!)
+        val teamRef = db.collection("teams").document(currentTeam.id)
 
-
-        teamRef.collection("players").orderBy("positionId")
+        teamRef.collection("players").orderBy("posicionId")
             .get()
             .addOnSuccessListener { documents ->
                 for (jugador in documents) {
-                    val playerDB = jugador.toObject<PlayerModel>()
+                    val playerDB = jugador.toObject<JugadorModel>()
                     playerDB.id = jugador.id
                     listado.add(playerDB)
+
                 }
-                var posicionesTitulares: ArrayList<Int>
-                //quita a los titulares
-                for(id in titularesIds){
-                    listado.removeIf { jugador ->
-                        jugador.id == id }
+
+                for(titular in partido.titulares){
+                    listado.remove(titular)
                 }
+
 
                 callback(listado)
             }
@@ -133,8 +145,8 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
 
     private fun actualizar() {
         lifecycleScope.launch {
-            val listado = cargarJugadores(intent.extras?.getString("idEquipo"))
-            listOfItem = setMultipleListView(cargarJugadores(equipoId))
+            val listado = cargarJugadores(currentTeam.id)
+            listOfItem = setMultipleListView(listado)
             mostrarListado(listOfItem)
         }
 
