@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable.Orientation
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -48,12 +46,12 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         val emailIntent = intent.extras?.getString("email")
 
         if (emailIntent != null) {
             email = emailIntent
-
             lifecycleScope.launch {
                 val listado = cargarEquipos(email)
                 setup()
@@ -88,6 +86,12 @@ class HomeActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             val addTeamActivityIntent = Intent(this, AddTeamActivity::class.java)
             startActivity(addTeamActivityIntent)
+        }
+
+        binding.userbutton.setOnClickListener {
+            val miCuentaActivityIntent = Intent(this, MiCuentaActivity::class.java)
+            miCuentaActivityIntent.putExtra("email", email)
+            startActivity(miCuentaActivityIntent)
         }
 
         binding.playersRecyclerView.layoutManager =

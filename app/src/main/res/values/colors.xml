@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="rojo">#FF0000</color>
     <color name="amarillo">#EDED09</color>
+    <color name="verdeTitulos">#4CAF50</color>
+    <color name="azulBoton">#2196F3</color>
+    <color name="rojoBoton">#F44336</color>
+    <color name="grisClaro">#E0E0E0</color>
 </resources>

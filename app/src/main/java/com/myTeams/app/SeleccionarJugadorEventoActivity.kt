@@ -53,6 +53,7 @@ class SeleccionarJugadorEventoActivity : AppCompatActivity(), AdapterView.OnItem
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         equipoId = intent.extras?.getString("idEquipo")!!
         titularesSuplentesTodos = intent.extras?.getInt("titularesSuplentes")!!

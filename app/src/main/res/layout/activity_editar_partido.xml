@@ -57,14 +57,28 @@
         android:id="@+id/myTeamText3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#82B1FF"
+        android:background="#4CAF50"
         android:gravity="center"
-        android:text="Nuevo partido"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Editar partido"
+        android:textColor="@color/white"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/atrasbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myTeamText3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
 
     <EditText
         android:id="@+id/rivalEditText"
@@ -136,11 +150,15 @@
 
     <Button
         android:id="@+id/titularesButton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="#E0E0E0"
         android:text="Añadir titulares"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/Suplentesbutton"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.546"
@@ -149,11 +167,16 @@
 
     <Button
         android:id="@+id/Suplentesbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="#E0E0E0"
+        android:backgroundTintMode="add"
         android:text="Añadir suplentes"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/alineacionTextView2"
         app:layout_constraintTop_toBottomOf="@+id/alineacionTextView2" />
@@ -164,6 +187,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
+        android:backgroundTint="#2196F3"
         android:text="Añadir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -173,16 +197,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#F44336"
         android:text="Cancel"
         app:layout_constraintEnd_toStartOf="@+id/guardarButton"
         app:layout_constraintTop_toTopOf="@+id/guardarButton" />
 
     <Button
         android:id="@+id/eventosbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:backgroundTint="#E0E0E0"
         android:text="Goles, Sustituciones y amonestaciones"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="@+id/Suplentesbutton"
         app:layout_constraintStart_toStartOf="@+id/alineacionTextView4"
         app:layout_constraintTop_toBottomOf="@+id/alineacionTextView4" />

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contenedorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,32 +20,46 @@
         android:id="@+id/player1imageView2"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/person_24px" />
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="108dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Player 1"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/player1imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/numberTextView"
         app:layout_constraintStart_toEndOf="@+id/player1imageView2"
         app:layout_constraintTop_toTopOf="@+id/player1imageView2" />
 
     <TextView
         android:id="@+id/numberTextView"
-        android:layout_width="108dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="16dp"
         android:text="number"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/nameTextView"
-        app:layout_constraintStart_toEndOf="@+id/nameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/menuImageView2"
         app:layout_constraintTop_toTopOf="@+id/nameTextView" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player1imageView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

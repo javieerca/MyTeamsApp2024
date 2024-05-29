@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.databinding.ActivityAddTeamBinding
 import com.myTeams.app.model.TeamModel
@@ -19,13 +21,17 @@ class AddTeamActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityAddTeamBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         val prefs = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email = prefs.getString("email", null)
 
-
-        binding.saveButton.setOnClickListener {
+        binding.savebutton.setOnClickListener {
             val team =TeamModel(
                 nombre= binding.teamNameEditText.text.toString(),
                 colorEquipacion = binding.kitSpinner.selectedItem.toString()
@@ -50,5 +56,8 @@ class AddTeamActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.atrasbutton.setOnClickListener{
+            finish()
+        }
     }
 }

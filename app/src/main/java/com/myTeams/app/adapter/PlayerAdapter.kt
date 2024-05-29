@@ -1,6 +1,7 @@
 package com.myTeams.app.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.myTeams.app.EditarPartidoActivity
+import com.myTeams.app.MostrarJugadorActivity
 import com.myTeams.app.R
 import com.myTeams.app.databinding.PlayerLayoutBinding
 import com.myTeams.app.model.JugadorModel
@@ -37,7 +40,6 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
         val binding = PlayerLayoutBinding.bind(holder.itemView)
 
         holder.itemView.setOnClickListener {
-            //intent de TeamActivity
         }
 
         binding.nameTextView.text = player.nombre
@@ -87,13 +89,9 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
         }
         binding.contenedorLayout.setOnClickListener {
             Toast.makeText(context, "Abrir jugador", Toast.LENGTH_SHORT).show()
-            /*
-            val teamActivityIntent = Intent(context, TeamActivity::class.java)
-
-            teamActivityIntent.putExtra("idEquipo", team.id)
-            context.startActivity(teamActivityIntent)
-            */
-
+            val mostrarJugadorActivityIntent = Intent(context, MostrarJugadorActivity::class.java)
+            mostrarJugadorActivityIntent.putExtra("jugador", player)
+            context.startActivity(mostrarJugadorActivityIntent)
         }
     }
 

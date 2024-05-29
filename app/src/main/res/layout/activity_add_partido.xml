@@ -57,9 +57,12 @@
         android:id="@+id/myTeamText3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#82B1FF"
+        android:background="@color/verdeTitulos"
         android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="Nuevo partido"
+        android:textColor="@color/white"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,11 +139,15 @@
 
     <Button
         android:id="@+id/titularesButton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/grisClaro"
         android:text="Añadir titulares"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/Suplentesbutton"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintHorizontal_bias="0.546"
@@ -149,11 +156,15 @@
 
     <Button
         android:id="@+id/Suplentesbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/grisClaro"
         android:text="Añadir suplentes"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/alineacionTextView2"
         app:layout_constraintTop_toBottomOf="@+id/alineacionTextView2" />
@@ -164,6 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/azulBoton"
         android:text="Añadir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -173,16 +185,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/rojoBoton"
         android:text="Cancel"
         app:layout_constraintEnd_toStartOf="@+id/guardarButton"
         app:layout_constraintTop_toTopOf="@+id/guardarButton" />
 
     <Button
         android:id="@+id/eventosbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Goles, Sustituciones y amonestaciones"
+        android:backgroundTint="@color/grisClaro"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Goles, Sustituciones y tarjetas"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="@+id/Suplentesbutton"
         app:layout_constraintStart_toStartOf="@+id/alineacionTextView4"
         app:layout_constraintTop_toBottomOf="@+id/alineacionTextView4" />
@@ -271,5 +289,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/jornadaNumberEdit"
         app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toTopOf="@+id/jornadaNumberEdit" />
+
+    <ImageView
+        android:id="@+id/atrasbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myTeamText3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.41"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

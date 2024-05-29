@@ -34,6 +34,10 @@ class EditarPartidoActivity : AppCompatActivity() {
     private var jornadaActual: Int = 0
     private var jugadoresTitularesIds: ArrayList<String> = ArrayList()
     private var jugadoresSuplentesIds: ArrayList<String> = ArrayList()
+    private var jugadoresParticipantes: ArrayList<JugadorEnPartido> = ArrayList()
+    private val convocados: ArrayList<JugadorModel> = ArrayList()
+
+
     private var goleadores : ArrayList<JugadorModel> = ArrayList()
     private var tienenAmarilla: ArrayList<JugadorModel> = ArrayList()
 
@@ -52,6 +56,7 @@ class EditarPartidoActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
         //partidoDb.equipoId = currentTeam.id
@@ -118,10 +123,17 @@ class EditarPartidoActivity : AppCompatActivity() {
 
         binding.guardarButton.setOnClickListener {
             if(haTerminado()){
+                var borrado = false
                 lifecycleScope.launch {
-                    var borrado  = borrarPartido()
+                    borrado = borrarPartido()
                     if(borrado){
-                        subirDatos()
+                        lifecycleScope.launch {
+                            var partidoSubido = solicitudSubirPartido()
+                            if(partidoSubido){
+                                addEventos()
+                            }
+                        }
+
                     }
                 }
             }else{
@@ -129,11 +141,18 @@ class EditarPartidoActivity : AppCompatActivity() {
             }
         }
     }
+    private suspend fun solicitudSubirPartido():  Boolean{
+        return suspendCoroutine { continuation ->
+            subirPartido { terminado->
+                continuation.resume(terminado)
+            }
+        }
+    }
 
     private suspend fun borrarPartido(): Boolean {
         return suspendCoroutine { continuation ->
-            borradoPartido { equipo ->
-                continuation.resume(equipo)
+            borradoPartido { terminado ->
+                continuation.resume(terminado)
             }
         }
     }
@@ -189,8 +208,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error" , Toast.LENGTH_SHORT).show()
             }
 
-
-        //borrar goleadores
+        //borrar goles a jugador
         for(gol in partidoDb.goles){
             //buscar jugador
             var goleador= JugadorModel()
@@ -212,7 +230,7 @@ class EditarPartidoActivity : AppCompatActivity() {
         }
 
 
-        //quitar veces cambiado
+        //quitar veces cambiado a jugador
         for(cambio in partidoDb.sustituciones){
             //buscar jugador
             var cambiado= JugadorModel()
@@ -299,7 +317,7 @@ class EditarPartidoActivity : AppCompatActivity() {
 
 
         var titularesId: ArrayList<String> = ArrayList()
-        //suplentes
+        //borrar titularidades
         db.collection("partidos").document(partidoDb.equipoId).collection("liga").document(partidoDb.id)
             .collection("titulares")
             .get()
@@ -314,11 +332,8 @@ class EditarPartidoActivity : AppCompatActivity() {
                     jugadoresRef.document(id)
                         .get()
                         .addOnSuccessListener { document ->
-
                             jugador = document.toObject<JugadorModel>()!!
                             jugador.id = document.id
-                            //partidoDb.titulares.add(jugador)
-
 
                             //resta convocatorias
                             jugadoresRef.document(jugador.id).update(
@@ -328,10 +343,12 @@ class EditarPartidoActivity : AppCompatActivity() {
                                 )
                             )
                         }
+                        .addOnFailureListener {
+                            Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()
+                        }
                 }
 
             }
-
 
         var suplentesId: ArrayList<String> = ArrayList()
         //suplentes
@@ -344,7 +361,6 @@ class EditarPartidoActivity : AppCompatActivity() {
                     suplentesId.add(suplenteId)
                     documento.reference.delete()
                 }
-
 
                 for (id in suplentesId){
                     var jugador = JugadorModel()
@@ -362,8 +378,14 @@ class EditarPartidoActivity : AppCompatActivity() {
                                 )
                             )
                         }
+                        .addOnFailureListener {
+                            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                        }
                 }
 
+            }
+            .addOnFailureListener {
+                Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()
             }
 
         //borar subcolecciones
@@ -412,7 +434,6 @@ class EditarPartidoActivity : AppCompatActivity() {
                 }
             }
 
-        //borrar partido
         db.collection("partidos").document(partidoDb.equipoId).collection("liga").document(partidoDb.id)
             .delete()
             .addOnSuccessListener {
@@ -423,13 +444,9 @@ class EditarPartidoActivity : AppCompatActivity() {
                 callback(true)
             }
 
-
     }
 
-
-
-
-    private fun subirDatos(){
+    private fun subirPartido(callback: (Boolean) -> Unit){
         if(haTerminado()){
             var esLocal = true
             //comprobar spinner
@@ -449,7 +466,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                 golesMarcados = partidoActualizado.goles.size
             )
 
-            val nuevoDocumento = db.collection("partidos").document(currentTeam.id).collection("liga").document(partidoActualizado.id)
+            val nuevoDocumento = db.collection("partidos").document(currentTeam.id).collection("liga").document()
             nuevoDocumento.set(
                 hashMapOf(
                     "numeroJornada" to datosPartido.numeroJornada,
@@ -461,148 +478,93 @@ class EditarPartidoActivity : AppCompatActivity() {
                     "golesMarcados" to datosPartido.golesMarcados,
                     "observaciones" to datosPartido.observaciones
                 )
-            ).addOnSuccessListener {
-                partidoActualizado.id = nuevoDocumento.id
+            )
+            .addOnSuccessListener {
                 Toast.makeText(this, "Id partido: ${partidoActualizado.id}", Toast.LENGTH_SHORT).show()
-                addEventos()
+                partidoActualizado.id = nuevoDocumento.id
+
                 actualizarInfoEquipo(datosPartido)
-                //actualizarInfoJugadores()
-            }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Algo ha ido mal", Toast.LENGTH_SHORT).show()
+
+                //subir goles al partido
+                for(gol in partidoActualizado.goles){
+                    val golesRef = db.collection("partidos").document(currentTeam.id).collection("liga").document(nuevoDocumento.id).collection("goles")
+                    golesRef.document().set(
+                        hashMapOf(
+                            "goleadorId" to gol.jugadoresImplicados[0].id,
+                            "goleadorNombre" to gol.jugadoresImplicados[0].nombre,
+                            "numero" to gol.jugadoresImplicados[0].numero,
+                            "minuto" to gol.minuto
+                        )
+                    )
                 }
 
-            //subir goles al partido
-            for(gol in partidoActualizado.goles){
-                val golesRef = db.collection("partidos").document(currentTeam.id).collection("liga").document(nuevoDocumento.id).collection("goles")
-                golesRef.document().set(
-                    hashMapOf(
-                        "goleadorId" to gol.jugadoresImplicados[0].id,
-                        "goleadorNombre" to gol.jugadoresImplicados[0].nombre,
-                        "numero" to gol.jugadoresImplicados[0].numero,
-                        "minuto" to gol.minuto
-                    )
-                )
-            }
-            //subir amonestaciones al partido
-            for (tarjeta in partidoActualizado.amonestaciones){
-                nuevoDocumento.collection("amonestaciones").document().set(
-                    hashMapOf<String, Any>(
-                        "amonestadoId" to tarjeta.jugadoresImplicados[0].id,
-                        "amonestadoNombre" to tarjeta.jugadoresImplicados[0].nombre,
-                        "amonestadoNumero" to tarjeta.jugadoresImplicados[0].numero,
-                        "tipoTarjetaId" to tarjeta.tipoEventoId,
-                        "tipoTarjetaNombre" to tarjeta.tipoEventoNombre,
-                        "minuto" to tarjeta.minuto
-                    )
-                )
-            }
-            //subir cambios al partido
-            for (cambio in partidoActualizado.sustituciones){
-                nuevoDocumento.collection("sustituciones").document().set(
-                    hashMapOf<String, Any>(
-                        "entraId" to cambio.jugadoresImplicados[0].id,
-                        "entraNombre" to cambio.jugadoresImplicados[0].nombre,
-                        "entraNumero" to cambio.jugadoresImplicados[0].numero,
-                        "saleId" to cambio.jugadoresImplicados[1].id,
-                        "saleNombre" to cambio.jugadoresImplicados[1].nombre,
-                        "saleNumero" to cambio.jugadoresImplicados[1].numero,
-                        "minuto" to cambio.minuto
-                    )
-                )
-
-                //sumar cambio a sustituido
-                val jugadoresRef =
-                    db.collection("teams").document(currentTeam.id).collection("players")
-
-                //buscar jugador actualizado en la bd
-                var jugadorBd = JugadorModel()
-                jugadoresRef.document(cambio.jugadoresImplicados[1].id)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        jugadorBd = document.toObject<JugadorModel>()!!
-
-                        jugadoresRef.document(cambio.jugadoresImplicados[1].id).update(
-                            hashMapOf<String, Any>(
-                                "vecesCambiado" to jugadorBd.vecesCambiado + 1
-                            )
+                //subir amonestaciones al partido
+                for (tarjeta in partidoActualizado.amonestaciones){
+                    nuevoDocumento.collection("amonestaciones").document().set(
+                        hashMapOf<String, Any>(
+                            "amonestadoId" to tarjeta.jugadoresImplicados[0].id,
+                            "amonestadoNombre" to tarjeta.jugadoresImplicados[0].nombre,
+                            "amonestadoNumero" to tarjeta.jugadoresImplicados[0].numero,
+                            "tipoTarjetaId" to tarjeta.tipoEventoId,
+                            "tipoTarjetaNombre" to tarjeta.tipoEventoNombre,
+                            "minuto" to tarjeta.minuto
                         )
-                    }
-
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                    }
-            }
-
-            //subir titulares
-            for(jugador in partidoActualizado.titulares){
-                nuevoDocumento.collection("titulares").document().set(
-                    hashMapOf<String, Any>(
-                        "nombre" to jugador.nombre,
-                        "id" to jugador.id,
-                        "numero" to jugador.numero
                     )
-                )
-            }
-            //subir suplentes
-            for(jugador in partidoActualizado.suplentes){
-                nuevoDocumento.collection("suplentes").document().set(
-                    hashMapOf<String, Any>(
-                        "nombre" to jugador.nombre,
-                        "id" to jugador.id,
-                        "numero" to jugador.numero
+                }
+
+                for (cambio in partidoActualizado.sustituciones){
+                    nuevoDocumento.collection("sustituciones").document().set(
+                        hashMapOf<String, Any>(
+                            "entraId" to cambio.jugadoresImplicados[0].id,
+                            "entraNombre" to cambio.jugadoresImplicados[0].nombre,
+                            "entraNumero" to cambio.jugadoresImplicados[0].numero,
+                            "saleId" to cambio.jugadoresImplicados[1].id,
+                            "saleNombre" to cambio.jugadoresImplicados[1].nombre,
+                            "saleNumero" to cambio.jugadoresImplicados[1].numero,
+                            "minuto" to cambio.minuto
+                        )
                     )
-                )
+
+                    //sumar cambio a sustituido
+                    val jugadoresRef =
+                        db.collection("teams").document(currentTeam.id).collection("players")
+                    jugadoresRef.document(cambio.jugadoresImplicados[1].id).update(
+                        hashMapOf<String, Any>(
+                            "vecesCambiado" to cambio.jugadoresImplicados[1].vecesCambiado + 1
+                        )
+                    )
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                        }
+                }
+                //subir titulares
+                for(jugador in partidoActualizado.titulares){
+                    nuevoDocumento.collection("titulares").document().set(
+                        hashMapOf<String, Any>(
+                            "nombre" to jugador.nombre,
+                            "id" to jugador.id,
+                            "numero" to jugador.numero
+                        )
+                    )
+                }
+                //subir suplentes
+                for(jugador in partidoActualizado.suplentes){
+                    nuevoDocumento.collection("suplentes").document().set(
+                        hashMapOf<String, Any>(
+                            "nombre" to jugador.nombre,
+                            "id" to jugador.id,
+                            "numero" to jugador.numero
+                        )
+                    )
+                }
+
+                callback(true)
             }
-
-            Toast.makeText(this, "Se ha añadido un nuevo partido", Toast.LENGTH_SHORT).show()
-
-
-            val builder = AlertDialog.Builder(this@EditarPartidoActivity)
-            builder.setMessage("¿Desea seguir añadiendo jornadas?")
-            builder.setTitle("Importante")
-            builder.setCancelable(false)
-
-            builder.setPositiveButton("Sí") { _, _ ->
-                limpiar()
+            .addOnFailureListener {
+                Toast.makeText(this, "Algo ha ido mal al crear el partido", Toast.LENGTH_SHORT).show()
             }
-            builder.setNegativeButton("No"){_,_ ->
-                finish()
-            }
-
-            val alertDialog = builder.create()
-            alertDialog.show()
-        }else{
-            //nunca llega aqui porque el metodo haTerminado() manda el mensaje de error
         }
     }
-
-    private fun insertarDatos(){
-
-        binding.golesanotadostextView.text = partidoActualizado.golesMarcados.toString()
-        binding.jornadaNumberEdit.setText(partidoActualizado.numeroJornada.toString())
-        binding.rivalEditText.setText(partidoActualizado.rival)
-        binding.encajadosTextNumber.setText(partidoActualizado.golesEncajados.toString())
-        if(!partidoActualizado.local){
-            binding.estadioSpinner.setSelection(1)
-        }
-        binding.contadorTitulares.text = "(${partidoActualizado.titulares.size})"
-        binding.contadorSuplentes.text = "(${partidoActualizado.suplentes.size})"
-        binding.contadorEventostextView.text = "(${partidoActualizado.goles.size + partidoActualizado.sustituciones.size + partidoActualizado.amonestaciones.size})"
-
-        binding.observacionesMultiline.setText(partidoActualizado.observaciones)
-
-        for(jugador in partidoActualizado.titulares){
-            partidoActualizado.convocados.add(jugador)
-            jugadoresTitularesIds.add(jugador.id)
-        }
-
-        for(jugador in partidoActualizado.suplentes){
-            partidoActualizado.convocados.add(jugador)
-            jugadoresSuplentesIds.add(jugador.id)
-        }
-    }
-
 
     private fun haTerminado(): Boolean{
         if(binding.jornadaNumberEdit.text.isNullOrEmpty()){
@@ -630,138 +592,137 @@ class EditarPartidoActivity : AppCompatActivity() {
         for(tarjeta in partidoActualizado.amonestaciones){
             sumarTarjetas(tarjeta.jugadoresImplicados[0], tarjeta)
         }
-        calcularMinutos(partidoActualizado.suplentes, partidoActualizado.titulares)
 
-    }
+        lifecycleScope.launch {
+            var calculadoTitulares = solicitudCalcularMinutosTitulares()
+            var calculadoSuplentes = false
+            if(calculadoTitulares){
+                lifecycleScope.launch {
+                    calculadoSuplentes  = solicitudCalcularMinutosSuplentes()
+                    println("Terminado suplentes")
 
-    private fun sumarGoles(jugador: JugadorModel, gol: EventoModel){
-        //sumar gol al jugador
-        val yaHaMarcado = goleadores.firstOrNull{it.id == jugador.id}
-        if(yaHaMarcado == null){
-            val jugadoresRef =
-                db.collection("teams").document(currentTeam.id).collection("players")
-
-            //buscar jugador actualizado en la bd
-            var jugadorBd = JugadorModel()
-            jugadoresRef.document(jugador.id)
-                .get()
-                .addOnSuccessListener { document ->
-                    jugadorBd = document.toObject<JugadorModel>()!!
-
-                    jugadoresRef.document(jugador.id).update(
-                        hashMapOf<String, Any>(
-                            "golesMarcados" to jugadorBd.golesMarcados + 1
-                        )
-                    )
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                }
-            gol.jugadoresImplicados[0].golesMarcados += 1
-            goleadores.add(gol.jugadoresImplicados[0])
-        }else{
-            val jugadoresRef =
-                db.collection("teams").document(currentTeam.id).collection("players")
-            //buscar jugador actualizado en la bd
-            var jugadorBd = JugadorModel()
-            jugadoresRef.document(jugador.id)
-                .get()
-                .addOnSuccessListener { document ->
-                    jugadorBd = document.toObject<JugadorModel>()!!
-                    jugadoresRef.document(jugador.id).update(
-                        hashMapOf<String, Any>(
-                            "golesMarcados" to jugadorBd.golesMarcados + 1
-                        )
-                    )
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                }
-            goleadores.remove(yaHaMarcado)
-            yaHaMarcado.golesMarcados += 1
-            goleadores.add(yaHaMarcado)
-        }
-
-
-
-        Toast.makeText(this, "Se ha añadido el gol de ${gol.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
-    }
-    private fun sumarTarjetas(jugador: JugadorModel, tarjeta: EventoModel){
-        val tieneAmarilla = tienenAmarilla.firstOrNull { it.id == jugador.id }
-
-        if(tarjeta.tipoEventoId == 1){      //tarjeta amarilla
-            if(tieneAmarilla == null){
-                val jugadoresRef =
-                    db.collection("teams").document(currentTeam.id).collection("players")
-                //buscar jugador actualizado en la bd
-                var jugadorBd = JugadorModel()
-                jugadoresRef.document(jugador.id)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        jugadorBd = document.toObject<JugadorModel>()!!
-                        jugadoresRef.document(jugador.id).update(
-                            hashMapOf<String, Any>(
-                                "tarjetasAmarillas" to jugadorBd.tarjetasAmarillas + 1
-                            )
-                        )
+                    if(calculadoSuplentes){
+                        sumarMinutos(jugadoresParticipantes)
                     }
 
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                    }
-                tarjeta.jugadoresImplicados[0].tarjetasAmarillas += 1
-                tienenAmarilla.add(tarjeta.jugadoresImplicados[0])
-            }else{
-                val jugadoresRef =
-                    db.collection("teams").document(currentTeam.id).collection("players")
-                //buscar jugador actualizado en la bd
-                var jugadorBd = JugadorModel()
-                jugadoresRef.document(jugador.id)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        jugadorBd = document.toObject<JugadorModel>()!!
-                        jugadoresRef.document(jugador.id).update(
-                            hashMapOf<String, Any>(
-                                "tarjetasAmarillas" to jugadorBd.tarjetasAmarillas + 1
-                            )
-                        )
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                    }
-                tienenAmarilla.remove(tieneAmarilla)
-                tieneAmarilla.tarjetasAmarillas += 1
-                tienenAmarilla.add(tarjeta.jugadoresImplicados[0])
+                }
+                mostrarGuardando()
             }
 
 
-        }else if(tarjeta.tipoEventoId == 2) {        //Tarjeta roja
+        }
+
+    }
+    private fun mostrarGuardando(){
+        val builder = AlertDialog.Builder(this@EditarPartidoActivity)
+        builder.setMessage("Se están guardando sus cambios.")
+        builder.setTitle("Importante")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton("OK") { _, _ ->
+            finish()
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
+
+    private suspend fun solicitudCalcularMinutosTitulares():  Boolean{
+        return suspendCoroutine { continuation ->
+            calcularMinutosTitulares { terminado->
+                continuation.resume(terminado)
+            }
+        }
+    }
+    private suspend fun solicitudCalcularMinutosSuplentes():  Boolean{
+        return suspendCoroutine { continuation ->
+            calcularMinutosSuplentes { terminado->
+                continuation.resume(terminado)
+            }
+        }
+    }
+    private fun calcularMinutosSuplentes(callback: (Boolean) -> Unit){
+        var suplentes: ArrayList<JugadorModel> = partidoActualizado.suplentes
+        var realizados = 0
+        for (jugador in suplentes){
+            convocados.add(jugador)
+
+            //sumar una convocatoria
             val jugadoresRef =
                 db.collection("teams").document(currentTeam.id).collection("players")
+
             //buscar jugador actualizado en la bd
             var jugadorBd = JugadorModel()
             jugadoresRef.document(jugador.id)
                 .get()
                 .addOnSuccessListener { document ->
                     jugadorBd = document.toObject<JugadorModel>()!!
-                    jugadoresRef.document(jugador.id).update(
+                    jugadorBd.id = document.id
+                    jugadoresRef.document(jugadorBd.id).update(
                         hashMapOf<String, Any>(
-                            "tarjetasRojas" to jugadorBd.tarjetasRojas + 1
+                            "partidosConvocado" to jugadorBd.partidosConvocado + 1,
                         )
                     )
+                        .addOnFailureListener {
+                            Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()
+                        }
+
+
+                    //suplente entra a jugar
+                    if(suplenteJuega(jugadorBd)){
+                        //buscar minuto en el que entra
+                        val minutoEntra = minutoEntra(jugadorBd)
+                        if(haSidoCambiado(jugadorBd)){
+                            //ver en que minuto sale
+                            for(cambio in partidoActualizado.sustituciones) {
+                                if(jugadorBd.id == cambio.jugadoresImplicados[1].id){
+                                    val minutoSeVa = cambio.minuto
+                                    val jugadorCambiado = JugadorEnPartido(jugador = jugadorBd,minutoEntra, minutoSeVa)
+                                    jugadoresParticipantes.add(jugadorCambiado)
+                                    realizados += 1
+                                    if(realizados == partidoActualizado.sustituciones.size){
+                                        callback(true)
+                                    }
+                                }
+
+                            }
+                        }
+                        else if(haSidoExpulsado(jugadorBd)){
+                            for(expulsion in partidoActualizado.amonestaciones.filter { it.tipoEventoId == 2 }){ //eventoId 2  expulsion
+                                if(expulsion.jugadoresImplicados[0].id == jugador.id){     //se busca cual es su expulsion
+                                    val jugadorExpulsado = JugadorEnPartido(jugador = jugadorBd, minutoEntra, expulsion.minuto)
+                                    jugadoresParticipantes.add(jugadorExpulsado)
+                                    realizados += 1
+                                    if(realizados == partidoActualizado.sustituciones.size){
+                                        callback(true)
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            val jugadorCambiado = JugadorEnPartido(jugadorBd,minutoEntra, 90)
+                            jugadoresParticipantes.add(jugadorCambiado)
+                            realizados += 1
+                            if(realizados == partidoActualizado.sustituciones.size){
+                                callback(true)
+                            }
+                        }
+                    }
+
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,it.message, Toast.LENGTH_SHORT).show()
                 }
-            tarjeta.jugadoresImplicados[0].tarjetasRojas += 1
-        }
 
-        Toast.makeText(this, "Se ha añadido la tarjeta de ${tarjeta.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
+        }
+        if(realizados == partidoActualizado.sustituciones.size){
+            callback(true)
+        }
     }
 
-    private fun calcularMinutos(suplentes: ArrayList<JugadorModel>, titulares: ArrayList<JugadorModel>){
-        val jugadoresParticipantes: ArrayList<JugadorEnPartido> = ArrayList()
-        val convocados: ArrayList<JugadorModel> = ArrayList()
+
+    private fun calcularMinutosTitulares(callback: (Boolean) -> Unit){
+        var titulares: ArrayList<JugadorModel> = partidoActualizado.titulares
 
         for (jugador in titulares){
             //Se le añade una titularidad a los 11 titulares
@@ -776,6 +737,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { document ->
                     jugadorBd = document.toObject<JugadorModel>()!!
+
                     jugadoresRef.document(jugador.id).update(
                         hashMapOf<String, Any>(
                             "partidosConvocado" to jugadorBd.partidosConvocado + 1,
@@ -809,62 +771,12 @@ class EditarPartidoActivity : AppCompatActivity() {
                 }
             }
         }
-        for (jugador in suplentes){
-            convocados.add(jugador)
+            ////////////////////////////////////////
+            //sumarMinutos(jugadoresParticipantes)
+            callback(true)
 
-            //sumar una convocatoria
-            val jugadoresRef =
-                db.collection("teams").document(currentTeam.id).collection("players")
-
-            //buscar jugador actualizado en la bd
-            var jugadorBd = JugadorModel()
-            jugadoresRef.document(jugador.id)
-                .get()
-                .addOnSuccessListener { document ->
-                    jugadorBd = document.toObject<JugadorModel>()!!
-                    jugadoresRef.document(jugador.id).update(
-                        hashMapOf<String, Any>(
-                            "partidosConvocado" to jugadorBd.partidosConvocado + 1,
-                        )
-                    )
-                }
-
-
-                .addOnFailureListener {
-                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                }
-
-            //suplente entra a jugar
-            if(suplenteJuega(jugadorBd)){
-                //buscar minuto en el que entra
-                val minutoEntra = minutoEntra(jugadorBd)
-                if(haSidoCambiado(jugadorBd)){
-                    //ver en que minuto sale
-                    for(cambio in partidoActualizado.sustituciones) {
-                        if(jugadorBd.id == cambio.jugadoresImplicados[1].id){
-                            val minutoSeVa = cambio.minuto
-                            val jugadorCambiado = JugadorEnPartido(jugador = jugadorBd,minutoEntra, minutoSeVa)
-                            jugadoresParticipantes.add(jugadorCambiado)
-                        }
-                    }
-                }
-                else if(haSidoExpulsado(jugadorBd)){
-                    for(expulsion in partidoActualizado.amonestaciones.filter { it.tipoEventoId == 2 }){ //eventoId 2  expulsion
-                        if(expulsion.jugadoresImplicados[0].id == jugador.id){     //se busca cual es su expulsion
-                            val jugadorExpulsado = JugadorEnPartido(jugador = jugadorBd, minutoEntra, expulsion.minuto)
-                            jugadoresParticipantes.add(jugadorExpulsado)
-                        }
-                    }
-                }
-                else{
-                    val jugadorCambiado = JugadorEnPartido(jugadorBd,minutoEntra, 90)
-                    jugadoresParticipantes.add(jugadorCambiado)
-                }
-            }
-        }
-
-        sumarMinutos(jugadoresParticipantes)
     }
+
 
     private fun sumarMinutos(participantes: ArrayList<JugadorEnPartido> ){
         for(jugadorMinutos in participantes){
@@ -882,8 +794,11 @@ class EditarPartidoActivity : AppCompatActivity() {
                             "minutosJugados" to jugadorBd.minutosJugados + jugadorMinutos.minutosJugados(),
                             "partidosJugados" to jugadorBd.partidosJugados + 1
                         )
-                    )
+                    ).addOnFailureListener {
+                        Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
+
 
             val partidoRef = db.collection("partidos").document(currentTeam.id).collection("liga").document(partidoActualizado.id)
             partidoRef.collection("minutosJugados").document(jugador.id).set(
@@ -896,6 +811,76 @@ class EditarPartidoActivity : AppCompatActivity() {
         }
     }
 
+    private fun sumarGoles(jugador: JugadorModel, gol: EventoModel){
+        //sumar gol al jugador
+        val jugadoresRef =
+            db.collection("teams").document(currentTeam.id).collection("players")
+
+        //buscar jugador actualizado en la bd
+        var jugadorBd = JugadorModel()
+        jugadoresRef.document(jugador.id)
+            .get()
+            .addOnSuccessListener { document ->
+                jugadorBd = document.toObject<JugadorModel>()!!
+
+                jugadoresRef.document(jugador.id).update(
+                    hashMapOf<String, Any>(
+                        "golesMarcados" to jugadorBd.golesMarcados + 1
+                    )
+                )
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+            }
+        Toast.makeText(this, "Se ha añadido el gol de ${gol.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun sumarTarjetas(jugador: JugadorModel, tarjeta: EventoModel){
+
+        if(tarjeta.tipoEventoId == 1){      //tarjeta amarilla
+            val jugadoresRef =
+                db.collection("teams").document(currentTeam.id).collection("players")
+            //buscar jugador actualizado en la bd
+            var jugadorBd = JugadorModel()
+            jugadoresRef.document(jugador.id)
+                .get()
+                .addOnSuccessListener { document ->
+                    jugadorBd = document.toObject<JugadorModel>()!!
+                    jugadoresRef.document(jugador.id).update(
+                        hashMapOf<String, Any>(
+                            "tarjetasAmarillas" to jugadorBd.tarjetasAmarillas + 1
+                        )
+                    )
+                }
+
+                .addOnFailureListener {
+                    Toast.makeText(this, "Ha ocurrido un error ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+
+        }else if(tarjeta.tipoEventoId == 2) {        //Tarjeta roja
+            val jugadoresRef =
+                db.collection("teams").document(currentTeam.id).collection("players")
+            //buscar jugador actualizado en la bd
+            var jugadorBd = JugadorModel()
+            jugadoresRef.document(jugador.id)
+                .get()
+                .addOnSuccessListener { document ->
+                    jugadorBd = document.toObject<JugadorModel>()!!
+                    jugadoresRef.document(jugador.id).update(
+                        hashMapOf<String, Any>(
+                            "tarjetasRojas" to jugadorBd.tarjetasRojas + 1
+                        )
+                    )
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                }
+            tarjeta.jugadoresImplicados[0].tarjetasRojas += 1
+        }
+
+        Toast.makeText(this, "Se ha añadido la tarjeta de ${tarjeta.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
+    }
 
     private fun suplenteJuega(jugador: JugadorModel): Boolean{
         var respuesta = false
@@ -940,54 +925,67 @@ class EditarPartidoActivity : AppCompatActivity() {
         return minuto
     }
 
-
     private fun actualizarInfoEquipo(partido: PartidoModel){
-        currentTeam.partidosJugados += 1
-
-        if (partido.golesMarcados > partido.golesEncajados){
-            currentTeam.victorias += 1
-        }else if(partido.golesMarcados < partido.golesEncajados){
-            currentTeam.derrotas += 1
-        }
-        if(partido.golesMarcados == partido.golesEncajados){
-            currentTeam.empates += 1
-        }
-
-        currentTeam.golesMarcados += partido.golesMarcados
-        currentTeam.golesEncajados += partido.golesEncajados
-
-        db.collection("teams").document(currentTeam.id).update(
-            hashMapOf<String, Any>(
-                "partidosJugados" to currentTeam.partidosJugados,
-                "victorias" to currentTeam.victorias,
-                "derrotas" to currentTeam.derrotas,
-                "empates" to currentTeam.empates,
-                "golesMarcados" to currentTeam.golesMarcados,
-                "golesEncajados" to currentTeam.golesEncajados
-            )
-        )
-        /*
-        var equipoDb = TeamModel()
         db.collection("teams").document(currentTeam.id)
             .get()
             .addOnSuccessListener {document ->
-                equipoDb = document.toObject<TeamModel>()!!
-                equipoDb.id = document.id
+                currentTeam = document.toObject<TeamModel>()!!
+                currentTeam.id = document.id
+
+                currentTeam.partidosJugados += 1
+
+                if (partido.golesMarcados > partido.golesEncajados){
+                    currentTeam.victorias += 1
+                }
+                if(partido.golesMarcados < partido.golesEncajados){
+                    currentTeam.derrotas += 1
+                }
+                if(partido.golesMarcados == partido.golesEncajados){
+                    currentTeam.empates += 1
+                }
+
+                currentTeam.golesMarcados += partido.golesMarcados
+                currentTeam.golesEncajados += partido.golesEncajados
 
                 db.collection("teams").document(currentTeam.id).update(
                     hashMapOf<String, Any>(
-                        "partidosJugados" to equipoDb.partidosJugados,
-                        "victorias" to equipoDb.victorias,
-                        "derrotas" to equipoDb.derrotas,
-                        "empates" to equipoDb.empates,
-                        "golesMarcados" to equipoDb.golesMarcados,
-                        "golesEncajados" to equipoDb.golesEncajados
+                        "partidosJugados" to currentTeam.partidosJugados,
+                        "victorias" to currentTeam.victorias,
+                        "derrotas" to currentTeam.derrotas,
+                        "empates" to currentTeam.empates,
+                        "golesMarcados" to currentTeam.golesMarcados,
+                        "golesEncajados" to currentTeam.golesEncajados
                     )
                 )
             }
 
-         */
+    }
 
+    private fun insertarDatos() {
+
+        binding.golesanotadostextView.text = partidoActualizado.golesMarcados.toString()
+        binding.jornadaNumberEdit.setText(partidoActualizado.numeroJornada.toString())
+        binding.rivalEditText.setText(partidoActualizado.rival)
+        binding.encajadosTextNumber.setText(partidoActualizado.golesEncajados.toString())
+        if (!partidoActualizado.local) {
+            binding.estadioSpinner.setSelection(1)
+        }
+        binding.contadorTitulares.text = "(${partidoActualizado.titulares.size})"
+        binding.contadorSuplentes.text = "(${partidoActualizado.suplentes.size})"
+        binding.contadorEventostextView.text =
+            "(${partidoActualizado.goles.size + partidoActualizado.sustituciones.size + partidoActualizado.amonestaciones.size})"
+
+        binding.observacionesMultiline.setText(partidoActualizado.observaciones)
+
+        for (jugador in partidoActualizado.titulares) {
+            partidoActualizado.convocados.add(jugador)
+            jugadoresTitularesIds.add(jugador.id)
+        }
+
+        for (jugador in partidoActualizado.suplentes) {
+            partidoActualizado.convocados.add(jugador)
+            jugadoresSuplentesIds.add(jugador.id)
+        }
     }
 
     private fun limpiar(){
@@ -1034,7 +1032,12 @@ class EditarPartidoActivity : AppCompatActivity() {
             jugadoresSuplentesIds = data.getStringArrayListExtra("suplentesId")!!
             binding.contadorSuplentes.text = "("+jugadoresSuplentesIds.size+")"
             for(jugador in partidoActualizado.suplentes){
-                partidoActualizado.convocados.add(jugador)
+                val suplente = partidoActualizado.convocados.find { it.id == jugador.id }
+                if (suplente == null) {
+                    partidoActualizado.convocados.add(jugador)
+                }else{
+                    println("Ya estaba convocado")
+                }
             }
 
             Toast.makeText(this, "Suplentes: ${jugadoresSuplentesIds.size}", Toast.LENGTH_SHORT).show()

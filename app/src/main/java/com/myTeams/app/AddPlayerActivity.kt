@@ -1,5 +1,6 @@
 package com.myTeams.app
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -30,6 +31,7 @@ class AddPlayerActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
 
@@ -86,10 +88,29 @@ class AddPlayerActivity : AppCompatActivity() {
             }
         }
 
+        binding.atrasbutton.setOnClickListener {
+            confirmCerrar()
+        }
         binding.cancelButton.setOnClickListener {
             finish()
             //añadir confimarSalir
         }
 
+    }
+    private fun confirmCerrar(){
+        val builder = AlertDialog.Builder(this@AddPlayerActivity)
+        builder.setMessage("¿Desea salir sin guardar?")
+        builder.setTitle("Importante")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton("yes") { _, _ ->
+            finish()
+        }
+        builder.setNegativeButton("no"){_,_ ->
+
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 }

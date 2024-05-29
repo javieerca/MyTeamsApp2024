@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="25dp"
-    android:layout_marginBottom="25dp"
     android:clickable="true"
-    android:padding="10dp"
-    app:cardBackgroundColor="#FFFFFF"
+    android:clipToPadding="false"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
     app:cardElevation="16dp"
+    app:cardUseCompatPadding="false"
     app:layout_constraintEnd_toEndOf="parent"
     app:strokeColor="@color/material_dynamic_neutral30"
-    app:strokeWidth="5dp">
+    app:strokeWidth="2dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contenedorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="15dp"
-        android:clickable="false">
+        android:backgroundTintMode="src_over"
+        android:clickable="false"
+        android:paddingBottom="15dp">
 
         <TextView
             android:id="@+id/visitanteTextView"
@@ -64,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="64dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="Jornada"
@@ -100,11 +101,5 @@
             app:layout_constraintTop_toTopOf="@+id/visitanteTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:background="?android:attr/listDivider" />
 
 </com.google.android.material.card.MaterialCardView>

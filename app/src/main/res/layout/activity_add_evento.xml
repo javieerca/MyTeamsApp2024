@@ -8,16 +8,12 @@
     android:orientation="vertical"
     tools:context=".AddEventoActivity">
 
-    <Button
+    <ImageView
         android:id="@+id/atrasbutton"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:backgroundTint="@color/white"
-        android:gravity="left"
-        android:text="Atrás"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        app:srcCompat="@drawable/arrow_dark_back_ios_24px" />
 
     <Button
         android:id="@+id/golesbutton"

@@ -12,12 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.HomeActivity
 import com.myTeams.app.ProviderType
 import com.myTeams.app.R
 import com.myTeams.app.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
+    private val db = FirebaseFirestore.getInstance()
 
     private val GOOGLE_SIGN_IN = 100
 
@@ -87,6 +89,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showHome(email:String, provider: ProviderType){
+        var nombreUsuario = email.split("@")[0]
+        db.collection("users").document(email).set(
+            hashMapOf<String,Any>("username" to nombreUsuario)
+        )
+
         val homeActivityIntent = Intent(this, HomeActivity::class.java).apply {
             putExtra("email", email)
             putExtra("provider", provider)

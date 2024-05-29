@@ -8,6 +8,34 @@
     tools:context=".AddGolActivity">
 
     <TextView
+        android:id="@+id/myTeamText7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/verdeTitulos"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Nueva tarjeta"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <ImageView
+        android:id="@+id/atrasbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myTeamText7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
+
+    <TextView
         android:id="@+id/tarjetatextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,13 +46,19 @@
 
     <Button
         android:id="@+id/seleccionarJugadorbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="75dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/grisClaro"
         android:text="Seleccionar jugador"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/myTeamText7" />
 
     <SeekBar
         android:id="@+id/seekBar"

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MostrarJugadorActivity">
+
+    <TextView
+        android:id="@+id/nombreJugadorTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/verdeTitulos"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Nombre Jugador"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/numeroJugadortextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/verdeTitulos"
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dp"
+        android:text="1"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nombreJugadorTextView"
+        tools:ignore="TextContrastCheck" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numeroJugadortextView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="25dp">
+
+            <TextView
+                android:id="@+id/minutosJugadostextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Minutos jugados:"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/valorminutosJugadostextView"
+                app:layout_constraintStart_toStartOf="@+id/partidosJugadostextView"
+                app:layout_constraintTop_toBottomOf="@+id/partidosJugadostextView" />
+
+            <TextView
+                android:id="@+id/valorminutosJugadostextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10.000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/minutosJugadostextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorpartidosJugadostextView"
+                app:layout_constraintTop_toTopOf="@+id/minutosJugadostextView" />
+
+            <TextView
+                android:id="@+id/partidosJugadostextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Partidos jugados:"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/valorpartidosJugadostextView"
+                app:layout_constraintStart_toStartOf="@+id/partidosConvocadotextView"
+                app:layout_constraintTop_toBottomOf="@+id/partidosConvocadotextView" />
+
+            <TextView
+                android:id="@+id/valorpartidosJugadostextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/partidosJugadostextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorpartidosConvocadotextView"
+                app:layout_constraintTop_toTopOf="@+id/partidosJugadostextView" />
+
+            <TextView
+                android:id="@+id/partidosConvocadotextView"
+                android:layout_width="329dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Partidos convocado:"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/textView32"
+                app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+            <TextView
+                android:id="@+id/valorpartidosConvocadotextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/valorPosiciontextView"
+                app:layout_constraintTop_toTopOf="@+id/partidosConvocadotextView" />
+
+            <TextView
+                android:id="@+id/vecesCambiadotextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Veces cambiado: "
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/valorvecesCambiadotextView"
+                app:layout_constraintStart_toStartOf="@+id/minutosJugadostextView"
+                app:layout_constraintTop_toBottomOf="@+id/minutosJugadostextView" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="195dp"
+                android:layout_marginEnd="173dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_end="180dp"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/valorvecesCambiadotextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/vecesCambiadotextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorminutosJugadostextView"
+                app:layout_constraintTop_toTopOf="@+id/vecesCambiadotextView" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Este jugador es cambiado cada x minutos de media"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/valorvecesCambiadotextView"
+                app:layout_constraintStart_toStartOf="@+id/vecesCambiadotextView"
+                app:layout_constraintTop_toBottomOf="@+id/vecesCambiadotextView" />
+
+            <TextView
+                android:id="@+id/golesMarcadostextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Goles marcados:"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/valorgolesMarcadostextView"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <TextView
+                android:id="@+id/valorgolesMarcadostextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/golesMarcadostextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorvecesCambiadotextView"
+                app:layout_constraintTop_toTopOf="@+id/golesMarcadostextView" />
+
+            <TextView
+                android:id="@+id/golesPartidotextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Goles / Partido"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/golesMarcadostextView"
+                app:layout_constraintTop_toBottomOf="@+id/golesMarcadostextView" />
+
+            <TextView
+                android:id="@+id/valorGolesPartidotextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.05"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/golesPartidotextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorgolesMarcadostextView"
+                app:layout_constraintTop_toTopOf="@+id/golesPartidotextView" />
+
+            <TextView
+                android:id="@+id/golesMinutostextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Goles / Minutos"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/golesPartidotextView"
+                app:layout_constraintTop_toBottomOf="@+id/golesPartidotextView" />
+
+            <TextView
+                android:id="@+id/valorgolesMinutostextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="90"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/golesMinutostextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorGolesPartidotextView"
+                app:layout_constraintTop_toTopOf="@+id/golesMinutostextView" />
+
+            <TextView
+                android:id="@+id/tarjetasAmarillastextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Tarjetas amarillas:"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/golesPartidotextView"
+                app:layout_constraintTop_toBottomOf="@+id/golesMinutostextView" />
+
+            <TextView
+                android:id="@+id/valortarjetasAmarillastextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tarjetasAmarillastextView"
+                app:layout_constraintEnd_toEndOf="@+id/valorgolesMarcadostextView"
+                app:layout_constraintTop_toTopOf="@+id/tarjetasAmarillastextView" />
+
+            <TextView
+                android:id="@+id/tarjetasRojastextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Tarjetas rojas:"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/tarjetasAmarillastextView"
+                app:layout_constraintTop_toBottomOf="@+id/tarjetasAmarillastextView" />
+
+            <TextView
+                android:id="@+id/valortarjetasRojastextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/valortarjetasAmarillastextView"
+                app:layout_constraintTop_toTopOf="@+id/tarjetasRojastextView" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="Posición:"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/valorPosiciontextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Delantero"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView32"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView32" />
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="377dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/golesMarcadostextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+            <View
+                android:id="@+id/divider11"
+                android:layout_width="377dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/tarjetasAmarillastextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/golesMinutostextView" />
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="377dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/partidosConvocadotextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+            <View
+                android:id="@+id/divider13"
+                android:layout_width="377dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toTopOf="@+id/minutosJugadostextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/partidosJugadostextView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/atrasbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/nombreJugadorTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

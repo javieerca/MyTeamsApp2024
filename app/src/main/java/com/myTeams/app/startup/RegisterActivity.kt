@@ -12,12 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.HomeActivity
 import com.myTeams.app.ProviderType
 import com.myTeams.app.R
 import com.myTeams.app.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {
+    private val db = FirebaseFirestore.getInstance()
 
     private val GOOGLE_SIGN_IN = 100
 
@@ -49,6 +51,11 @@ class RegisterActivity : AppCompatActivity() {
                     .addOnCompleteListener{
                         if(it.isSuccessful){
                             showHome(it.result?.user?.email ?:"", ProviderType.BASIC)
+
+                            var nombreUsuario = email.split("@")[0]
+                            db.collection("users").document(email).set(
+                                hashMapOf<String,Any>("username" to nombreUsuario)
+                            )
                         }else{
                             showAlert()
                         }
@@ -67,6 +74,12 @@ class RegisterActivity : AppCompatActivity() {
             googleClient.signOut()
 
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+
+
+        }
+
+        binding.atrasbutton.setOnClickListener {
+            finish()
         }
     }
 
@@ -80,6 +93,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showHome(email:String, provider: ProviderType){
+        var nombreUsuario = email.split("@")[0]
+        db.collection("users").document(email).set(
+            hashMapOf<String,Any>("username" to nombreUsuario)
+        )
+
         val homeActivityIntent = Intent(this, HomeActivity::class.java).apply {
             putExtra("email", email)
             putExtra("provider", provider)

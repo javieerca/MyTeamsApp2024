@@ -1,6 +1,7 @@
 package com.myTeams.app
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,21 +12,18 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.databinding.ActivityAddGolBinding
 import com.myTeams.app.model.EventoModel
-import com.myTeams.app.model.PartidoModel
 import com.myTeams.app.model.JugadorModel
+import com.myTeams.app.model.PartidoModel
 import com.myTeams.app.model.TeamModel
 
 class AddGolActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddGolBinding
     private var currentTeam: TeamModel = TeamModel()
-    private var goleadorId: String = ""
     private var goleador: JugadorModel = JugadorModel()
     private var progresoSeekBar: Int=0
 
-    private val db = FirebaseFirestore.getInstance()
     private var partido: PartidoModel = PartidoModel()
 
 
@@ -41,6 +39,7 @@ class AddGolActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
         partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
@@ -69,11 +68,12 @@ class AddGolActivity : AppCompatActivity() {
         }
 
 
+
         binding.guardarGolbutton.setOnClickListener {
-            var minutoGol: Int= progresoSeekBar
-            var jugadorArray: ArrayList<JugadorModel> = ArrayList()
+            val minutoGol: Int= progresoSeekBar
+            val jugadorArray: ArrayList<JugadorModel> = ArrayList()
             jugadorArray.add(goleador)
-            var evento = EventoModel(
+            val evento = EventoModel(
                 tipoEventoId = 0,
                 tipoEventoNombre = "Gol",
                 jugadoresImplicados = jugadorArray,
@@ -90,6 +90,30 @@ class AddGolActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK, resultadoIntent)
             finish()
         }
+
+        binding.atrasbutton.setOnClickListener {
+            confirmCerrar()
+        }
+        binding.cancelarbutton.setOnClickListener {
+            finish()
+        }
+
+    }
+    private fun confirmCerrar(){
+        val builder = AlertDialog.Builder(this@AddGolActivity)
+        builder.setMessage("¿Desea salir de la app?")
+        builder.setTitle("Importante")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton("yes") { _, _ ->
+            finishAffinity()
+        }
+        builder.setNegativeButton("no"){_,_ ->
+
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 
 

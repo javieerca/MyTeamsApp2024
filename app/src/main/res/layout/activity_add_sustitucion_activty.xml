@@ -7,13 +7,42 @@
     android:layout_height="match_parent"
     tools:context=".AddSustitucionActivty">
 
+    <TextView
+        android:id="@+id/myTeamText7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/verdeTitulos"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Nuevo cambio"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <ImageView
+        android:id="@+id/atrasbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myTeamText7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
+
     <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:max="90"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -52,25 +81,33 @@
 
     <Button
         android:id="@+id/seleccionarsustituidobutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:backgroundTint="@color/grisClaro"
         android:text="Seleccionar jugador"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="@+id/nombreEntratextView"
         app:layout_constraintStart_toStartOf="@+id/nombreEntratextView"
         app:layout_constraintTop_toBottomOf="@+id/nombreEntratextView" />
 
     <Button
         android:id="@+id/seleccionarsustitutobutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/grisClaro"
         android:text="Seleccionar jugador"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/myTeamText7" />
 
     <TextView
         android:id="@+id/numeroEntratextView2"
@@ -91,8 +128,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/numeroEntratextView2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="@+id/seleccionarsustitutobutton"
-        app:layout_constraintTop_toTopOf="@+id/numeroEntratextView2" />
+        app:layout_constraintTop_toTopOf="@+id/numeroEntratextView2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/minutotextView2"
@@ -120,6 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/azulBoton"
         android:text="Añadir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -133,5 +173,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/seleccionarsustitutobutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/seleccionarsustitutobutton" />
+
+    <Button
+        android:id="@+id/cancelbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/rojoBoton"
+        android:text="Cancelar"
+        app:layout_constraintEnd_toStartOf="@+id/guardarGolbutton2"
+        app:layout_constraintTop_toTopOf="@+id/guardarGolbutton2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

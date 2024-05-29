@@ -46,6 +46,7 @@ class PartidosActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
 
@@ -64,6 +65,10 @@ class PartidosActivity : AppCompatActivity() {
                 addPartidoActivityIntent.putExtra("jornadasJugadas", numeroPartidos)
                 startActivity(addPartidoActivityIntent)
             }
+        }
+
+        binding.atrasbutton.setOnClickListener {
+            finish()
         }
 
         binding.partidosRecyclerView.layoutManager =
@@ -135,7 +140,7 @@ class PartidosActivity : AppCompatActivity() {
                             .addOnSuccessListener { documents ->
                                 for (jugador in documents) {
                                     val playerDB = jugador.toObject<JugadorModel>()
-                                    playerDB.id = jugador.id
+                                    playerDB.id = jugador.getString("id")!!
                                     partido.suplentes.add(playerDB)
                                 }
                             }
@@ -296,3 +301,65 @@ class PartidosActivity : AppCompatActivity() {
     }
 
 }
+
+
+/*
+private fun calcularMinutosTitulares(callback: (Boolean) -> Unit){
+        var titulares: ArrayList<JugadorModel> = partidoActualizado.titulares
+
+        for (jugador in titulares){
+            //Se le añade una titularidad a los 11 titulares
+            convocados.add(jugador)
+
+            val jugadoresRef =
+                db.collection("teams").document(currentTeam.id).collection("players")
+
+            //buscar jugador actualizado en la bd
+            var jugadorBd = JugadorModel()
+            jugadoresRef.document(jugador.id)
+                .get()
+                .addOnSuccessListener { document ->
+                    jugadorBd = document.toObject<JugadorModel>()!!
+
+                    jugadoresRef.document(jugador.id).update(
+                        hashMapOf<String, Any>(
+                            "partidosConvocado" to jugadorBd.partidosConvocado + 1,
+                            "partidosTitular" to jugadorBd.partidosTitular + 1
+                        )
+                    )
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                }
+
+            if(haSidoCambiado(jugador)){
+                for(cambio in partidoActualizado.sustituciones) {
+                    //ver en que minuto sale
+                    if(jugador.id == cambio.jugadoresImplicados[1].id){
+                        val minutoSeVa = cambio.minuto
+                        val jugadorCambiado = JugadorEnPartido(jugador,0, minutoSeVa)
+                        jugadoresParticipantes.add(jugadorCambiado)
+                    }
+                }
+            }else{
+                val jugo90 = JugadorEnPartido(jugador,0, 90)
+                jugadoresParticipantes.add(jugo90)
+            }
+            if(haSidoExpulsado(jugador)){
+                for(expulsion in partidoActualizado.amonestaciones.filter { it.tipoEventoId == 2 }){ //eventoId 2  expulsion
+                    if(expulsion.jugadoresImplicados[0].id == jugador.id){     //se busca cual es su expulsion
+                        val jugadorExpulsado = JugadorEnPartido(jugador, 0, expulsion.minuto)
+                        jugadoresParticipantes.add(jugadorExpulsado)
+                    }
+                }
+            }
+        }
+            ////////////////////////////////////////
+            //sumarMinutos(jugadoresParticipantes)
+            callback(true)
+
+    }
+
+
+
+ */

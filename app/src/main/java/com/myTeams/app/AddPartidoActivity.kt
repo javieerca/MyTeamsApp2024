@@ -45,6 +45,7 @@ class AddPartidoActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
         jornadaActual = intent.extras?.getInt("jornadasJugadas")!! + 1
@@ -80,6 +81,10 @@ class AddPartidoActivity : AppCompatActivity() {
                 addSuplentesActivityIntent.putExtra("partido", partidoActual)
                 startActivityForResult(addSuplentesActivityIntent, 222)
             }
+        }
+
+        binding.atrasbutton.setOnClickListener {
+            confirmarCerrar()
         }
 
         binding.eventosbutton.setOnClickListener {
@@ -208,6 +213,8 @@ class AddPartidoActivity : AppCompatActivity() {
                             "numero" to jugador.numero
                         )
                     )
+
+                    //sumar gol
                 }
                 //subir suplentes
                 for(jugador in partidoActual.suplentes){
@@ -241,6 +248,23 @@ class AddPartidoActivity : AppCompatActivity() {
                 //nunca llega aqui porque el metodo haTerminado() manda el mensaje de error
             }
         }
+    }
+
+    private fun confirmarCerrar(){
+        val builder = AlertDialog.Builder(this@AddPartidoActivity)
+        builder.setMessage("¿Desea salir sin guardar?")
+        builder.setTitle("Importante")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton("yes") { _, _ ->
+            finish()
+        }
+        builder.setNegativeButton("no"){_,_ ->
+
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
     }
 
     private fun haTerminado(): Boolean{

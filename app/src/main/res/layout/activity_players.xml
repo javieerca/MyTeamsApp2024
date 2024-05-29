@@ -7,24 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".PlayersActivity">
 
-    <Button
-        android:id="@+id/addButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="Añadir"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playersRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
+        android:fadeScrollbars="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/addButton2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,14 +25,30 @@
         android:id="@+id/myTeamText2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#82B1FF"
+        android:background="@color/verdeTitulos"
         android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="MyTeams"
+        android:textColor="@color/white"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <ImageView
+        android:id="@+id/atrasbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myTeamText2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.41"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loadingGif2"
@@ -49,8 +56,8 @@
         android:layout_height="46dp"
         android:src="@drawable/gif_loading"
         app:layout_constraintBottom_toBottomOf="@+id/playersRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/playersRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/playersRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/playersRecyclerView" />
 
     <Button
@@ -60,4 +67,16 @@
         android:text="Generar 11"
         app:layout_constraintStart_toStartOf="@+id/playersRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/addButton2" />
+
+    <Button
+        android:id="@+id/addButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/azulBoton"
+        android:text="Añadir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

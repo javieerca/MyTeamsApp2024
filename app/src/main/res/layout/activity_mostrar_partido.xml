@@ -46,13 +46,27 @@
 
             <TextView
                 android:id="@+id/marcotextView"
-                android:layout_width="411dp"
-                android:layout_height="136dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/design_default_color_secondary_variant"
-                android:backgroundTint="@color/design_default_color_secondary_variant"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/verdeTitulos"
                 app:layout_constraintBottom_toTopOf="@+id/titularestextView"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/atrasbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="3dp"
+                app:layout_constraintStart_toStartOf="@+id/marcotextView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/arrow_back_ios_24px" />
 
             <TextView
                 android:id="@+id/golesVisitantetextView"
@@ -70,7 +84,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="Local"
                 android:textAlignment="center"
@@ -80,7 +94,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/marcotextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/atrasbutton" />
 
             <TextView
                 android:id="@+id/visitantetextView2"
@@ -106,7 +120,7 @@
                 android:textColor="@color/white"
                 android:textSize="34sp"
                 app:layout_constraintEnd_toEndOf="@+id/localTextView2"
-                app:layout_constraintStart_toStartOf="@+id/marcotextView"
+                app:layout_constraintStart_toStartOf="@+id/localTextView2"
                 app:layout_constraintTop_toBottomOf="@+id/localTextView2" />
 
             <TextView
@@ -178,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:text="-"
                 android:textColor="@color/white"
-                android:textSize="24sp"
+                android:textSize="34sp"
                 app:layout_constraintBottom_toBottomOf="@+id/golesVisitantetextView"
                 app:layout_constraintEnd_toStartOf="@+id/golesVisitantetextView"
                 app:layout_constraintStart_toEndOf="@+id/golesLocaltextView"

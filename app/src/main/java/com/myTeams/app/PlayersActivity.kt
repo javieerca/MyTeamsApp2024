@@ -41,6 +41,9 @@ class PlayersActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
+
+
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
 
@@ -60,6 +63,9 @@ class PlayersActivity : AppCompatActivity() {
             startActivity(addPlayerActivityIntent)
         }
 
+        binding.atrasbutton.setOnClickListener {
+            finish()
+        }
 
         binding.playersRecyclerView.layoutManager =
                GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
@@ -122,7 +128,7 @@ class PlayersActivity : AppCompatActivity() {
     }
 
     private fun crear11(){
-        var jugadores: ArrayList<JugadorModel>  = ArrayList()
+        val jugadores: ArrayList<JugadorModel>  = ArrayList()
         val por = JugadorModel(
             nombre = "por",
             numero = 1,

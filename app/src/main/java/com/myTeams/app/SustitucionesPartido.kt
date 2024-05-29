@@ -41,6 +41,7 @@ class SustitucionesPartido : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        window.statusBarColor = getColor(R.color.verdeTitulos)
 
         currentTeam = intent.extras?.getSerializable("equipo", TeamModel::class.java)!!
         partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
@@ -65,6 +66,10 @@ class SustitucionesPartido : AppCompatActivity() {
         }
 
         binding.guardarEventosbutton.setOnClickListener {
+            guardarYSalir()
+        }
+
+        binding.atrasbutton.setOnClickListener {
             guardarYSalir()
         }
 
