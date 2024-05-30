@@ -16,6 +16,7 @@
         android:gravity="center"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:text="Mi equipo"
         android:textColor="@color/white"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -85,7 +86,7 @@
                     android:text="Último partido"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/nombreEquipotextView" />
 
                 <TextView
                     android:id="@+id/verTodostextView"
@@ -107,6 +108,32 @@
                     app:layout_constraintEnd_toEndOf="@+id/partidoRecyclerView"
                     app:layout_constraintStart_toStartOf="@+id/partidoRecyclerView"
                     app:layout_constraintTop_toTopOf="@+id/partidoRecyclerView" />
+
+                <TextView
+                    android:id="@+id/nombreEquipotextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_horizontal"
+                    android:text="TextView"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/divider16"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintBottom_toTopOf="@+id/textView14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nombreEquipotextView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

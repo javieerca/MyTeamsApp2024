@@ -53,7 +53,10 @@ class TeamActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 currentTeam  = cargarEquipo(teamId)
                 ultimoPartido = cargarPartido(teamId)
-                listaPartidos.add(ultimoPartido)
+                if(ultimoPartido.id != ""){
+                    listaPartidos.add(ultimoPartido)
+                }
+
             }
         }
 
@@ -141,7 +144,7 @@ class TeamActivity : AppCompatActivity() {
                 currentTeam = document.toObject<TeamModel>()!!
                 currentTeam.id= document.id
 
-                binding.myTeamText3.text = currentTeam.nombre
+                binding.nombreEquipotextView.text = currentTeam.nombre
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting team: ", exception)
@@ -161,6 +164,7 @@ class TeamActivity : AppCompatActivity() {
     }
 
     private fun buscarPartido(equipoId: String?, callback: (PartidoModel) -> Unit) {
+
         val ligaRef = db.collection("partidos").document(equipoId!!).collection("liga")
         var partido = PartidoModel()
 
@@ -169,145 +173,153 @@ class TeamActivity : AppCompatActivity() {
             .limit(1)
             .get()
             .addOnSuccessListener { documents->
-                partido = documents.documents[0].toObject<PartidoModel>()!!
-                partido.id= documents.documents[0].id
+                if(documents.documents.isEmpty()){
+                    callback(partido)
+                }else{
+                    partido = documents.documents[0].toObject<PartidoModel>()!!
+                    partido.id= documents.documents[0].id
 
-                partido.titulares = ArrayList()
-                partido.suplentes = ArrayList()
-                partido.goles = ArrayList()
-                partido.amonestaciones = ArrayList()
-                partido.sustituciones = ArrayList()
+                    partido.titulares = ArrayList()
+                    partido.suplentes = ArrayList()
+                    partido.goles = ArrayList()
+                    partido.amonestaciones = ArrayList()
+                    partido.sustituciones = ArrayList()
 
-                val partidoRef =
-                    db.collection("partidos").document(equipoId).collection("liga")
-                        .document(partido.id)
+                    val partidoRef =
+                        db.collection("partidos").document(equipoId).collection("liga")
+                            .document(partido.id)
 
-                //busca titulares
-                partidoRef.collection("titulares").orderBy("numero")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        for (jugador in documents) {
-                            val playerDB = jugador.toObject<JugadorModel>()
-                            playerDB.id = jugador.getString("id")!!
-                            partido.titulares.add(playerDB)
+
+                    //busca titulares
+                    partidoRef.collection("titulares").orderBy("numero")
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            for (jugador in documents) {
+                                val playerDB = jugador.toObject<JugadorModel>()
+                                playerDB.id = jugador.getString("id")!!
+                                partido.titulares.add(playerDB)
+                            }
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                        callback(PartidoModel()) // En caso de error, devolver una lista vacía
-                    }
-
-                //busca suplentes
-                partidoRef.collection("suplentes").orderBy("numero")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        for (jugador in documents) {
-                            val playerDB = jugador.toObject<JugadorModel>()
-                            playerDB.id = jugador.getString("id")!!
-                            partido.suplentes.add(playerDB)
+                        .addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                            callback(PartidoModel()) // En caso de error, devolver una lista vacía
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                        callback(PartidoModel()) // En caso de error, devolver una lista vacía
-                    }
+
+                    //busca suplentes
+                    partidoRef.collection("suplentes").orderBy("numero")
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            for (jugador in documents) {
+                                val playerDB = jugador.toObject<JugadorModel>()
+                                playerDB.id = jugador.getString("id")!!
+                                partido.suplentes.add(playerDB)
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                            callback(PartidoModel()) // En caso de error, devolver una lista vacía
+                        }
 
 
-                //cargar goles
-                partidoRef.collection("goles")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        for (gol in documents) {
-                            //Toast.makeText(this, "Encontrado", Toast.LENGTH_SHORT).show()
-                            val goleador: ArrayList<JugadorModel> = ArrayList()
-                            goleador.add(
-                                JugadorModel(
-                                    nombre = gol.get("goleadorNombre").toString(),
-                                    numero = gol.get("numero").toString().toInt(),
-                                    id = gol.get("goleadorId").toString()
+                    //cargar goles
+                    partidoRef.collection("goles")
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            for (gol in documents) {
+                                //Toast.makeText(this, "Encontrado", Toast.LENGTH_SHORT).show()
+                                val goleador: ArrayList<JugadorModel> = ArrayList()
+                                goleador.add(
+                                    JugadorModel(
+                                        nombre = gol.get("goleadorNombre").toString(),
+                                        numero = gol.get("numero").toString().toInt(),
+                                        id = gol.get("goleadorId").toString()
+                                    )
                                 )
-                            )
-                            val golDb = EventoModel(
-                                tipoEventoId = 0,
-                                minuto = gol.get("minuto").toString().toInt(),
-                                jugadoresImplicados = goleador
-                            )
-                            golDb.id = gol.id
-                            partido.goles.add(golDb)
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                        callback(PartidoModel()) // En caso de error, devolver una lista vacía
-                    }
-
-                //cargar tarjetas
-                partidoRef.collection("amonestaciones")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        for (tarjeta in documents) {
-                            val tipoEventoId: Int =
-                                tarjeta.get("tipoTarjetaId").toString().toInt()
-                            val amonestado: ArrayList<JugadorModel> = ArrayList()
-                            amonestado.add(
-                                JugadorModel(
-                                    nombre = tarjeta.get("amonestadoNombre").toString(),
-                                    numero = tarjeta.get("amonestadoNumero").toString()
-                                        .toInt(),
-                                    id = tarjeta.get("amonestadoId").toString()
+                                val golDb = EventoModel(
+                                    tipoEventoId = 0,
+                                    minuto = gol.get("minuto").toString().toInt(),
+                                    jugadoresImplicados = goleador
                                 )
-                            )
-                            val tarjetaDB = EventoModel(
-                                tipoEventoId = tipoEventoId,
-                                minuto = tarjeta.get("minuto").toString().toInt(),
-                                jugadoresImplicados = amonestado
-                            )
-
-                            partido.amonestaciones.add(tarjetaDB)
+                                golDb.id = gol.id
+                                partido.goles.add(golDb)
+                            }
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                        callback(PartidoModel()) // En caso de error, devolver una lista vacía
-                    }
-
-                //cargar cambios
-                partidoRef.collection("sustituciones")
-                    .get()
-                    .addOnSuccessListener { documents ->
-                        for (cambio in documents) {
-                            val jugadores: ArrayList<JugadorModel> = ArrayList()
-                            jugadores.add(
-                                JugadorModel(
-                                    nombre = cambio.get("entraNombre").toString(),
-                                    numero = cambio.get("entraNumero").toString().toInt(),
-                                    id = cambio.get("entraId").toString()
-                                )
-                            )
-                            jugadores.add(
-                                JugadorModel(
-                                    nombre = cambio.get("saleNombre").toString(),
-                                    numero = cambio.get("saleNumero").toString().toInt(),
-                                    id = cambio.get("saleId").toString()
-                                )
-                            )
-
-                            val sustitucion = EventoModel(
-                                tipoEventoId = 3,
-                                minuto = cambio.get("minuto").toString().toInt(),
-                                jugadoresImplicados = jugadores
-                            )
-
-                            partido.sustituciones.add(sustitucion)
-                            //listadoEventos.add(sustitucion)
+                        .addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                            callback(PartidoModel()) // En caso de error, devolver una lista vacía
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                        callback(PartidoModel()) // En caso de error, devolver una lista vacía
-                    }
-                binding.loadingGif.visibility = View.INVISIBLE
-                callback(partido)
+
+                    //cargar tarjetas
+                    partidoRef.collection("amonestaciones")
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            for (tarjeta in documents) {
+                                val tipoEventoId: Int =
+                                    tarjeta.get("tipoTarjetaId").toString().toInt()
+                                val amonestado: ArrayList<JugadorModel> = ArrayList()
+                                amonestado.add(
+                                    JugadorModel(
+                                        nombre = tarjeta.get("amonestadoNombre").toString(),
+                                        numero = tarjeta.get("amonestadoNumero").toString()
+                                            .toInt(),
+                                        id = tarjeta.get("amonestadoId").toString()
+                                    )
+                                )
+                                val tarjetaDB = EventoModel(
+                                    tipoEventoId = tipoEventoId,
+                                    minuto = tarjeta.get("minuto").toString().toInt(),
+                                    jugadoresImplicados = amonestado
+                                )
+
+                                partido.amonestaciones.add(tarjetaDB)
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                            callback(PartidoModel()) // En caso de error, devolver una lista vacía
+                        }
+
+                    //cargar cambios
+                    partidoRef.collection("sustituciones")
+                        .get()
+                        .addOnSuccessListener { documents ->
+                            for (cambio in documents) {
+                                val jugadores: ArrayList<JugadorModel> = ArrayList()
+                                jugadores.add(
+                                    JugadorModel(
+                                        nombre = cambio.get("entraNombre").toString(),
+                                        numero = cambio.get("entraNumero").toString().toInt(),
+                                        id = cambio.get("entraId").toString()
+                                    )
+                                )
+                                jugadores.add(
+                                    JugadorModel(
+                                        nombre = cambio.get("saleNombre").toString(),
+                                        numero = cambio.get("saleNumero").toString().toInt(),
+                                        id = cambio.get("saleId").toString()
+                                    )
+                                )
+
+                                val sustitucion = EventoModel(
+                                    tipoEventoId = 3,
+                                    minuto = cambio.get("minuto").toString().toInt(),
+                                    jugadoresImplicados = jugadores
+                                )
+
+                                partido.sustituciones.add(sustitucion)
+                                //listadoEventos.add(sustitucion)
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                            callback(PartidoModel()) // En caso de error, devolver una lista vacía
+                        }
+                    binding.loadingGif.visibility = View.INVISIBLE
+                    callback(partido)
+                }
+            }
+            .addOnFailureListener {
+                callback(PartidoModel())
             }
 
     }
@@ -317,7 +329,11 @@ class TeamActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val partido = cargarPartido(intent.extras?.getString("idEquipo"))
             listaPartidos = ArrayList()
-            listaPartidos.add(partido)
+            if(partido.id != ""){
+                listaPartidos.add(ultimoPartido)
+            }else{
+                binding.loadingGif.visibility = View.INVISIBLE
+            }
             setPartidoAdapter(listaPartidos)
         }
 
