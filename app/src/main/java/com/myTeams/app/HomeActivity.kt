@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,13 +16,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.myTeams.app.adapter.TeamAdapter
 import com.myTeams.app.databinding.ActivityHomeBinding
 import com.myTeams.app.model.TeamModel
-import com.myTeams.app.startup.MainActivity
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -54,8 +53,12 @@ class HomeActivity : AppCompatActivity() {
             email = emailIntent
             lifecycleScope.launch {
                 val listado = cargarEquipos(email)
+                if(listado.isEmpty()){
+                    binding.sinEquipostextView.visibility = View.VISIBLE
+                }else{
+                    binding.sinEquipostextView.visibility = View.INVISIBLE
+                }
                 setup()
-
                 setAdapter(listado)
             }
         }
@@ -66,22 +69,28 @@ class HomeActivity : AppCompatActivity() {
         prefs.putString("email", email)
         prefs.apply()
 
+        val username = email.split("@")[0]
+
+        db.collection("users").document(email)
+            .get()
+            .addOnSuccessListener {documents ->
+                val userDb = documents.getString("username")
+                if(userDb == null){
+                    //Primer inicio de sesión
+                    db.collection("users").document(email).set(
+                        hashMapOf<String,Any>(
+                            "username" to username
+                        )
+                    )
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Ha ocurrido un error inesperado", Toast.LENGTH_SHORT).show()
+            }
+
     }
 
     private fun setup() {
-
-        binding.logoutbutton.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-
-            //borrado de datos
-            val prefs =
-                getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-            prefs.clear()
-            prefs.apply()
-
-            val mainActivityIntent = Intent(this, MainActivity::class.java)
-            startActivity(mainActivityIntent)
-        }
 
         binding.saveButton.setOnClickListener {
             val addTeamActivityIntent = Intent(this, AddTeamActivity::class.java)
@@ -143,6 +152,12 @@ class HomeActivity : AppCompatActivity() {
     private fun actualizar() {
         lifecycleScope.launch {
             val listado = cargarEquipos(intent.extras?.getString("email"))
+            if(listado.isEmpty()){
+                binding.sinEquipostextView.visibility = View.VISIBLE
+                binding.loadingGif.visibility = View.INVISIBLE
+            }else{
+                binding.sinEquipostextView.visibility = View.INVISIBLE
+            }
             setAdapter(listado)
         }
 

@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
+import com.myTeams.app.adapter.JugadoresGolesAdapter
+import com.myTeams.app.adapter.JugadoresMinutosAdapter
 import com.myTeams.app.adapter.PartidoAdapter
 import com.myTeams.app.databinding.ActivityTeamBinding
 import com.myTeams.app.model.EventoModel
@@ -49,14 +51,20 @@ class TeamActivity : AppCompatActivity() {
 
         val teamId = intent.extras?.getString("idEquipo")
 
-        if (teamId != null) {
+        if(teamId != null){
             lifecycleScope.launch {
                 currentTeam  = cargarEquipo(teamId)
-                ultimoPartido = cargarPartido(teamId)
+                ultimoPartido = cargarPartido(intent.extras?.getString("idEquipo"))
+                listaPartidos = ArrayList()
                 if(ultimoPartido.id != ""){
                     listaPartidos.add(ultimoPartido)
-                }
+                    binding.sinPartidostextView.visibility = View.INVISIBLE
 
+                }else{
+                    binding.loadingGif.visibility = View.INVISIBLE
+                    binding.sinPartidostextView.visibility = View.VISIBLE
+                }
+                setPartidoAdapter(listaPartidos)
             }
         }
 
@@ -117,8 +125,20 @@ class TeamActivity : AppCompatActivity() {
 
         }
 
+        binding.verJugadorestextView.setOnClickListener {
+            val teamActivityIntent = Intent(this, PlayersActivity::class.java)
+            if(currentTeam.id != ""){
+                teamActivityIntent.putExtra("equipoId", currentTeam.id)
+                teamActivityIntent.putExtra("equipo", currentTeam)
+                startActivity(teamActivityIntent)
+            }
+        }
 
         binding.partidoRecyclerView.layoutManager =
+            GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
+        binding.jugadoresMinutosrecyclerView.layoutManager =
+            GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
+        binding.jugadoresGolesrecyclerView.layoutManager =
             GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
     }
 
@@ -128,6 +148,19 @@ class TeamActivity : AppCompatActivity() {
             listado, this, db, currentTeam
         )
     }
+
+    private fun setJugadoresMasMinutosAdapter(listado: ArrayList<JugadorModel>) {
+        binding.jugadoresMinutosrecyclerView.adapter = JugadoresMinutosAdapter(
+            listado, this
+        )
+    }
+
+    private fun setJugadoresGoleadores(listado: ArrayList<JugadorModel>) {
+        binding.jugadoresGolesrecyclerView.adapter = JugadoresGolesAdapter(
+            listado, this
+        )
+    }
+
 
     private suspend fun cargarEquipo(teamId: String?): TeamModel {
         return suspendCoroutine { continuation ->
@@ -145,12 +178,13 @@ class TeamActivity : AppCompatActivity() {
                 currentTeam.id= document.id
 
                 binding.nombreEquipotextView.text = currentTeam.nombre
+                callback(currentTeam)
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting team: ", exception)
                 callback(TeamModel()) // En caso de error, devolver una lista vacía
             }
-        callback(currentTeam)
+        //callback(currentTeam)
         Toast.makeText(this,"Ya hemos econtrado el equipo ${currentTeam.nombre}",Toast.LENGTH_SHORT).show()
     }
 
@@ -324,6 +358,63 @@ class TeamActivity : AppCompatActivity() {
 
     }
 
+    private suspend fun cargarJugadoresMinutos(teamId: String?): ArrayList<JugadorModel>{
+        return suspendCoroutine { continuation ->
+            buscarJugadoresMinutos(teamId) { equipo ->
+                continuation.resume(equipo)
+            }
+        }
+    }
+    private fun buscarJugadoresMinutos(equipoId: String?, callback: (ArrayList<JugadorModel>) -> Unit) {
+        val listado = ArrayList<JugadorModel>()
+        val jugadoresRef = db.collection("teams").document(equipoId!!).collection("players")
+
+        jugadoresRef.orderBy("minutosJugados",Query.Direction.DESCENDING).limit(3)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (jugador in documents) {
+                    val playerDB = jugador.toObject<JugadorModel>()
+                    playerDB.id = jugador.id
+                    listado.add(playerDB)
+                }
+                callback(listado)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                callback(ArrayList()) // En caso de error, devolver una lista vacía
+            }
+
+    }
+
+    private suspend fun cargarJugadoresGoles(teamId: String?): ArrayList<JugadorModel>{
+        return suspendCoroutine { continuation ->
+            buscarJugadoresGoles(teamId) { equipo ->
+                continuation.resume(equipo)
+            }
+        }
+    }
+    private fun buscarJugadoresGoles(equipoId: String?, callback: (ArrayList<JugadorModel>) -> Unit) {
+        val listado = ArrayList<JugadorModel>()
+        val jugadoresRef = db.collection("teams").document(equipoId!!).collection("players")
+
+        jugadoresRef.orderBy("golesMarcados",Query.Direction.DESCENDING).limit(3)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (jugador in documents) {
+                    val playerDB = jugador.toObject<JugadorModel>()
+                    playerDB.id = jugador.id
+                    if(playerDB.golesMarcados != 0){
+                        listado.add(playerDB)
+                    }
+                }
+                callback(listado)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                callback(ArrayList()) // En caso de error, devolver una lista vacía
+            }
+
+    }
 
     private fun actualizar() {
         lifecycleScope.launch {
@@ -331,16 +422,32 @@ class TeamActivity : AppCompatActivity() {
             listaPartidos = ArrayList()
             if(partido.id != ""){
                 listaPartidos.add(ultimoPartido)
+                binding.sinPartidostextView.visibility = View.INVISIBLE
             }else{
                 binding.loadingGif.visibility = View.INVISIBLE
+                binding.sinPartidostextView.visibility = View.VISIBLE
             }
             setPartidoAdapter(listaPartidos)
         }
+        lifecycleScope.launch {
+            val jugadores = cargarJugadoresMinutos(intent.extras?.getString("idEquipo"))
+
+            setJugadoresMasMinutosAdapter(jugadores)
+            binding.loadingGifMinutos.visibility = View.INVISIBLE
+        }
+
+        lifecycleScope.launch {
+            val jugadores = cargarJugadoresGoles(intent.extras?.getString("idEquipo"))
+
+            setJugadoresGoleadores(jugadores)
+            binding.loadingGifGoles.visibility = View.INVISIBLE
+        }
+
 
     }
 
     override fun onResume() {
-        super.onResume()
         actualizar()
+        super.onResume()
     }
 }

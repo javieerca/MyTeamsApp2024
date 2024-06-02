@@ -77,6 +77,10 @@ class SeleccionarJugadorEventoActivity : AppCompatActivity(), AdapterView.OnItem
                   enviarJugadorAtras()
             }
         }
+
+        binding.cancelarbutton.setOnClickListener {
+            finish()
+        }
     }
     private fun enviarJugadorAtras(){
         val resultadoIntent = Intent()

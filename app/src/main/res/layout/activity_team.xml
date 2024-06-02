@@ -64,8 +64,10 @@
             android:paddingBottom="50dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/partidoLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/partidoRecyclerView"
@@ -74,6 +76,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="@+id/textView14"
                     app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -83,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
-                    android:text="Último partido"
+                    android:text="Último partido:"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nombreEquipotextView" />
@@ -93,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="VER TODOS"
+                    android:text="VER PARTIDOS"
                     android:textColor="@color/azulBoton"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="@+id/partidoRecyclerView"
@@ -134,7 +137,119 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nombreEquipotextView" />
+
+                <TextView
+                    android:id="@+id/sinPartidostextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="!Añade tu primer partido!"
+                    android:textSize="16sp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView14"
+                    app:layout_constraintTop_toTopOf="@+id/textView14" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/minutosLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/jugadoresMinutosrecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/masMinutotextView"
+                    app:layout_constraintTop_toBottomOf="@+id/masMinutotextView" />
+
+                <TextView
+                    android:id="@+id/verJugadorestextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="VER JUGADORES"
+                    android:textColor="@color/azulBoton"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="@+id/jugadoresMinutosrecyclerView"
+                    app:layout_constraintTop_toBottomOf="@+id/jugadoresMinutosrecyclerView" />
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/loadingGifMinutos"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="64dp"
+                    android:src="@drawable/gif_loading"
+                    app:layout_constraintEnd_toEndOf="@+id/jugadoresMinutosrecyclerView"
+                    app:layout_constraintStart_toStartOf="@+id/masMinutotextView"
+                    app:layout_constraintTop_toTopOf="@+id/jugadoresMinutosrecyclerView" />
+
+                <TextView
+                    android:id="@+id/masMinutotextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Más minutos jugados:"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/goleadoresLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/verJugadorestextView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="VER JUGADORES"
+                    android:textColor="@color/azulBoton"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="@+id/jugadoresGolesrecyclerView"
+                    app:layout_constraintTop_toBottomOf="@+id/jugadoresGolesrecyclerView" />
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/loadingGifGoles"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="64dp"
+                    android:src="@drawable/gif_loading"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/jugadoresGolesrecyclerView" />
+
+                <TextView
+                    android:id="@+id/MaximosgoleadorestextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Máximos goleadores:"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/jugadoresGolesrecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/MaximosgoleadorestextView"
+                    app:layout_constraintTop_toBottomOf="@+id/MaximosgoleadorestextView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
     </ScrollView>
 

@@ -117,6 +117,10 @@ class PlayersActivity : AppCompatActivity() {
     private fun actualizar() {
         lifecycleScope.launch {
             val listado = cargarJugadores(intent.extras?.getString("equipoId"))
+            if(listado.isEmpty()){
+                binding.sinJugadorestextView2.visibility = View.VISIBLE
+            }
+
             setAdapter(listado)
         }
 

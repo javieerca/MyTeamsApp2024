@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:strokeColor="@color/black"
+    app:strokeWidth="2dp">
+
+    <LinearLayout
+        android:id="@+id/contenedorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/primeroLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/minutos1TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="1000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/nombre1TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nombre1TextView" />
+
+            <TextView
+                android:id="@+id/posicion1TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="1."
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nombre1TextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Jugador nombre"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/posicion1TextView"
+                app:layout_constraintEnd_toStartOf="@+id/minutos1TextView"
+                app:layout_constraintStart_toEndOf="@+id/posicion1TextView"
+                app:layout_constraintTop_toTopOf="@+id/posicion1TextView" />
+
+            <View
+                android:id="@+id/dividerPrimero"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nombre1TextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/segundoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/minutos2TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="1000"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/nombre1TextView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nombre1TextView2" />
+
+            <TextView
+                android:id="@+id/posicion2TextView3"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="24dp"
+                android:gravity="center"
+                android:text="2."
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nombre1TextView2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Jugador nombre"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/posicion2TextView3"
+                app:layout_constraintEnd_toStartOf="@+id/minutos2TextView"
+                app:layout_constraintStart_toEndOf="@+id/posicion2TextView3"
+                app:layout_constraintTop_toTopOf="@+id/posicion2TextView3" />
+
+            <View
+                android:id="@+id/divider19"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nombre1TextView2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/terceroConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/minutos3TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center"
+                android:text="1000"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/nombre3TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nombre3TextView" />
+
+            <TextView
+                android:id="@+id/posicion3TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="3."
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/nombre3TextView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Jugador nombre"
+                android:textAlignment="viewStart"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/posicion3TextView"
+                app:layout_constraintEnd_toStartOf="@+id/minutos3TextView"
+                app:layout_constraintStart_toEndOf="@+id/posicion3TextView"
+                app:layout_constraintTop_toTopOf="@+id/posicion3TextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

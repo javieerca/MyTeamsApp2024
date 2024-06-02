@@ -79,4 +79,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/sinJugadorestextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay jugadores guardados"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/playersRecyclerView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

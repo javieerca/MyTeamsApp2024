@@ -2,6 +2,7 @@ package com.myTeams.app
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -47,6 +48,12 @@ class AddTeamActivity : AppCompatActivity() {
                         "golesMarcados" to team.golesMarcados
                     )
                 )
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Hemos añadido el equipo", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Ha ocurrido un error inesperado", Toast.LENGTH_SHORT).show()
+                    }
             }
 
             finish()

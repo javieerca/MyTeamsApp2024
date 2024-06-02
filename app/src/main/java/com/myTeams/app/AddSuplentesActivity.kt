@@ -59,6 +59,7 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
         partido = intent.extras?.getSerializable("partido", PartidoModel::class.java)!!
         mostrarListado(listOfItem)
 
+        binding.myTeamText.text = "Suplentes"
         binding.guardarButton3.setOnClickListener {
                 partido.suplentes = seleccionados
 
@@ -69,6 +70,10 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
 
                 setResult(Activity.RESULT_OK, resultadoIntent)
                 finish()
+        }
+
+        binding.cancelarbutton.setOnClickListener {
+            finish()
         }
     }
 

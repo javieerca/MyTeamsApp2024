@@ -9,6 +9,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.myTeams.app.EditarEquipoActivity
 import com.myTeams.app.databinding.TeamLayoutBinding
 import com.myTeams.app.R
 import com.myTeams.app.TeamActivity
@@ -54,7 +55,10 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
                 when (item.itemId){
                     R.id.editarEquipoOption -> {
                         Toast.makeText(context,"Opción 1", Toast.LENGTH_SHORT).show()
+                        val editarEquipoActivityIntent = Intent(context, EditarEquipoActivity::class.java)
 
+                        editarEquipoActivityIntent.putExtra("equipo", team)
+                        context.startActivity(editarEquipoActivityIntent)
                         /*
                         abrir editar Team
                          */
@@ -69,7 +73,6 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
                         teams.removeAt(position)
                         notifyDataSetChanged()
                         updateDataSet(teams)
-
 
                         true
                     }
@@ -91,6 +94,9 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
 
     private fun updateDataSet(list: ArrayList<TeamModel>){
         teams = list
+        if(teams.isEmpty()){
+
+        }
         notifyItemRangeInserted(0, itemCount)
     }
 

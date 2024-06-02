@@ -79,6 +79,10 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
             }
         }
 
+        binding.cancelarbutton.setOnClickListener {
+            finish()
+        }
+
     }
 
     private fun mostrarListado(listado: ArrayList<String>){

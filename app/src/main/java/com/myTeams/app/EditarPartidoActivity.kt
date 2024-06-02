@@ -121,6 +121,11 @@ class EditarPartidoActivity : AppCompatActivity() {
             }
         }
 
+        binding.atrasbutton.setOnClickListener {
+            finish()
+        }
+
+        binding.guardarButton.text = "Guardar"
         binding.guardarButton.setOnClickListener {
             if(haTerminado()){
                 var borrado = false

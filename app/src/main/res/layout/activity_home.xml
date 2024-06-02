@@ -26,7 +26,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/logoutbutton"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myTeamText" />
@@ -47,16 +47,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextContrastCheck" />
 
-    <Button
-        android:id="@+id/logoutbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:text="Cerrar sesion"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loadingGif"
         android:layout_width="46dp"
@@ -76,5 +66,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/myTeamText"
         app:srcCompat="@drawable/user_white_circle_24px" />
+
+    <TextView
+        android:id="@+id/sinEquipostextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Añade un equipo para empezar! "
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/playersRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/playersRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/playersRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
