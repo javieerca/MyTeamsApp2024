@@ -98,9 +98,18 @@ class TeamActivity : AppCompatActivity() {
                         }
                         true
                     }
+                    R.id.equipoPopupOption ->{
+                        val miEquipoActivityIntent = Intent(this, MostrarDatosEquipoActivity::class.java)
+                        miEquipoActivityIntent.putExtra("equipo", currentTeam)
+                        startActivity(miEquipoActivityIntent)
+
+                        true
+                    }
 
                     R.id.miCuentaPopupOption -> {
                         val miCuentaActivityIntent = Intent(this, MiCuentaActivity::class.java)
+                        miCuentaActivityIntent.putExtra("email", currentTeam.usuario)
+
                         startActivity(miCuentaActivityIntent)
 
                         true
@@ -225,14 +234,27 @@ class TeamActivity : AppCompatActivity() {
 
 
                     //busca titulares
-                    partidoRef.collection("titulares").orderBy("numero")
+                    partidoRef.collection("titulares")
                         .get()
                         .addOnSuccessListener { documents ->
+                            val titularesPartidoId = ArrayList<String>()
+
                             for (jugador in documents) {
-                                val playerDB = jugador.toObject<JugadorModel>()
-                                playerDB.id = jugador.getString("id")!!
-                                partido.titulares.add(playerDB)
+                                titularesPartidoId.add(jugador.getString("id")!!)
                             }
+
+                            for(id in titularesPartidoId){
+                                db.collection("teams").document(equipoId).collection("players")
+                                    .document(id)
+                                    .get()
+                                    .addOnSuccessListener { document->
+                                        val playerDB = document.toObject<JugadorModel>()
+                                        playerDB!!.id = document.id
+                                        partido.titulares.add(playerDB)
+                                        partido.titulares.sortBy { it.numero }
+                                    }
+                            }
+
                         }
                         .addOnFailureListener { exception ->
                             Log.w(ContentValues.TAG, "Error getting documents: ", exception)
@@ -240,13 +262,25 @@ class TeamActivity : AppCompatActivity() {
                         }
 
                     //busca suplentes
-                    partidoRef.collection("suplentes").orderBy("numero")
+                    partidoRef.collection("suplentes")
                         .get()
                         .addOnSuccessListener { documents ->
+                            val suplentesPartidoId = ArrayList<String>()
+
                             for (jugador in documents) {
-                                val playerDB = jugador.toObject<JugadorModel>()
-                                playerDB.id = jugador.getString("id")!!
-                                partido.suplentes.add(playerDB)
+                                suplentesPartidoId.add(jugador.getString("id")!!)
+                            }
+
+                            for(id in suplentesPartidoId){
+                                db.collection("teams").document(equipoId).collection("players")
+                                    .document(id)
+                                    .get()
+                                    .addOnSuccessListener { document->
+                                        val playerDB = document.toObject<JugadorModel>()
+                                        playerDB!!.id = document.id
+                                        partido.suplentes.add(playerDB)
+                                        partido.suplentes.sortBy { it.numero }
+                                    }
                             }
                         }
                         .addOnFailureListener { exception ->
@@ -262,13 +296,23 @@ class TeamActivity : AppCompatActivity() {
                             for (gol in documents) {
                                 //Toast.makeText(this, "Encontrado", Toast.LENGTH_SHORT).show()
                                 val goleador: ArrayList<JugadorModel> = ArrayList()
-                                goleador.add(
-                                    JugadorModel(
-                                        nombre = gol.get("goleadorNombre").toString(),
-                                        numero = gol.get("numero").toString().toInt(),
-                                        id = gol.get("goleadorId").toString()
-                                    )
-                                )
+
+                                db.collection("teams").document(equipoId).collection("players")
+                                    .document(gol.getString("goleadorId")!!)
+                                    .get()
+                                    .addOnSuccessListener { document->
+                                        val playerDB = document.toObject<JugadorModel>()
+                                        playerDB!!.id = document.id
+
+                                        goleador.add(
+                                            JugadorModel(
+                                                nombre = playerDB.nombre,
+                                                numero = playerDB.numero,
+                                                id = playerDB.id
+                                            )
+                                        )
+                                    }
+
                                 val golDb = EventoModel(
                                     tipoEventoId = 0,
                                     minuto = gol.get("minuto").toString().toInt(),
@@ -290,15 +334,24 @@ class TeamActivity : AppCompatActivity() {
                             for (tarjeta in documents) {
                                 val tipoEventoId: Int =
                                     tarjeta.get("tipoTarjetaId").toString().toInt()
+                                val idAmonestado = tarjeta.getString("amonestadoId")
                                 val amonestado: ArrayList<JugadorModel> = ArrayList()
-                                amonestado.add(
-                                    JugadorModel(
-                                        nombre = tarjeta.get("amonestadoNombre").toString(),
-                                        numero = tarjeta.get("amonestadoNumero").toString()
-                                            .toInt(),
-                                        id = tarjeta.get("amonestadoId").toString()
-                                    )
-                                )
+
+                                db.collection("teams").document(equipoId).collection("players")
+                                    .document(idAmonestado!!)
+                                    .get()
+                                    .addOnSuccessListener { document->
+                                        val playerDB = document.toObject<JugadorModel>()
+                                        playerDB!!.id = document.id
+                                        amonestado.add(
+                                            JugadorModel(
+                                                nombre = playerDB.nombre,
+                                                numero = playerDB.numero,
+                                                id = tarjeta.get("amonestadoId").toString()
+                                            )
+                                        )
+                                    }
+
                                 val tarjetaDB = EventoModel(
                                     tipoEventoId = tipoEventoId,
                                     minuto = tarjeta.get("minuto").toString().toInt(),
@@ -319,20 +372,38 @@ class TeamActivity : AppCompatActivity() {
                         .addOnSuccessListener { documents ->
                             for (cambio in documents) {
                                 val jugadores: ArrayList<JugadorModel> = ArrayList()
-                                jugadores.add(
-                                    JugadorModel(
-                                        nombre = cambio.get("entraNombre").toString(),
-                                        numero = cambio.get("entraNumero").toString().toInt(),
-                                        id = cambio.get("entraId").toString()
-                                    )
-                                )
-                                jugadores.add(
-                                    JugadorModel(
-                                        nombre = cambio.get("saleNombre").toString(),
-                                        numero = cambio.get("saleNumero").toString().toInt(),
-                                        id = cambio.get("saleId").toString()
-                                    )
-                                )
+                                val entraId = cambio.getString("entraId")
+
+                                db.collection("teams").document(equipoId).collection("players")
+                                    .document(entraId!!)
+                                    .get()
+                                    .addOnSuccessListener { document->
+                                        val playerDB = document.toObject<JugadorModel>()
+                                        playerDB!!.id = document.id
+                                        jugadores.add(
+                                            JugadorModel(
+                                                nombre = playerDB.nombre,
+                                                numero = playerDB.numero,
+                                                id = playerDB.id
+                                            )
+                                        )
+                                    }
+
+                                val saleId = cambio.getString("saleId")
+                                db.collection("teams").document(equipoId).collection("players")
+                                    .document(saleId!!)
+                                    .get()
+                                    .addOnSuccessListener { document->
+                                        val playerDB = document.toObject<JugadorModel>()
+                                        playerDB!!.id = document.id
+                                        jugadores.add(
+                                            JugadorModel(
+                                                nombre = playerDB.nombre,
+                                                numero = playerDB.numero,
+                                                id = playerDB.id
+                                            )
+                                        )
+                                    }
 
                                 val sustitucion = EventoModel(
                                     tipoEventoId = 3,
@@ -341,7 +412,6 @@ class TeamActivity : AppCompatActivity() {
                                 )
 
                                 partido.sustituciones.add(sustitucion)
-                                //listadoEventos.add(sustitucion)
                             }
                         }
                         .addOnFailureListener { exception ->
@@ -428,6 +498,7 @@ class TeamActivity : AppCompatActivity() {
                 binding.sinPartidostextView.visibility = View.VISIBLE
             }
             setPartidoAdapter(listaPartidos)
+
         }
         lifecycleScope.launch {
             val jugadores = cargarJugadoresMinutos(intent.extras?.getString("idEquipo"))
@@ -442,7 +513,6 @@ class TeamActivity : AppCompatActivity() {
             setJugadoresGoleadores(jugadores)
             binding.loadingGifGoles.visibility = View.INVISIBLE
         }
-
 
     }
 

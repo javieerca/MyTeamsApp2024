@@ -73,6 +73,7 @@ class MostrarPartidoActivity : AppCompatActivity() {
         binding.atrasbutton.setOnClickListener {
             finish()
         }
+        binding.jornadaTextView3.text = "Jornada ${partidoActual.numeroJornada}"
     }
     private fun setAdapterEventos(listadoDeEventos: List<EventoModel>) {
         binding.eventosRecyclerView.adapter = EventosPartidoAdapter(

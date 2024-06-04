@@ -37,10 +37,6 @@ class EditarPartidoActivity : AppCompatActivity() {
     private var jugadoresParticipantes: ArrayList<JugadorEnPartido> = ArrayList()
     private val convocados: ArrayList<JugadorModel> = ArrayList()
 
-
-    private var goleadores : ArrayList<JugadorModel> = ArrayList()
-    private var tienenAmarilla: ArrayList<JugadorModel> = ArrayList()
-
     private var partidoDb: PartidoModel = PartidoModel()
     private var partidoActualizado: PartidoModel = PartidoModel()
 
@@ -133,7 +129,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                     borrado = borrarPartido()
                     if(borrado){
                         lifecycleScope.launch {
-                            var partidoSubido = solicitudSubirPartido()
+                            val partidoSubido = solicitudSubirPartido()
                             if(partidoSubido){
                                 addEventos()
                             }
@@ -366,7 +362,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                     suplentesId.add(suplenteId)
                     documento.reference.delete()
                 }
-
+//borrando
                 for (id in suplentesId){
                     var jugador = JugadorModel()
                     jugadoresRef.document(id)
@@ -374,7 +370,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                         .addOnSuccessListener { document ->
                             jugador = document.toObject<JugadorModel>()!!
                             jugador.id = document.id
-                            partidoDb.suplentes.add(jugador)
+                            //partidoDb.suplentes.add(jugador)
 
                             //resta convocatorias
                             jugadoresRef.document(jugador.id).update(
@@ -496,8 +492,6 @@ class EditarPartidoActivity : AppCompatActivity() {
                     golesRef.document().set(
                         hashMapOf(
                             "goleadorId" to gol.jugadoresImplicados[0].id,
-                            "goleadorNombre" to gol.jugadoresImplicados[0].nombre,
-                            "numero" to gol.jugadoresImplicados[0].numero,
                             "minuto" to gol.minuto
                         )
                     )
@@ -508,8 +502,6 @@ class EditarPartidoActivity : AppCompatActivity() {
                     nuevoDocumento.collection("amonestaciones").document().set(
                         hashMapOf<String, Any>(
                             "amonestadoId" to tarjeta.jugadoresImplicados[0].id,
-                            "amonestadoNombre" to tarjeta.jugadoresImplicados[0].nombre,
-                            "amonestadoNumero" to tarjeta.jugadoresImplicados[0].numero,
                             "tipoTarjetaId" to tarjeta.tipoEventoId,
                             "tipoTarjetaNombre" to tarjeta.tipoEventoNombre,
                             "minuto" to tarjeta.minuto
@@ -521,11 +513,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                     nuevoDocumento.collection("sustituciones").document().set(
                         hashMapOf<String, Any>(
                             "entraId" to cambio.jugadoresImplicados[0].id,
-                            "entraNombre" to cambio.jugadoresImplicados[0].nombre,
-                            "entraNumero" to cambio.jugadoresImplicados[0].numero,
                             "saleId" to cambio.jugadoresImplicados[1].id,
-                            "saleNombre" to cambio.jugadoresImplicados[1].nombre,
-                            "saleNumero" to cambio.jugadoresImplicados[1].numero,
                             "minuto" to cambio.minuto
                         )
                     )
@@ -546,9 +534,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                 for(jugador in partidoActualizado.titulares){
                     nuevoDocumento.collection("titulares").document().set(
                         hashMapOf<String, Any>(
-                            "nombre" to jugador.nombre,
                             "id" to jugador.id,
-                            "numero" to jugador.numero
                         )
                     )
                 }
@@ -556,9 +542,7 @@ class EditarPartidoActivity : AppCompatActivity() {
                 for(jugador in partidoActualizado.suplentes){
                     nuevoDocumento.collection("suplentes").document().set(
                         hashMapOf<String, Any>(
-                            "nombre" to jugador.nombre,
                             "id" to jugador.id,
-                            "numero" to jugador.numero
                         )
                     )
                 }

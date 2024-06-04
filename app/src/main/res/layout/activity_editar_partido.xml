@@ -67,7 +67,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <ImageView
         android:id="@+id/atrasbutton"
@@ -209,7 +210,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="#E0E0E0"
-        android:text="Goles, Sustituciones y amonestaciones"
+        android:text="Goles, Sustituciones y TARJETAS"
         android:textColor="@color/black"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="@+id/Suplentesbutton"

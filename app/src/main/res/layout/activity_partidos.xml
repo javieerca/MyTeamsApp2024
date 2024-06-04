@@ -50,6 +50,16 @@
         tools:ignore="TextContrastCheck" />
 
     <ImageView
+        android:id="@+id/puntosButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dots_40px" />
+
+    <ImageView
         android:id="@+id/atrasbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

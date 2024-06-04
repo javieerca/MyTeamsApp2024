@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -146,7 +147,6 @@ class AddPartidoActivity : AppCompatActivity() {
                     Toast.makeText(this, "Id partido: ${partidoActual.id}", Toast.LENGTH_SHORT).show()
                     addEventos()
                     actualizarInfoEquipo(datosPartido)
-                    //actualizarInfoJugadores()
                 }
                 .addOnFailureListener {
                     Toast.makeText(this, "Algo ha ido mal", Toast.LENGTH_SHORT).show()
@@ -158,8 +158,6 @@ class AddPartidoActivity : AppCompatActivity() {
                     golesRef.document().set(
                         hashMapOf(
                             "goleadorId" to gol.jugadoresImplicados[0].id,
-                            "goleadorNombre" to gol.jugadoresImplicados[0].nombre,
-                            "numero" to gol.jugadoresImplicados[0].numero,
                             "minuto" to gol.minuto
                         )
                     )
@@ -169,8 +167,6 @@ class AddPartidoActivity : AppCompatActivity() {
                     nuevoDocumento.collection("amonestaciones").document().set(
                         hashMapOf<String, Any>(
                             "amonestadoId" to tarjeta.jugadoresImplicados[0].id,
-                            "amonestadoNombre" to tarjeta.jugadoresImplicados[0].nombre,
-                            "amonestadoNumero" to tarjeta.jugadoresImplicados[0].numero,
                             "tipoTarjetaId" to tarjeta.tipoEventoId,
                             "tipoTarjetaNombre" to tarjeta.tipoEventoNombre,
                             "minuto" to tarjeta.minuto
@@ -182,11 +178,7 @@ class AddPartidoActivity : AppCompatActivity() {
                     nuevoDocumento.collection("sustituciones").document().set(
                         hashMapOf<String, Any>(
                             "entraId" to cambio.jugadoresImplicados[0].id,
-                            "entraNombre" to cambio.jugadoresImplicados[0].nombre,
-                            "entraNumero" to cambio.jugadoresImplicados[0].numero,
                             "saleId" to cambio.jugadoresImplicados[1].id,
-                            "saleNombre" to cambio.jugadoresImplicados[1].nombre,
-                            "saleNumero" to cambio.jugadoresImplicados[1].numero,
                             "minuto" to cambio.minuto
                         )
                     )
@@ -208,13 +200,9 @@ class AddPartidoActivity : AppCompatActivity() {
                 for(jugador in partidoActual.titulares){
                     nuevoDocumento.collection("titulares").document().set(
                         hashMapOf<String, Any>(
-                            "nombre" to jugador.nombre,
                             "id" to jugador.id,
-                            "numero" to jugador.numero
                         )
                     )
-
-                    //sumar gol
                 }
                 //subir suplentes
                 for(jugador in partidoActual.suplentes){
@@ -598,6 +586,7 @@ class AddPartidoActivity : AppCompatActivity() {
             partidoActual = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
 
             jugadoresTitularesIds = data.getStringArrayListExtra("titularesId")!!
+            partidoActual.titulares.sortBy { it.posicionId }
             binding.contadorTitulares.text = "("+jugadoresTitularesIds.size+")"
             for(jugador in partidoActual.titulares){
                 partidoActual.convocados.add(jugador)

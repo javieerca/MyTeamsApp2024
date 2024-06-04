@@ -70,7 +70,7 @@ class MiCuentaActivity : AppCompatActivity() {
 
         binding.editarbutton.setOnClickListener {
             if(estaEditando){
-                if(nombreDeUsuario.isEmpty()){
+                if(binding.usernameEditText.text.isEmpty()){
                     val builder = AlertDialog.Builder(this@MiCuentaActivity)
                     builder.setMessage("Debe introducir un nombre de usuario.")
                     builder.setTitle("Importante")

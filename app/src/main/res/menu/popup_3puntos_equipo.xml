@@ -10,6 +10,9 @@
         android:id="@+id/partidosPopupOption"
         android:title="Partidos" />
     <item
+        android:id="@+id/equipoPopupOption"
+        android:title="Mi equipo" />
+    <item
         android:id="@+id/miCuentaPopupOption"
         android:title="Mi cuenta" />
 </menu>

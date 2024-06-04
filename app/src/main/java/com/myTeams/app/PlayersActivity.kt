@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -52,7 +53,50 @@ class PlayersActivity : AppCompatActivity() {
     }
 
     private fun setup(){
-        binding.myTeamText2.text = "MyPlayers"
+        binding.puntosButton.setOnClickListener {
+            val popupMenu = PopupMenu(this,binding.puntosButton)
+            popupMenu.inflate(R.menu.popup_3puntos_equipo)
+            popupMenu.show()
+
+            popupMenu.setOnMenuItemClickListener {item ->
+                when(item.itemId){
+                    R.id.partidosPopupOption -> {
+                        val partidosActivityIntent = Intent(this, PartidosActivity::class.java)
+
+                        if(currentTeam.id != ""){
+                            partidosActivityIntent.putExtra("equipoId", currentTeam.id)
+                            partidosActivityIntent.putExtra("equipo", currentTeam)
+                            startActivity(partidosActivityIntent)
+                            finish()
+                        }
+                        true
+                    }
+                    R.id.equipoPopupOption ->{
+                        val miEquipoActivityIntent = Intent(this, MostrarDatosEquipoActivity::class.java)
+                        miEquipoActivityIntent.putExtra("equipo", currentTeam)
+                        startActivity(miEquipoActivityIntent)
+                        finish()
+                        true
+                    }
+
+                    R.id.miCuentaPopupOption -> {
+                        val miCuentaActivityIntent = Intent(this, MiCuentaActivity::class.java)
+                        miCuentaActivityIntent.putExtra("email", currentTeam.usuario)
+
+                        startActivity(miCuentaActivityIntent)
+                        finish()
+                        true
+
+                    }
+
+                    else -> {
+                        false
+                    }
+                }
+            }
+        }
+
+
 
         binding.button2.setOnClickListener {
             crear11()

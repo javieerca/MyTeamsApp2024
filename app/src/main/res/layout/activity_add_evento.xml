@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,38 +8,87 @@
     android:orientation="vertical"
     tools:context=".AddEventoActivity">
 
+    <TextView
+        android:id="@+id/myTeamText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/verdeTitulos"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Eventos"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck" />
+
     <ImageView
         android:id="@+id/atrasbutton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/arrow_dark_back_ios_24px" />
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myTeamText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/myTeamText"
+        app:srcCompat="@drawable/arrow_back_ios_24px" />
 
-    <Button
-        android:id="@+id/golesbutton"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="24dp"
-        android:layout_weight="1"
-        android:text="Goles" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myTeamText">
 
-    <Button
-        android:id="@+id/cambiosbutton"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="24dp"
-        android:layout_weight="1"
-        android:text="Sustituciones" />
+        <Button
+            android:id="@+id/golesbutton"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="24dp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/grisClaro"
+            android:text="GOLES"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/sports_soccer_24px"
+            app:iconSize="48dp"
+            app:iconTint="@color/black" />
 
-    <Button
-        android:id="@+id/amonestacionesbutton"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="24dp"
-        android:layout_weight="1"
-        android:text="Amonestaciones" />
+        <Button
+            android:id="@+id/cambiosbutton"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="24dp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/grisClaro"
+            android:text="SUSTITUCIONES"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/change_circle_24px"
+            app:iconSize="48dp"
+            app:iconTint="@color/black" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/amonestacionesbutton"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="24dp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/grisClaro"
+            android:isScrollContainer="false"
+            android:text="AMONESTACIONES"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/silbato_24px"
+            app:iconSize="48dp"
+            app:iconTint="@color/black" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

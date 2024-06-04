@@ -69,12 +69,26 @@
                 app:srcCompat="@drawable/arrow_back_ios_24px" />
 
             <TextView
+                android:id="@+id/jornadaTextView3"
+                android:layout_width="182dp"
+                android:layout_height="wrap_content"
+                android:text="Jornada 1"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/atrasbutton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/atrasbutton" />
+
+            <TextView
                 android:id="@+id/golesVisitantetextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="34sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/visitantetextView2"
                 app:layout_constraintStart_toStartOf="@+id/visitantetextView2"
                 app:layout_constraintTop_toTopOf="@+id/golesLocaltextView" />
@@ -84,12 +98,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:text="Local"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/visitantetextView2"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/marcotextView"
@@ -106,6 +121,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/localTextView2"
@@ -119,6 +135,7 @@
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="34sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/localTextView2"
                 app:layout_constraintStart_toStartOf="@+id/localTextView2"
                 app:layout_constraintTop_toBottomOf="@+id/localTextView2" />
@@ -193,6 +210,7 @@
                 android:text="-"
                 android:textColor="@color/white"
                 android:textSize="34sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/golesVisitantetextView"
                 app:layout_constraintEnd_toStartOf="@+id/golesVisitantetextView"
                 app:layout_constraintStart_toEndOf="@+id/golesLocaltextView"
