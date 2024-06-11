@@ -44,7 +44,7 @@ class SustitucionAdapter (private var sustituciones: ArrayList<EventoModel>, val
 
 
         binding.imageView2.setOnClickListener{
-            Toast.makeText(context, "Vamos a borrar el cambio del minuto " + evento.minuto, Toast.LENGTH_SHORT)
+            Toast.makeText(context, "Has borrado el cambio del minuto " + evento.minuto, Toast.LENGTH_SHORT)
                 .show()
 
             partido.sustituciones.removeAt(position)

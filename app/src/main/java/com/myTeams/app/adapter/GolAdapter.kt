@@ -40,12 +40,12 @@ class GolAdapter (private var goles: ArrayList<EventoModel>, val context: Contex
         binding.minutoTextView2.text = evento.minuto.toString()
 
         binding.imageView.setOnClickListener{
-            Toast.makeText(context, "Vamos a borrar el gol del minuto " + evento.minuto, Toast.LENGTH_SHORT)
-                .show()
-
             partido.goles.removeAt(position)
             notifyDataSetChanged()
-            updateDataSet(goles)
+            updateDataSet(partido.goles)
+
+            Toast.makeText(context, "Has borrado el gol del minuto " + evento.minuto, Toast.LENGTH_SHORT)
+                .show()
         }
 
         binding.contenedorLayout.setOnClickListener {

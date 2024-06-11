@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.myTeams.app.adapter.GolAdapter
 import com.myTeams.app.adapter.TarjetaAdapter
 import com.myTeams.app.databinding.ActivityAmonestacionesPartidoBinding
 import com.myTeams.app.model.EventoModel
@@ -116,7 +114,7 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
     }
 
     private fun encontrarSegundaAmarilla(amonestaciones: List<EventoModel>): JugadorModel?{
-        var conAmarilla: ArrayList<JugadorModel> = ArrayList()
+        val conAmarilla: ArrayList<JugadorModel> = ArrayList()
         for(tarjeta in amonestaciones){
             if(tarjeta.tipoEventoId == 1){ //es tarjeta amarilla
                 conAmarilla.add(tarjeta.jugadoresImplicados[0])   //guardo los amonestados
@@ -162,10 +160,6 @@ class AmonestacionesPartidoActivity : AppCompatActivity() {
             //jugadoresTitulares = data?.getStringArrayListExtra("titulares")!!
             //binding.contadorTitulares.text = "(${jugadoresTitulares!!.size})"
             partido = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
-
-            if (partido.equipoId != "") {
-                Toast.makeText(this, "Tarjetas: ${partido.amonestaciones.size}", Toast.LENGTH_SHORT).show()
-            }
             //añadir evento a la bd y a listado
         }
     }

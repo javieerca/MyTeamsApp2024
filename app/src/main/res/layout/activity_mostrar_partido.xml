@@ -25,6 +25,16 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/eventostextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Observaciones:"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/eventostextView2"
+                app:layout_constraintTop_toBottomOf="@+id/divider22" />
+
+            <TextView
                 android:id="@+id/cambiostextView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,6 +66,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/puntosButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/dots_40px" />
 
             <ImageView
                 android:id="@+id/atrasbutton"
@@ -157,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/localTextView2"
                 app:layout_constraintStart_toStartOf="@+id/titularestextView"
                 app:layout_constraintTop_toBottomOf="@+id/titularestextView" />
@@ -176,7 +196,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/visitantetextView2"
                 app:layout_constraintStart_toStartOf="@+id/suplentesTextView"
                 app:layout_constraintTop_toTopOf="@+id/listadoTitularestextView" />
@@ -197,8 +217,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/eventostextView2" />
@@ -221,7 +239,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -233,12 +251,52 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listadoTitularestextView" />
+
+            <View
+                android:id="@+id/divider22"
+                android:layout_width="409dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventosRecyclerView" />
+
+            <TextView
+                android:id="@+id/observacionesDbTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/border"
+                android:text="TextView"
+                android:textIsSelectable="true"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/eventostextView"
+                app:layout_constraintTop_toBottomOf="@+id/eventostextView" />
+
+            <View
+                android:id="@+id/divider24"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="@+id/listadoTitularestextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/marcotextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

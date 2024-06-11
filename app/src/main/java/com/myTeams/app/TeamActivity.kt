@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -61,12 +60,15 @@ class TeamActivity : AppCompatActivity() {
                     binding.sinPartidostextView.visibility = View.INVISIBLE
 
                 }else{
+                    binding.minutosLayout.visibility = View.GONE
+                    binding.goleadoresLayout.visibility = View.GONE
                     binding.loadingGif.visibility = View.INVISIBLE
                     binding.sinPartidostextView.visibility = View.VISIBLE
                 }
                 setPartidoAdapter(listaPartidos)
             }
         }
+
 
         binding.atrasbutton.setOnClickListener {
             finish()
@@ -143,6 +145,15 @@ class TeamActivity : AppCompatActivity() {
             }
         }
 
+        binding.verJugadorestextView2.setOnClickListener{
+            val teamActivityIntent = Intent(this, PlayersActivity::class.java)
+            if(currentTeam.id != ""){
+                teamActivityIntent.putExtra("equipoId", currentTeam.id)
+                teamActivityIntent.putExtra("equipo", currentTeam)
+                startActivity(teamActivityIntent)
+            }
+        }
+
         binding.partidoRecyclerView.layoutManager =
             GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
         binding.jugadoresMinutosrecyclerView.layoutManager =
@@ -193,8 +204,6 @@ class TeamActivity : AppCompatActivity() {
                 Log.w(ContentValues.TAG, "Error getting team: ", exception)
                 callback(TeamModel()) // En caso de error, devolver una lista vacía
             }
-        //callback(currentTeam)
-        Toast.makeText(this,"Ya hemos econtrado el equipo ${currentTeam.nombre}",Toast.LENGTH_SHORT).show()
     }
 
 
@@ -294,7 +303,6 @@ class TeamActivity : AppCompatActivity() {
                         .get()
                         .addOnSuccessListener { documents ->
                             for (gol in documents) {
-                                //Toast.makeText(this, "Encontrado", Toast.LENGTH_SHORT).show()
                                 val goleador: ArrayList<JugadorModel> = ArrayList()
 
                                 db.collection("teams").document(equipoId).collection("players")
@@ -491,7 +499,7 @@ class TeamActivity : AppCompatActivity() {
             val partido = cargarPartido(intent.extras?.getString("idEquipo"))
             listaPartidos = ArrayList()
             if(partido.id != ""){
-                listaPartidos.add(ultimoPartido)
+                listaPartidos.add(partido)
                 binding.sinPartidostextView.visibility = View.INVISIBLE
             }else{
                 binding.loadingGif.visibility = View.INVISIBLE

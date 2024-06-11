@@ -136,9 +136,6 @@ class GolesPartidoActivity : AppCompatActivity() {
             //binding.contadorTitulares.text = "(${jugadoresTitulares!!.size})"
             partido = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
 
-            if (partido.equipoId != "") {
-                Toast.makeText(this, "Goles: ${partido.goles.size}", Toast.LENGTH_SHORT).show()
-            }
 
             //añadir evento a la bd y a listado
         }

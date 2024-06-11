@@ -64,6 +64,13 @@ class MiCuentaActivity : AppCompatActivity() {
     }
 
     private fun setup(){
+
+        val prefs =
+            getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val emailRecuperado = prefs.getString("email","")
+
+        binding.correoTextView.text = emailRecuperado
+
         binding.atrasbutton.setOnClickListener {
             finish()
         }

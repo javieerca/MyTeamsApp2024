@@ -1,6 +1,7 @@
 package com.myTeams.app
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -13,22 +14,19 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.databinding.ActivityAddTarjetaBinding
 import com.myTeams.app.model.EventoModel
-import com.myTeams.app.model.PartidoModel
 import com.myTeams.app.model.JugadorModel
+import com.myTeams.app.model.PartidoModel
 import com.myTeams.app.model.TeamModel
 
 class AddTarjetaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddTarjetaBinding
     private var currentTeam: TeamModel = TeamModel()
-    private var goleadorId: String = ""
     private var amonestado: JugadorModel = JugadorModel()
     private var progresoSeekBar: Int=0
     private var esAmarilla: Boolean = true
 
-    private val db = FirebaseFirestore.getInstance()
     private var partido: PartidoModel = PartidoModel()
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +48,7 @@ class AddTarjetaActivity : AppCompatActivity() {
 
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.textView7.text = progress.toString()
+                binding.minutotextView.text = progress.toString()
                 progresoSeekBar = progress
             }
 
@@ -82,40 +80,68 @@ class AddTarjetaActivity : AppCompatActivity() {
             startActivityForResult(seleccionarJugadorEventoActivityIntent, 333)
         }
 
+        binding.masbutton.setOnClickListener {
+            binding.seekBar.progress += 1
+        }
+
+        binding.menosbutton.setOnClickListener {
+            binding.seekBar.progress -= 1
+        }
 
         binding.guardarGolbutton.setOnClickListener {
-            var minutoTarjeta: Int= progresoSeekBar
-            var jugadorArray: ArrayList<JugadorModel> = ArrayList()
-            jugadorArray.add(amonestado)
-            var tipoEventoId = 1
-            var tipoEventoNombre = "Tarjeta Amarilla"
-            if(!esAmarilla){
-                tipoEventoId = 2
-                tipoEventoNombre = "Tarjeta roja"
+            val minutoTarjeta: Int= progresoSeekBar
+            if(amonestado.id != ""){
+                val jugadorArray: ArrayList<JugadorModel> = ArrayList()
+                jugadorArray.add(amonestado)
+                var tipoEventoId = 1
+                var tipoEventoNombre = "Tarjeta Amarilla"
+                if(!esAmarilla){
+                    tipoEventoId = 2
+                    tipoEventoNombre = "Tarjeta roja"
+                }
+                val evento = EventoModel(
+                    tipoEventoId = tipoEventoId,
+                    tipoEventoNombre = tipoEventoNombre,
+                    jugadoresImplicados = jugadorArray,
+                    minuto = minutoTarjeta
+                )
+                partido.amonestaciones.add(evento)
+
+                val resultadoIntent = Intent()
+                resultadoIntent.putExtra("partido", partido)
+
+                setResult(Activity.RESULT_OK, resultadoIntent)
+                finish()
+            }else{
+                Toast.makeText(this, "Deber seleccionar un jugador", Toast.LENGTH_SHORT).show()
             }
-            var evento = EventoModel(
-                tipoEventoId = tipoEventoId,
-                tipoEventoNombre = tipoEventoNombre,
-                jugadoresImplicados = jugadorArray,
-                minuto = minutoTarjeta
-            )
-            Toast.makeText(this, "Evento creado", Toast.LENGTH_SHORT).show()
-
-            partido.amonestaciones.add(evento)
-
-            val resultadoIntent = Intent()
-            resultadoIntent.putExtra("partido", partido)
-
-            //SUBIR A BD
-            setResult(Activity.RESULT_OK, resultadoIntent)
-            finish()
-
         }
+
+        binding.atrasbutton.setOnClickListener {
+            confirmCerrar()
+        }
+
         binding.atrasbutton.setOnClickListener {
             finish()
         }
     }
 
+    private fun confirmCerrar(){
+        val builder = AlertDialog.Builder(this@AddTarjetaActivity)
+        builder.setMessage("¿Desea salir sin guardar?")
+        builder.setTitle("Importante")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton("yes") { _, _ ->
+            finish()
+        }
+        builder.setNegativeButton("no"){_,_ ->
+
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
 
     @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -126,9 +152,6 @@ class AddTarjetaActivity : AppCompatActivity() {
             amonestado = data?.getSerializableExtra("jugador", JugadorModel::class.java)!!
             binding.nombreJugadortextView.text = amonestado.nombre
             binding.numeroGoleadortextView.text = amonestado.numero.toString()
-
-            Toast.makeText(this, "JugadorId ${amonestado.id}", Toast.LENGTH_SHORT)
-                .show()
         }
     }
 }

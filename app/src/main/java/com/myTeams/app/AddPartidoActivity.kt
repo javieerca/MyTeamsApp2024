@@ -144,7 +144,7 @@ class AddPartidoActivity : AppCompatActivity() {
                     )
                 ).addOnSuccessListener {
                     partidoActual.id = nuevoDocumento.id
-                    Toast.makeText(this, "Id partido: ${partidoActual.id}", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Id partido: ${partidoActual.id}", Toast.LENGTH_SHORT).show()
                     addEventos()
                     actualizarInfoEquipo(datosPartido)
                 }
@@ -319,7 +319,7 @@ class AddPartidoActivity : AppCompatActivity() {
 
 
 
-        Toast.makeText(this, "Se ha añadido el gol de ${gol.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
+       // Toast.makeText(this, "Se ha añadido el gol de ${gol.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
     }
     private fun sumarTarjetas(jugador: JugadorModel, tarjeta: EventoModel){
         val tieneAmarilla = tienenAmarilla.firstOrNull { it.id == jugador.id }
@@ -591,7 +591,7 @@ class AddPartidoActivity : AppCompatActivity() {
             for(jugador in partidoActual.titulares){
                 partidoActual.convocados.add(jugador)
             }
-            Toast.makeText(this, "Titulares: ${jugadoresTitularesIds.size}",Toast.LENGTH_SHORT).show()
+           // Toast.makeText(this, "Titulares: ${jugadoresTitularesIds.size}",Toast.LENGTH_SHORT).show()
         }
 
         if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
@@ -603,7 +603,7 @@ class AddPartidoActivity : AppCompatActivity() {
                 partidoActual.convocados.add(jugador)
             }
 
-            Toast.makeText(this, "Suplentes: ${jugadoresSuplentesIds.size}",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Suplentes: ${jugadoresSuplentesIds.size}",Toast.LENGTH_SHORT).show()
         }
 
         if (requestCode == 777 && resultCode == Activity.RESULT_OK) {
@@ -613,7 +613,7 @@ class AddPartidoActivity : AppCompatActivity() {
             binding.contadorEventostextView.text = "($sumatorioEventos)"
             binding.golesanotadostextView.text = partidoActual.goles.size.toString()
 
-            Toast.makeText(this, "Hay $sumatorioEventos eventos",Toast.LENGTH_SHORT).show()
+           // Toast.makeText(this, "Hay $sumatorioEventos eventos",Toast.LENGTH_SHORT).show()
         }
     }
 }

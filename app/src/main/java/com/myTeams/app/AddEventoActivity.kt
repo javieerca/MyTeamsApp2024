@@ -52,8 +52,6 @@ class AddEventoActivity : AppCompatActivity() {
             golesPartidoActivityIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
             golesPartidoActivityIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
             startActivityForResult(golesPartidoActivityIntent, 333)
-
-            Toast.makeText(this, "Seleccionado goles", Toast.LENGTH_SHORT).show()
         }
 
         binding.amonestacionesbutton.setOnClickListener {
@@ -64,8 +62,6 @@ class AddEventoActivity : AppCompatActivity() {
             amonestacionesPartidoActivityIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
             amonestacionesPartidoActivityIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
             startActivityForResult(amonestacionesPartidoActivityIntent, 444)
-
-            Toast.makeText(this, "Seleccionado goles", Toast.LENGTH_SHORT).show()
         }
 
         binding.cambiosbutton.setOnClickListener {
@@ -76,11 +72,7 @@ class AddEventoActivity : AppCompatActivity() {
             sustitucionesPartidoIntent.putStringArrayListExtra("titulares", jugadoresTitulares)
             sustitucionesPartidoIntent.putStringArrayListExtra("suplentes", jugadoresSuplentes)
             startActivityForResult(sustitucionesPartidoIntent, 555)
-
-            Toast.makeText(this, "Seleccionado goles", Toast.LENGTH_SHORT).show()
-
         }
-
 
         binding.atrasbutton.setOnClickListener {
             guardarYSalir()

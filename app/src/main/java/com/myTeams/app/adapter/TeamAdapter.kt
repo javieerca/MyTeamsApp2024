@@ -54,7 +54,6 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId){
                     R.id.editarEquipoOption -> {
-                        Toast.makeText(context,"Opción 1", Toast.LENGTH_SHORT).show()
                         val editarEquipoActivityIntent = Intent(context, EditarEquipoActivity::class.java)
 
                         editarEquipoActivityIntent.putExtra("equipo", team)
@@ -66,7 +65,7 @@ class TeamAdapter(private var teams: ArrayList<TeamModel>, val context:Context, 
                         true
                     }
                     R.id.borrarEquipoOption ->{
-                        Toast.makeText(context, "Vamos a borrar a "+team.nombre, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Has borrado a "+team.nombre, Toast.LENGTH_SHORT).show()
                         db.collection("teams").document(team.id).delete()
                         db.collection("partidos").document(team.id).delete()
 

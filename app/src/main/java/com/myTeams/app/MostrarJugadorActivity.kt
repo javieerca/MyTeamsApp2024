@@ -1,7 +1,9 @@
 package com.myTeams.app
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -57,6 +59,34 @@ class MostrarJugadorActivity : AppCompatActivity() {
 
         binding.atrasbutton.setOnClickListener {
             finish()
+        }
+
+        var cambioMinutos =  0
+        if(jugador.vecesCambiado != 0) {
+            cambioMinutos = jugador.minutosJugados / jugador.vecesCambiado
+        }
+        binding.textView21.text = "Este jugador es cambiado cada $cambioMinutos minutos de media."
+
+        binding.puntosButton.setOnClickListener {
+            val popupMenu = PopupMenu(this, binding.puntosButton)
+            popupMenu.inflate(R.menu.solo_editar_menu)
+            popupMenu.show()
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.editarOpcion -> {
+                        val editarJugadorActivityIntent = Intent(this, EditarJugadorActivity::class.java)
+                        editarJugadorActivityIntent.putExtra("jugador", jugador)
+                        this.startActivity(editarJugadorActivityIntent)
+
+                        true
+                    }
+
+                    else -> {
+                        false
+                    }
+                }
+            }
         }
     }
 }

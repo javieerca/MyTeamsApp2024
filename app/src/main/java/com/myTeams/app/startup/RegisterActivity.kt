@@ -1,7 +1,9 @@
 package com.myTeams.app.startup
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -44,22 +46,113 @@ class RegisterActivity : AppCompatActivity() {
         title = "Autenticación"
 
         binding.registerButton2.setOnClickListener {
-            if(binding.emailEdittext.text.isNotEmpty() && binding.passwordEditText2.text.isNotEmpty()){
-                var email = binding.emailEdittext.text.toString()
-                var password = binding.passwordEditText2.text.toString()
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener{
-                        if(it.isSuccessful){
-                            showHome(it.result?.user?.email ?:"", ProviderType.BASIC)
+            var nombreValido = true
 
-                            var nombreUsuario = email.split("@")[0]
-                            db.collection("users").document(email).set(
-                                hashMapOf<String,Any>("username" to nombreUsuario)
-                            )
-                        }else{
-                            showAlert()
+            var nombreDeUsuario = binding.usernameEditText.text.toString().trim()
+            if (nombreDeUsuario.contains("#") || nombreDeUsuario.contains("$") || nombreDeUsuario.contains(
+                    "%"
+                )
+                || nombreDeUsuario.contains(";") || nombreDeUsuario.contains("<") || nombreDeUsuario.contains(
+                    ">"
+                )
+                || nombreDeUsuario.contains(",") || nombreDeUsuario.contains("=") || nombreDeUsuario.contains(
+                    "!"
+                )
+                || nombreDeUsuario.contains("¡") || nombreDeUsuario.contains("?") || nombreDeUsuario.contains(
+                    "¿"
+                )
+                || nombreDeUsuario.contains("'") || nombreDeUsuario.contains("[") || nombreDeUsuario.contains(
+                    "]"
+                )
+                || nombreDeUsuario.contains("^") || nombreDeUsuario.contains("¨") || nombreDeUsuario.contains(
+                    "{"
+                )
+                || nombreDeUsuario.contains("}") || nombreDeUsuario.contains("ç") || nombreDeUsuario.contains(
+                    ":"
+                )
+            ) {
+                nombreValido = false
+                val builder = AlertDialog.Builder(this@RegisterActivity)
+                builder.setMessage("Su nombre de usuario no puede contener caracteres especiales.")
+                builder.setTitle("Importante")
+                builder.setCancelable(false)
+
+                builder.setPositiveButton("OK") { _, _ ->
+                }
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
+            if (nombreDeUsuario.count() in 1..5) {
+
+                val builder = AlertDialog.Builder(this@RegisterActivity)
+                builder.setMessage("Su nombre de usuario debe contener mas de 6 caracteres.")
+                builder.setTitle("Importante")
+                builder.setCancelable(false)
+
+                builder.setPositiveButton("OK") { _, _ ->
+                }
+                val alertDialog = builder.create()
+                alertDialog.show()
+                nombreValido = false
+            }
+            if (nombreDeUsuario.contains(" ")) {
+                nombreValido = false
+                val builder = AlertDialog.Builder(this@RegisterActivity)
+                builder.setMessage("Su nombre de usuario no puede contener espacios.")
+                builder.setTitle("Importante")
+                builder.setCancelable(false)
+
+                builder.setPositiveButton("OK") { _, _ ->
+                }
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
+
+            if (nombreValido) {
+                //comprobar que no existe
+                val nuevoUsername = binding.usernameEditText.text.trim().toString()
+                db.collection("users")
+                    .whereEqualTo("username", nuevoUsername)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        if (documents.isEmpty) {
+                            //guardar y cambiar estado
+                            if (binding.emailEdittext.text.isNotEmpty() && binding.passwordEditText2.text.isNotEmpty()) {
+                                var email = binding.emailEdittext.text.toString()
+                                var password = binding.passwordEditText2.text.toString()
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            showHome(it.result?.user?.email ?: "", ProviderType.BASIC)
+
+                                            db.collection("users").document(email).set(
+                                                hashMapOf<String, Any>("username" to nuevoUsername)
+                                            )
+                                        } else {
+                                            showAlert()
+                                        }
+                                    }
+                            }
+
+                        } else {
+                            val builder = AlertDialog.Builder(this@RegisterActivity)
+                            builder.setMessage("Ese nombre ya está en uso.")
+                            builder.setTitle("Importante")
+                            builder.setCancelable(false)
+
+                            builder.setPositiveButton("OK") { _, _ ->
+                            }
+                            val alertDialog = builder.create()
+                            alertDialog.show()
                         }
                     }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Ha ocurrido un error inesperado.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+
+
             }
         }
 
@@ -93,10 +186,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showHome(email:String, provider: ProviderType){
-        var nombreUsuario = email.split("@")[0]
-        db.collection("users").document(email).set(
-            hashMapOf<String,Any>("username" to nombreUsuario)
-        )
 
         val homeActivityIntent = Intent(this, HomeActivity::class.java).apply {
             putExtra("email", email)

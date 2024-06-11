@@ -47,7 +47,7 @@ class EventosPartidoAdapter(private var eventos: List<EventoModel>, val context:
         }
         binding.dorsaltextView.text = evento.jugadoresImplicados[0].numero.toString()
         binding.nombreGoleadortextView.text = evento.jugadoresImplicados[0].nombre.toString()
-        binding.minutotextView.text = evento.minuto.toString()
+        binding.minutoContadortextView.text = evento.minuto.toString()
     }
 
 }

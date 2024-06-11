@@ -7,6 +7,51 @@
     android:layout_height="match_parent"
     tools:context=".AddGolActivity">
 
+    <Button
+        android:id="@+id/masbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/grisClaro"
+        android:text="+"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/seekBar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/menosbutton"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+    <Button
+        android:id="@+id/menosbutton"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/grisClaro"
+        android:text="-"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/masbutton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+
+    <TextView
+        android:id="@+id/minutoContadortextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Minuto:"
+        app:layout_constraintStart_toStartOf="@+id/numeroGoleadortextView"
+        app:layout_constraintTop_toBottomOf="@+id/numeroGoleadortextView" />
+
     <TextView
         android:id="@+id/nombreJugadorTextView2"
         android:layout_width="0dp"
@@ -48,9 +93,8 @@
         android:layout_marginEnd="24dp"
         android:max="90"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/minutotextView"
-        app:layout_constraintTop_toBottomOf="@+id/minutotextView" />
+        app:layout_constraintStart_toStartOf="@+id/minutoContadortextView2"
+        app:layout_constraintTop_toBottomOf="@+id/minutoContadortextView2" />
 
     <TextView
         android:id="@+id/numeroGoleadortextView"
@@ -67,25 +111,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:hint="Selecciona un jugador"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/numeroGoleadortextView"
-        app:layout_constraintEnd_toStartOf="@+id/textView7"
         app:layout_constraintStart_toEndOf="@+id/numeroGoleadortextView"
         app:layout_constraintTop_toTopOf="@+id/numeroGoleadortextView" />
 
     <TextView
-        android:id="@+id/minutotextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Minuto:"
-        app:layout_constraintStart_toStartOf="@+id/numeroGoleadortextView"
-        app:layout_constraintTop_toBottomOf="@+id/numeroGoleadortextView" />
-
-    <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/minutoContadortextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1"

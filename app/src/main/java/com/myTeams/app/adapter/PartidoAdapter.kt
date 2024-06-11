@@ -66,8 +66,6 @@ class PartidoAdapter(private var partidos: ArrayList<PartidoModel>, val context:
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId){
                     R.id.editarEquipoOption -> {
-                        Toast.makeText(context,"Opción 1", Toast.LENGTH_SHORT).show()
-
                         val editarPartidoActivityIntent = Intent(context, EditarPartidoActivity::class.java)
 
                         editarPartidoActivityIntent.putExtra("equipo", equipo)
@@ -366,6 +364,7 @@ class PartidoAdapter(private var partidos: ArrayList<PartidoModel>, val context:
         }
         binding.contenedorLayout.setOnClickListener{
             val mostrarPartidoActivityIntent = Intent(context, MostrarPartidoActivity::class.java)
+            mostrarPartidoActivityIntent.putExtra("equipo", equipo)
             mostrarPartidoActivityIntent.putExtra("partido", partidos[position])
             context.startActivity(mostrarPartidoActivityIntent)
         }

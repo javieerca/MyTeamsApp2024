@@ -1,5 +1,6 @@
 package com.myTeams.app
 
+import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -38,7 +39,7 @@ class EditarEquipoActivity : AppCompatActivity() {
     }
 
     private fun setup(){
-        binding.textView20.text = "Editar equipo"
+        binding.myTeamText6.text = "Editar equipo"
         binding.teamNameEditText.setText(equipoActual.nombre)
 
         binding.savebutton.text = "Guardar"
@@ -83,8 +84,17 @@ class EditarEquipoActivity : AppCompatActivity() {
                     Toast.makeText(this, "Ha ocurrido un error inesperado", Toast.LENGTH_SHORT).show()
                 }
 
-            finish()
-        }
+            val builder = AlertDialog.Builder(this@EditarEquipoActivity)
+            builder.setMessage("Se están guardando sus cambios.")
+            builder.setTitle("Importante")
+            builder.setCancelable(false)
+
+            builder.setPositiveButton("OK") { _, _ ->
+                finish()
+            }
+
+            val alertDialog = builder.create()
+            alertDialog.show()        }
 
         binding.cancelButton.setOnClickListener {
             finish()

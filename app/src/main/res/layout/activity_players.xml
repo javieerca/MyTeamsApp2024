@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:fadeScrollbars="true"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical"
@@ -75,6 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Generar 11"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/playersRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/addButton2" />
 

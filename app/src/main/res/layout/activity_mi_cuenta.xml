@@ -57,7 +57,7 @@
         app:srcCompat="@drawable/user_circle_24px" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/correoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -93,8 +93,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Nombre de usuario:"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintStart_toStartOf="@+id/correoTextView"
+        app:layout_constraintTop_toBottomOf="@+id/correoTextView" />
 
     <EditText
         android:id="@+id/usernameEditText"

@@ -133,7 +133,7 @@ class AddTitularesActivity : AppCompatActivity() , OnItemClickListener{
 
         val teamRef = db.collection("teams").document(teamId!!)
 
-        teamRef.collection("players").orderBy("posicionId")
+        teamRef.collection("players").orderBy("numero")
             .get()
             .addOnSuccessListener { documents ->
                 for (jugador in documents) {

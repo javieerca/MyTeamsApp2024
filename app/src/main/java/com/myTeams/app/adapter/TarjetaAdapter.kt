@@ -48,14 +48,14 @@ class TarjetaAdapter (private var tarjetas: ArrayList<EventoModel>, val context:
         }
 
         binding.imageView7.setOnClickListener{
-            Toast.makeText(context, "Vamos a borrar la tarjeta del minuto " + evento.minuto, Toast.LENGTH_SHORT)
+            partido.amonestaciones.remove(evento)
+            //tarjetas.remove(evento)
+            updateDataSet(partido.amonestaciones)
+            Toast.makeText(context, "Has borrado la tarjeta del minuto " + evento.minuto, Toast.LENGTH_SHORT)
                 .show()
-
-            partido.goles.removeAt(position)
             notifyDataSetChanged()
-            updateDataSet(tarjetas)
-        }
 
+        }
     }
 
     private fun updateDataSet(list: ArrayList<EventoModel>) {

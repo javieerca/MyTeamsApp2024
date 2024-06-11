@@ -79,26 +79,36 @@ class AddSustitucionActivty : AppCompatActivity() {
         }
 
         binding.guardarGolbutton2.setOnClickListener {
-            val minutoCambio: Int= progresoSeekBar
+            val minutoCambio: Int = binding.textView11.text.toString().toInt()
             val jugadorArray: ArrayList<JugadorModel> = ArrayList()
-            jugadorArray.add(sustituto)
-            jugadorArray.add(sustituido)
-            val evento = EventoModel(
-                tipoEventoId = 3,
-                tipoEventoNombre = "Sustitucion",
-                jugadoresImplicados = jugadorArray,
-                minuto = minutoCambio
-            )
+            if(sustituido.id != "" && sustituto.id != ""){
+                jugadorArray.add(sustituto)
+                jugadorArray.add(sustituido)
+                val evento = EventoModel(
+                    tipoEventoId = 3,
+                    tipoEventoNombre = "Sustitucion",
+                    jugadoresImplicados = jugadorArray,
+                    minuto = minutoCambio
+                )
 
-            Toast.makeText(this, "Evento creado", Toast.LENGTH_SHORT).show()
+                partido.sustituciones.add(evento)
 
-            partido.sustituciones.add(evento)
+                val resultadoIntent = Intent()
+                resultadoIntent.putExtra("partido", partido)
 
-            val resultadoIntent = Intent()
-            resultadoIntent.putExtra("partido", partido)
+                setResult(Activity.RESULT_OK, resultadoIntent)
+                finish()
+            }else{
+                Toast.makeText(this, "Debes seleccionar a los 2 jugadores", Toast.LENGTH_SHORT).show()
+            }
+        }
 
-            setResult(Activity.RESULT_OK, resultadoIntent)
-            finish()
+        binding.masbutton.setOnClickListener {
+            binding.seekBar.progress += 1
+        }
+
+        binding.menosbutton.setOnClickListener {
+            binding.seekBar.progress -= 1
         }
 
         binding.atrasbutton.setOnClickListener {
@@ -135,17 +145,11 @@ class AddSustitucionActivty : AppCompatActivity() {
             sustituto = data?.getSerializableExtra("jugador", JugadorModel::class.java)!!
             binding.nombreEntratextView.text = sustituto.nombre
             binding.numeroEntratextView2.text = sustituto.numero.toString()
-
-            Toast.makeText(this, "JugadorId ${sustituto.id}", Toast.LENGTH_SHORT)
-                .show()
         }
         if (requestCode == 444 && resultCode == Activity.RESULT_OK) {
             sustituido = data?.getSerializableExtra("jugador", JugadorModel::class.java)!!
             binding.nombreSaletextView3.text = sustituido.nombre
             binding.numeroSaletextView3.text = sustituido.numero.toString()
-
-            Toast.makeText(this, "JugadorId ${sustituido.id}", Toast.LENGTH_SHORT)
-                .show()
         }
     }
 

@@ -177,14 +177,13 @@
 
     <ImageView
         android:id="@+id/atrasbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:padding="3dp"
-        app:layout_constraintBottom_toBottomOf="@+id/myTeamText3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.41"
         app:srcCompat="@drawable/arrow_back_ios_24px" />
 
     <ImageView

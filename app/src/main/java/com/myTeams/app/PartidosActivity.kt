@@ -145,7 +145,6 @@ class PartidosActivity : AppCompatActivity() {
                         val partidoDB = partido.toObject<PartidoModel>()
                         partidoDB.id = partido.id
                         listado.add(partidoDB)
-
                     }
 
                     for(partido in listado) {
@@ -220,7 +219,6 @@ class PartidosActivity : AppCompatActivity() {
                             .get()
                             .addOnSuccessListener { documents ->
                                 for (gol in documents) {
-                                    //Toast.makeText(this, "Encontrado", Toast.LENGTH_SHORT).show()
                                     val goleador: ArrayList<JugadorModel> = ArrayList()
 
                                     db.collection("teams").document(equipoId).collection("players")
@@ -355,29 +353,6 @@ class PartidosActivity : AppCompatActivity() {
                     callback(ArrayList()) // En caso de error, devolver una lista vacía
                 }
 
-
-/*
-                //aprovecha y carga jugadores y sus datos
-                db.collection("teams").document(currentTeam.id).collection("players").get()
-                    .addOnSuccessListener { documents ->
-                        for (jugador in documents) {
-                            val playerDB = jugador.toObject<JugadorModel>()
-                            playerDB.id = jugador.id
-                            currentTeam.jugadores.add(playerDB)
-
-                        }
-                        callback(listado)
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-                        callback(ArrayList()) // En caso de error, devolver una lista vacía
-                    }
-
- */
-
-            //ya ha guardado todos los datos de los partidos y los devuelve actualizados
-
-            //callback(listado)
         } else {
             binding.loadingGif3.visibility = View.INVISIBLE
             callback(ArrayList())
@@ -396,14 +371,13 @@ class PartidosActivity : AppCompatActivity() {
             }else{
                 binding.sinPartidostextView.visibility = View.INVISIBLE
             }
-
             setAdapter(listado)
         }
     }
 
     override fun onResume() {
-        super.onResume()
         actualizar()
+        super.onResume()
     }
 
 }

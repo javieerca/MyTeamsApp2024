@@ -47,7 +47,7 @@ class AddGolActivity : AppCompatActivity() {
         binding.seekBar.min = 1
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.textView7.text = progress.toString()
+                binding.minutoContadortextView.text = progress.toString()
                 progresoSeekBar = progress
             }
 
@@ -67,28 +67,37 @@ class AddGolActivity : AppCompatActivity() {
             startActivityForResult(seleccionarJugadorEventoActivityIntent, 333)
         }
 
+        binding.masbutton.setOnClickListener {
+            binding.seekBar.progress += 1
+        }
 
+        binding.menosbutton.setOnClickListener {
+            binding.seekBar.progress -= 1
+        }
 
         binding.guardarGolbutton.setOnClickListener {
             val minutoGol: Int= progresoSeekBar
             val jugadorArray: ArrayList<JugadorModel> = ArrayList()
-            jugadorArray.add(goleador)
-            val evento = EventoModel(
-                tipoEventoId = 0,
-                tipoEventoNombre = "Gol",
-                jugadoresImplicados = jugadorArray,
-                minuto = minutoGol
-            )
-            Toast.makeText(this, "Evento creado", Toast.LENGTH_SHORT).show()
+            if(goleador.id != ""){
+                jugadorArray.add(goleador)
+                val evento = EventoModel(
+                    tipoEventoId = 0,
+                    tipoEventoNombre = "Gol",
+                    jugadoresImplicados = jugadorArray,
+                    minuto = minutoGol
+                )
+                partido.goles.add(evento)
 
-            partido.goles.add(evento)
+                val resultadoIntent = Intent()
+                resultadoIntent.putExtra("partido", partido)
 
-            val resultadoIntent = Intent()
-            resultadoIntent.putExtra("partido", partido)
+                //SUBIR A BD
+                setResult(Activity.RESULT_OK, resultadoIntent)
+                finish()
+            }else{
+                Toast.makeText(this, "Debes seleccionar un jugador", Toast.LENGTH_SHORT).show()
+            }
 
-            //SUBIR A BD
-            setResult(Activity.RESULT_OK, resultadoIntent)
-            finish()
         }
 
         binding.atrasbutton.setOnClickListener {
@@ -127,8 +136,6 @@ class AddGolActivity : AppCompatActivity() {
             binding.nombreJugadortextView.text = goleador.nombre
             binding.numeroGoleadortextView.text = goleador.numero.toString()
 
-            Toast.makeText(this, "JugadorId ${goleador.id}", Toast.LENGTH_SHORT)
-                .show()
         }
     }
 

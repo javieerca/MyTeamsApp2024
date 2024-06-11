@@ -132,11 +132,6 @@ class SustitucionesPartido : AppCompatActivity() {
 
         if (requestCode == 333 && resultCode == Activity.RESULT_OK) {
             partido = data?.getSerializableExtra("partido", PartidoModel::class.java)!!
-
-            if (partido.equipoId != "") {
-                Toast.makeText(this, "Sustituciones: ${partido.sustituciones.size}", Toast.LENGTH_SHORT).show()
-            }
-            //añadir evento a la bd y a listado
         }
     }
 

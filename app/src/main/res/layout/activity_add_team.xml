@@ -49,19 +49,13 @@
         android:id="@+id/kitSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:entries="@array/kit_colors"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/teamNameEditText"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toEndOf="@+id/textView20"
         app:layout_constraintTop_toBottomOf="@+id/teamNameEditText" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="256dp" />
 
     <EditText
         android:id="@+id/teamNameEditText"
@@ -92,14 +86,12 @@
 
     <TextView
         android:id="@+id/textView20"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
         android:text="Color de la equipación:"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/kitSpinner"
-        app:layout_constraintEnd_toStartOf="@+id/kitSpinner"
         app:layout_constraintStart_toStartOf="@+id/teamNameEditText"
         app:layout_constraintTop_toTopOf="@+id/kitSpinner" />
 

@@ -5,14 +5,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.myTeams.app.R
 import com.myTeams.app.TeamActivity
 import com.myTeams.app.databinding.EquipoEnPerfilLayoutBinding
-import com.myTeams.app.databinding.TeamLayoutBinding
 import com.myTeams.app.model.TeamModel
 
 class EquipoEnPerfilAdapter(private var teams: ArrayList<TeamModel>, val context: Context, private val db: FirebaseFirestore):

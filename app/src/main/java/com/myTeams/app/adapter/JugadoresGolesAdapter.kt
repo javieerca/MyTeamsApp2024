@@ -32,6 +32,10 @@ class JugadoresGolesAdapter (private var players: ArrayList<JugadorModel>, val c
 
         val binding = Jugadores3EstadisitcasBinding.bind(holder.itemView)
 
+        if(players.size == 0){
+            binding.contenedorLayout.visibility = View.GONE
+        }
+
         if(players.size > 0){
             val jugador1 = players[0]
             binding.nombre1TextView.text = jugador1.nombre
@@ -43,7 +47,7 @@ class JugadoresGolesAdapter (private var players: ArrayList<JugadorModel>, val c
                 context.startActivity(mostrarJugadorActivityIntent)
             }
         }else{
-            Toast.makeText(context, "No hay goleadoes", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(context, "No hay goleadores", Toast.LENGTH_SHORT).show()
         }
 
         if(players.size > 1){

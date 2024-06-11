@@ -821,8 +821,6 @@ class EditarPartidoActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
             }
-        Toast.makeText(this, "Se ha añadido el gol de ${gol.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
-
     }
 
     private fun sumarTarjetas(jugador: JugadorModel, tarjeta: EventoModel){
@@ -868,7 +866,6 @@ class EditarPartidoActivity : AppCompatActivity() {
             tarjeta.jugadoresImplicados[0].tarjetasRojas += 1
         }
 
-        Toast.makeText(this, "Se ha añadido la tarjeta de ${tarjeta.jugadoresImplicados[0].nombre}", Toast.LENGTH_SHORT).show()
     }
 
     private fun suplenteJuega(jugador: JugadorModel): Boolean{
@@ -1011,7 +1008,6 @@ class EditarPartidoActivity : AppCompatActivity() {
             for(jugador in partidoActualizado.titulares){
                 partidoActualizado.convocados.add(jugador)
             }
-            Toast.makeText(this, "Titulares: ${jugadoresTitularesIds.size}", Toast.LENGTH_SHORT).show()
         }
 
         if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
@@ -1029,7 +1025,6 @@ class EditarPartidoActivity : AppCompatActivity() {
                 }
             }
 
-            Toast.makeText(this, "Suplentes: ${jugadoresSuplentesIds.size}", Toast.LENGTH_SHORT).show()
         }
 
         if (requestCode == 777 && resultCode == Activity.RESULT_OK) {
@@ -1038,8 +1033,6 @@ class EditarPartidoActivity : AppCompatActivity() {
             val sumatorioEventos = partidoActualizado.goles.size + partidoActualizado.sustituciones.size + partidoActualizado.amonestaciones.size
             binding.contadorEventostextView.text = "($sumatorioEventos)"
             binding.golesanotadostextView.text = partidoActualizado.goles.size.toString()
-
-            Toast.makeText(this, "Hay $sumatorioEventos eventos", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -125,7 +125,7 @@ class AddSuplentesActivity : AppCompatActivity(), AdapterView.OnItemClickListene
 
         val teamRef = db.collection("teams").document(currentTeam.id)
 
-        teamRef.collection("players").orderBy("posicionId")
+        teamRef.collection("players").orderBy("numero")
             .get()
             .addOnSuccessListener { documents ->
                 for (jugador in documents) {

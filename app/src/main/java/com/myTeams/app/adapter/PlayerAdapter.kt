@@ -9,6 +9,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.myTeams.app.EditarJugadorActivity
 import com.myTeams.app.EditarPartidoActivity
 import com.myTeams.app.MostrarJugadorActivity
 import com.myTeams.app.R
@@ -56,15 +57,15 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.editarEquipoOption -> {
-                        Toast.makeText(context, "Opción 1", Toast.LENGTH_SHORT).show()
-                        /*
-                        abrir editar Team
-                         */
+                        val editarJugadorActivityIntent = Intent(context, EditarJugadorActivity::class.java)
+                        editarJugadorActivityIntent.putExtra("jugador", player)
+                        context.startActivity(editarJugadorActivityIntent)
+
                         true
                     }
 
                     R.id.borrarEquipoOption -> {
-                        Toast.makeText(context, "Vamos a borrar a " + player.nombre, Toast.LENGTH_SHORT)
+                        Toast.makeText(context, "Has borrado a " + player.nombre, Toast.LENGTH_SHORT)
                             .show()
                         val teamref = db.collection("teams").document(player.equipoId)
                         val playerRef = teamref.collection("players").document(player.id)
@@ -88,7 +89,6 @@ RecyclerView.Adapter<PlayerAdapter.ItemViewHolder>() {
             }
         }
         binding.contenedorLayout.setOnClickListener {
-            Toast.makeText(context, "Abrir jugador", Toast.LENGTH_SHORT).show()
             val mostrarJugadorActivityIntent = Intent(context, MostrarJugadorActivity::class.java)
             mostrarJugadorActivityIntent.putExtra("jugador", player)
             context.startActivity(mostrarJugadorActivityIntent)
